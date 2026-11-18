@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f7f1">
+  <title>Giao tiếp tiếng Anh trong lớp học — Lingua</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f7f7f1;
+      --ink: #172b27;
+      --muted: #697570;
+      --line: #dfe4dc;
+      --green: #176b53;
+      --green-dark: #10543f;
+      --lime: #d7f36b;
+      --coral: #ff795f;
+      --white: #fff;
+      font-family: "DM Sans", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background-color: var(--paper);
+      background-image: radial-gradient(#dce4d9 0.8px, transparent 0.8px);
+      background-size: 20px 20px;
+    }
+
+    a, button, input { font: inherit; }
+    a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
+    .page-shell { width: min(1080px, calc(100% - 56px)); margin: 0 auto; }
+
+    .topbar {
+      height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(23, 43, 39, 0.1);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--ink);
+      font-family: "Manrope", sans-serif;
+      font-size: 19px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      width: 35px;
+      height: 35px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: var(--green);
+      color: var(--lime);
+      transform: rotate(-5deg);
+    }
+
+    .back-link { color: var(--green-dark); font-size: 14px; font-weight: 700; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+    main { padding: 58px 0 56px; }
+    .intro { max-width: 720px; margin-bottom: 30px; animation: rise-in 500ms ease-out both; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 14px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before { width: 7px; height: 7px; border-radius: 50%; background: var(--coral); content: ""; }
+
+    h1 {
+      margin: 0;
+      font-family: "Manrope", sans-serif;
+      font-size: clamp(34px, 5vw, 52px);
+      font-weight: 800;
+      line-height: 1.12;
+    }
+
+    .intro-copy { max-width: 650px; margin: 14px 0 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .section-tabs { display: flex; gap: 8px; margin: 0 0 28px; border-bottom: 1px solid var(--line); }
+
+    .section-tab {
+      min-height: 45px;
+      padding: 0 16px;
+      border: 0;
+      border-bottom: 3px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .section-tab[aria-selected="true"] { border-bottom-color: var(--green); color: var(--green-dark); }
+    .teaching-panel[hidden] { display: none; }
+    .search-panel { position: relative; z-index: 2; max-width: 760px; margin: 0 0 22px; }
+    .search-label { display: block; margin-bottom: 8px; color: var(--ink); font-size: 13px; font-weight: 700; }
+
+    .search-input {
+      width: 100%;
+      min-height: 54px;
+      padding: 0 17px;
+      border: 1px solid #cbd5cc;
+      border-radius: 6px;
+      background: var(--white);
+      color: var(--ink);
+      font-size: 15px;
+    }
+
+    .search-input::placeholder { color: #87928c; }
+    .search-input:focus { border-color: var(--green); outline-offset: 2px; }
+
+    .search-suggestions {
+      position: absolute;
+      top: calc(100% + 5px);
+      right: 0;
+      left: 0;
+      max-height: 360px;
+      overflow-y: auto;
+      margin: 0;
+      padding: 5px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--white);
+      box-shadow: 0 16px 32px rgba(23, 43, 39, 0.12);
+      list-style: none;
+    }
+
+    .search-suggestions[hidden] { display: none; }
+    .suggestion-item { margin: 0; padding: 0; }
+
+    .suggestion {
+      width: 100%;
+      display: grid;
+      gap: 4px;
+      padding: 11px 12px;
+      border: 0;
+      border-radius: 4px;
+      background: transparent;
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .suggestion:hover, .suggestion:focus-visible { background: #eff5eb; }
+    .suggestion-english { font-size: 14px; font-weight: 700; }
+    .suggestion-vietnamese { color: var(--muted); font-size: 13px; }
+    .suggestion-empty { padding: 13px 12px; color: var(--muted); font-size: 14px; }
+    .result-count { min-height: 20px; margin: 0 0 22px; color: var(--muted); font-size: 13px; }
+    .lesson-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+
+    .lesson-group {
+      align-self: start;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.9);
+      animation: rise-in 450ms ease-out both;
+    }
+
+    .lesson-group h2 {
+      margin: 0;
+      padding: 15px 17px;
+      border-bottom: 2px solid var(--green);
+      background: #fbfcf8;
+      color: var(--green-dark);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .phrase-list { margin: 0; padding: 0 17px; list-style: none; }
+
+    .phrase-row {
+      display: grid;
+      gap: 5px;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--line);
+      scroll-margin-top: 20px;
+      transition: background 180ms ease;
+    }
+
+    .phrase-row:last-child { border-bottom: 0; }
+    .phrase-row[hidden], .lesson-group[hidden] { display: none; }
+    .phrase-english { font-size: 14px; font-weight: 700; line-height: 1.45; }
+    .phrase-vietnamese { color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .phrase-row.is-highlighted { background: #eff5d9; }
+    .empty-state { padding: 25px 0; color: var(--muted); font-size: 15px; }
+    .empty-state[hidden] { display: none; }
+    .resource-heading { margin: 0 0 17px; font-family: "Manrope", sans-serif; font-size: 23px; font-weight: 800; }
+    .game-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+
+    .game-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .game-card h3 { margin: 0 0 13px; color: var(--green-dark); font-size: 14px; font-weight: 700; }
+    .game-meta { margin: -5px 0 10px; color: var(--green); font-size: 12px; font-weight: 700; }
+    .game-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .game-prompt { display: block; margin-top: 10px; color: var(--ink); font-size: 13px; font-weight: 600; }
+    .game-link { display: inline-flex; margin-top: 15px; color: var(--green-dark); font-size: 13px; font-weight: 700; text-decoration: none; }
+    .game-link:hover { text-decoration: underline; }
+
+    footer {
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(23, 43, 39, 0.1);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @keyframes rise-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 700px) {
+      .page-shell { width: min(100% - 36px, 540px); }
+      .topbar { height: 72px; }
+      main { padding: 43px 0 38px; }
+      .lesson-groups { grid-template-columns: 1fr; gap: 12px; }
+      .section-tabs { gap: 0; }
+      .section-tab { flex: 1; padding: 0 8px; font-size: 13px; }
+      .game-grid { grid-template-columns: 1fr; gap: 10px; }
+      .search-suggestions { max-height: 300px; }
+      footer { min-height: 56px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Lingua, trang chủ">
+        <span class="brand-mark" aria-hidden="true">L</span>
+        <span>lingua</span>
+      </a>
+      <a class="back-link" href="index.html">← Chọn vai trò</a>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">Dành cho giáo viên · Tra cứu mẫu câu</p>
+        <h1 id="page-title">Giao tiếp tiếng Anh trong lớp học</h1>
+        <p class="intro-copy">Các mẫu câu dùng hằng ngày từ lúc chào lớp, điểm danh đến hướng dẫn hoạt động và kết thúc buổi học.</p>
+      </section>
+
+      <div class="section-tabs" role="tablist" aria-label="Nội dung dành cho giáo viên">
+        <button class="section-tab" id="communication-tab" type="button" role="tab" aria-selected="true" aria-controls="communication-panel">Giao tiếp</button>
+        <button class="section-tab" id="resources-tab" type="button" role="tab" aria-selected="false" aria-controls="resources-panel" tabindex="-1">Trò chơi khởi động</button>
+      </div>
+
+      <section class="teaching-panel" id="communication-panel" role="tabpanel" aria-labelledby="communication-tab">
+        <div class="search-panel" aria-label="Tìm kiếm mẫu câu">
+          <label class="search-label" for="phrase-search">Tìm theo câu tiếng Anh hoặc nghĩa tiếng Việt</label>
+          <input class="search-input" id="phrase-search" type="search" placeholder="Ví dụ: điểm danh, open your books..." autocomplete="off" aria-controls="search-suggestions">
+          <ul class="search-suggestions" id="search-suggestions" role="listbox" aria-label="Gợi ý mẫu câu" hidden></ul>
+        </div>
+        <p class="result-count" id="result-count" aria-live="polite"></p>
+        <div class="lesson-groups" id="lesson-groups"></div>
+        <p class="empty-state" id="empty-state" hidden>Không tìm thấy mẫu câu phù hợp. Thử từ khóa khác nhé.</p>
+      </section>
+
+      <section class="teaching-panel" id="resources-panel" role="tabpanel" aria-labelledby="resources-tab" hidden>
+        <h2 class="resource-heading">Trò chơi khởi động</h2>
+        <div class="game-grid">
+          <article class="game-card">
+            <h3>Word Chain</h3>
+            <p class="game-meta">3–5 phút · Cả lớp</p>
+            <p>Nối từ tiếng Anh được từ điển xác nhận. Mỗi lượt bắt đầu bằng 1, 2 hoặc 3 chữ cái cuối của từ trước.</p>
+            <span class="game-prompt">Chủ đề gợi ý: food, animals, school</span>
+            <a class="game-link" href="word-chain.html">Chơi ngay →</a>
+          </article>
+          <article class="game-card">
+            <h3>Guess the Picture</h3>
+            <p class="game-meta">5 phút · Theo đội</p>
+            <p>Cho xem một phần hình ảnh hoặc vẽ gợi ý lên bảng. Các đội đoán từ và đặt một câu với từ đó.</p>
+            <span class="game-prompt">Mẫu câu: “Is it a ...?” · “I think it is a ...”</span>
+            <a class="game-link" href="guess-the-picture.html">Chơi ngay →</a>
+          </article>
+          <article class="game-card">
+            <h3>Act It Out!</h3>
+            <p class="game-meta">5 phút · Đoán từ theo đội</p>
+            <p>Một bạn diễn tả từ bí mật bằng hành động, không nói. Đồng đội đoán bằng tiếng Anh trước khi hết giờ!</p>
+            <span class="game-prompt">Diễn tả: animals, actions, feelings</span>
+            <a class="game-link" href="act-it-out.html">Chơi ngay →</a>
+          </article>
+          <article class="game-card">
+            <h3>Quick Draw</h3>
+            <p class="game-meta">3–5 phút · Theo đội</p>
+            <p>Một học sinh bốc từ và vẽ nhanh lên bảng. Đồng đội đoán bằng tiếng Anh, không dùng tiếng Việt.</p>
+            <span class="game-prompt">Chủ đề gợi ý: classroom objects, weather, actions</span>
+            <a class="game-link" href="quick-draw.html">Chơi ngay →</a>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>© 2026 Lingua</span>
+      <span>Learn together. Grow everywhere.</span>
+    </footer>
+  </div>
+
+  <script>
+    const lessonGroups = [
+      {
+        title: "CHÀO HỎI VÀ ỔN ĐỊNH LỚP",
+        phrases: [
+          ["Good morning, class!", "Chào buổi sáng cả lớp!"],
+          ["How are you today?", "Hôm nay các em thế nào?"],
+          ["Sit down, please.", "Mời các em ngồi xuống."],
+          ["Stand up, please.", "Mời các em đứng lên."],
+          ["Please settle down and get ready to start.", "Các em ổn định chỗ ngồi và chuẩn bị bắt đầu nhé."]
+        ]
+      },
+      {
+        title: "ĐIỂM DANH VÀ TRỰC NHẬT",
+        phrases: [
+          ["Who is absent today?", "Hôm nay bạn nào vắng mặt?"],
+          ["Is everyone here today?", "Hôm nay các em có mặt đầy đủ không?"],
+          ["Hoa is absent today.", "Hôm nay Hoa vắng mặt."],
+          ["Hoa and Lan are absent today.", "Hôm nay Hoa và Lan vắng mặt."],
+          ["Nobody is absent today.", "Hôm nay không có bạn nào vắng mặt."],
+          ["Who is on duty today?", "Hôm nay bàn nào trực nhật?"]
+        ]
+      },
+      {
+        title: "HỎI NGÀY THÁNG",
+        phrases: [
+          ["What is the date today?", "Hôm nay là ngày bao nhiêu?"],
+          ["What day is it today?", "Hôm nay là thứ mấy?"],
+          ["Today is Tuesday, March 23rd.", "Hôm nay là thứ Ba, ngày 23 tháng 3."]
+        ]
+      },
+      {
+        title: "BẮT ĐẦU BÀI HỌC",
+        phrases: [
+          ["Is everybody ready to start?", "Các em đã sẵn sàng bắt đầu chưa?"],
+          ["I think we can start now.", "Thầy/cô nghĩ chúng ta có thể bắt đầu rồi."],
+          ["Let's start now.", "Chúng ta bắt đầu nhé."],
+          ["I'm waiting for everyone to be quiet.", "Thầy/cô đang chờ cả lớp giữ trật tự."],
+          ["Hurry up so that we can start the lesson.", "Các em nhanh lên để chúng ta bắt đầu bài học nhé."]
+        ]
+      },
+      {
+        title: "SÁCH VỞ VÀ BÀI TẬP",
+        phrases: [
+          ["Please take out your books.", "Các em lấy sách ra nhé."],
+          ["Open your books to page 10.", "Mở sách đến trang 10 nhé."],
+          ["Turn to page 10, please.", "Các em mở đến trang 10 nhé."],
+          ["Close your books, please.", "Các em đóng sách lại nhé."],
+          ["Look at exercise 1 on page 10.", "Nhìn vào bài tập 1 ở trang 10 nhé."],
+          ["Let's look at the dialogue on page 10.", "Cùng xem đoạn hội thoại ở trang 10 nhé."],
+          ["Try exercise 1, please.", "Các em thử làm bài tập 1 nhé."],
+          ["You can leave out question 1.", "Các em có thể bỏ qua câu 1."],
+          ["There is no need to translate everything.", "Không cần dịch tất cả mọi thứ đâu."]
+        ]
+      },
+      {
+        title: "HƯỚNG DẪN HOẠT ĐỘNG",
+        phrases: [
+          ["Work in pairs, please.", "Các em làm việc theo cặp nhé."],
+          ["Work with the person next to you.", "Các em làm việc cùng bạn bên cạnh nhé."],
+          ["Get into groups of four.", "Các em chia thành nhóm bốn người nhé."],
+          ["Discuss it with your partner.", "Hãy thảo luận với bạn cùng cặp nhé."],
+          ["Let's read the text aloud.", "Chúng ta cùng đọc to bài đọc nhé."],
+          ["Listen and repeat after me.", "Hãy nghe và nhắc lại theo thầy/cô."],
+          ["Time's up. Please stop working.", "Hết giờ rồi. Các em dừng làm bài nhé."],
+          ["Put your pens down, please.", "Các em đặt bút xuống nhé."],
+          ["Let's take a short break.", "Chúng ta nghỉ giải lao một lát nhé."]
+        ]
+      },
+      {
+        title: "ĐẶT CÂU HỎI VÀ GỌI TRẢ LỜI",
+        phrases: [
+          ["Does anyone have a question?", "Có bạn nào có câu hỏi không?"],
+          ["Do you understand everything?", "Các em đã hiểu hết chưa?"],
+          ["Can everyone see the board?", "Cả lớp nhìn rõ bảng không?"],
+          ["Raise your hand if you know the answer.", "Bạn nào biết câu trả lời thì giơ tay nhé."],
+          ["You answer this one, Mai.", "Mai, em trả lời câu này nhé."],
+          ["Would someone like to answer?", "Có bạn nào muốn trả lời không?"],
+          ["Do you agree with your classmate?", "Em có đồng ý với bạn không?"],
+          ["Are you sure?", "Em chắc chắn chứ?"],
+          ["Would you like to write your answer on the board?", "Em có muốn lên bảng viết câu trả lời không?"],
+          ["Could you repeat what you just said?", "Em có thể nhắc lại điều vừa nói không?"]
+        ]
+      },
+      {
+        title: "TỪ VỰNG VÀ PHÁT ÂM",
+        phrases: [
+          ["What does this word mean?", "Từ này có nghĩa là gì?"],
+          ["How do you spell this word?", "Từ này được đánh vần như thế nào?"],
+          ["How do you pronounce this word?", "Từ này được phát âm như thế nào?"],
+          ["Where is the stress in this word?", "Trọng âm của từ này nằm ở đâu?"],
+          ["How do you say this in English?", "Từ này nói bằng tiếng Anh như thế nào?"],
+          ["Let's translate these sentences together.", "Chúng ta cùng dịch những câu này nhé."]
+        ]
+      },
+      {
+        title: "NHẮC NHỞ VÀ GIỮ AN TOÀN",
+        phrases: [
+          ["Please be careful.", "Các em hãy cẩn thận nhé."],
+          ["Watch your step.", "Các em chú ý bước chân nhé."],
+          ["Please don't talk during the lesson.", "Các em đừng nói chuyện trong giờ học nhé."],
+          ["Please don't open your books yet.", "Các em khoan mở sách nhé."],
+          ["Please keep quiet for a moment.", "Các em giữ yên lặng một lát nhé."]
+        ]
+      },
+      {
+        title: "LÀM VIỆC TRÊN BẢNG",
+        phrases: [
+          ["Come to the board, please.", "Em lên bảng nhé."],
+          ["Write the word on the board, please.", "Em viết từ này lên bảng nhé."],
+          ["Take a piece of chalk and write the sentence.", "Em lấy viên phấn và viết câu lên bảng nhé."],
+          ["Everyone, look at the board, please.", "Cả lớp nhìn lên bảng nhé."],
+          ["Are these sentences on the board correct?", "Những câu trên bảng có đúng không?"],
+          ["Is there anything wrong with sentence 1?", "Câu số 1 có chỗ nào sai không?"]
+        ]
+      },
+      {
+        title: "YÊU CẦU VÀ GIÚP ĐỠ",
+        phrases: [
+          ["Can you give me a hand, please?", "Em giúp thầy/cô một tay được không?"],
+          ["Could you do me a favor?", "Em giúp thầy/cô một việc được không?"],
+          ["Could you speak a little louder, please?", "Em nói to hơn một chút được không?"],
+          ["Just a minute, please.", "Chờ thầy/cô một chút nhé."],
+          ["Excuse me, may I speak with you for a minute?", "Thầy/cô có thể trao đổi với em một chút không?"]
+        ]
+      },
+      {
+        title: "SỬA LỖI VÀ XIN LỖI",
+        phrases: [
+          ["That's nearly right. Try again.", "Gần đúng rồi. Em thử lại nhé."],
+          ["Not quite. Would someone else like to try?", "Chưa hoàn toàn đúng. Bạn nào khác muốn thử không?"],
+          ["Take your time. There's no rush.", "Cứ từ từ nhé, không cần vội."],
+          ["I made a mistake on the board.", "Thầy/cô đã viết nhầm trên bảng."],
+          ["I'm sorry, I didn't notice that.", "Thầy/cô xin lỗi, thầy/cô đã không để ý điều đó."]
+        ]
+      },
+      {
+        title: "KẾT THÚC BUỔI HỌC",
+        phrases: [
+          ["It's almost time to stop.", "Sắp hết giờ học rồi."],
+          ["We'll have to stop here for today.", "Hôm nay chúng ta dừng ở đây nhé."],
+          ["We'll finish this next time.", "Chúng ta sẽ hoàn thành phần này vào buổi sau."],
+          ["We'll continue this chapter next time.", "Buổi sau chúng ta sẽ học tiếp chương này."],
+          ["Please review this lesson for Monday.", "Các em ôn lại bài này để chuẩn bị cho thứ Hai nhé."],
+          ["Remember to do your homework.", "Các em nhớ làm bài tập về nhà nhé."],
+          ["There will be a test next Monday.", "Thứ Hai tuần sau chúng ta sẽ có bài kiểm tra."],
+          ["See you on Monday. Have a good weekend!", "Hẹn gặp lại các em vào thứ Hai. Chúc các em cuối tuần vui vẻ!"]
+        ]
+      }
+    ];
+
+    const groupsContainer = document.querySelector("#lesson-groups");
+    const searchInput = document.querySelector("#phrase-search");
+    const suggestions = document.querySelector("#search-suggestions");
+    const resultCount = document.querySelector("#result-count");
+    const emptyState = document.querySelector("#empty-state");
+    const sectionTabs = [...document.querySelectorAll(".section-tab")];
+    const allPhrases = lessonGroups.flatMap((group) => group.phrases.map(([english, vietnamese]) => ({ group: group.title, english, vietnamese })));
+
+    function normalize(value) {
+      return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").toLowerCase();
+    }
+
+    function renderLessons() {
+      groupsContainer.replaceChildren(...lessonGroups.map((group) => {
+        const section = document.createElement("section");
+        section.className = "lesson-group";
+        const heading = document.createElement("h2");
+        heading.textContent = group.title;
+        const list = document.createElement("ul");
+        list.className = "phrase-list";
+
+        group.phrases.forEach(([english, vietnamese]) => {
+          const row = document.createElement("li");
+          row.className = "phrase-row";
+          row.dataset.search = normalize(`${english} ${vietnamese} ${group.title}`);
+          const englishText = document.createElement("span");
+          englishText.className = "phrase-english";
+          englishText.textContent = english;
+          const vietnameseText = document.createElement("span");
+          vietnameseText.className = "phrase-vietnamese";
+          vietnameseText.textContent = vietnamese;
+          row.append(englishText, vietnameseText);
+          list.append(row);
+        });
+
+        section.append(heading, list);
+        return section;
+      }));
+    }
+
+    function showSuggestions(matches) {
+      suggestions.replaceChildren();
+      if (matches.length === 0) {
+        const empty = document.createElement("li");
+        empty.className = "suggestion-empty";
+        empty.textContent = "Không tìm thấy câu phù hợp.";
+        suggestions.append(empty);
+        suggestions.hidden = false;
+        return;
+      }
+
+      matches.slice(0, 8).forEach((phrase) => {
+        const item = document.createElement("li");
+        item.className = "suggestion-item";
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "suggestion";
+        button.setAttribute("role", "option");
+        button.setAttribute("aria-selected", "false");
+        const english = document.createElement("span");
+        english.className = "suggestion-english";
+        english.textContent = phrase.english;
+        const vietnamese = document.createElement("span");
+        vietnamese.className = "suggestion-vietnamese";
+        vietnamese.textContent = phrase.vietnamese;
+        button.append(english, vietnamese);
+        button.addEventListener("click", () => {
+          const row = [...document.querySelectorAll(".phrase-row")].find((entry) => entry.querySelector(".phrase-english").textContent === phrase.english);
+          if (!row) return;
+          row.scrollIntoView({ behavior: "smooth", block: "center" });
+          row.classList.add("is-highlighted");
+          window.setTimeout(() => row.classList.remove("is-highlighted"), 1800);
+          suggestions.hidden = true;
+        });
+        item.append(button);
+        suggestions.append(item);
+      });
+      suggestions.hidden = false;
+    }
+
+    function filterPhrases() {
+      const query = normalize(searchInput.value.trim());
+      const rows = [...document.querySelectorAll(".phrase-row")];
+      const matches = allPhrases.filter((phrase) => normalize(`${phrase.english} ${phrase.vietnamese} ${phrase.group}`).includes(query));
+
+      rows.forEach((row) => {
+        row.hidden = Boolean(query) && !row.dataset.search.includes(query);
+      });
+      document.querySelectorAll(".lesson-group").forEach((group) => {
+        group.hidden = !group.querySelector(".phrase-row:not([hidden])");
+      });
+      resultCount.textContent = query
+        ? `Tìm thấy ${matches.length} / ${allPhrases.length} mẫu câu`
+        : `${allPhrases.length} mẫu câu trong ${lessonGroups.length} chủ đề`;
+      emptyState.hidden = matches.length > 0;
+
+      if (query) showSuggestions(matches);
+      else suggestions.hidden = true;
+    }
+
+    renderLessons();
+    filterPhrases();
+    sectionTabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => activateTab(tab));
+      tab.addEventListener("keydown", (event) => {
+        let nextIndex = index;
+        if (event.key === "ArrowRight") nextIndex = (index + 1) % sectionTabs.length;
+        if (event.key === "ArrowLeft") nextIndex = (index - 1 + sectionTabs.length) % sectionTabs.length;
+        if (event.key === "Home") nextIndex = 0;
+        if (event.key === "End") nextIndex = sectionTabs.length - 1;
+        if (nextIndex !== index) {
+          event.preventDefault();
+          activateTab(sectionTabs[nextIndex]);
+          sectionTabs[nextIndex].focus();
+        }
+      });
+    });
+
+    function activateTab(activeTab) {
+      sectionTabs.forEach((tab) => {
+        const isActive = tab === activeTab;
+        tab.setAttribute("aria-selected", String(isActive));
+        tab.tabIndex = isActive ? 0 : -1;
+        document.querySelector(`#${tab.getAttribute("aria-controls")}`).hidden = !isActive;
+      });
+      suggestions.hidden = true;
+    }
+
+    searchInput.addEventListener("input", filterPhrases);
+    searchInput.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") suggestions.hidden = true;
+      if (event.key === "Enter") suggestions.querySelector("button")?.click();
+    });
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".search-panel")) suggestions.hidden = true;
+    });
+  </script>
+</body>
+</html>

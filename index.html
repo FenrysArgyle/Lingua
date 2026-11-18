@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f7f1">
+  <title>Lingua — Bắt đầu hành trình tiếng Anh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f7f7f1;
+      --ink: #172b27;
+      --muted: #697570;
+      --line: #dfe4dc;
+      --green: #176b53;
+      --green-dark: #10543f;
+      --lime: #d7f36b;
+      --coral: #ff795f;
+      --blue: #bed8f8;
+      --white: #fff;
+      font-family: "DM Sans", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background-color: var(--paper);
+      background-image: radial-gradient(#dce4d9 0.8px, transparent 0.8px);
+      background-size: 20px 20px;
+    }
+
+    button, a { font: inherit; }
+    button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline-offset: 4px; }
+
+    .page-shell {
+      width: min(1160px, calc(100% - 64px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      height: 88px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(23, 43, 39, 0.1);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--ink);
+      text-decoration: none;
+      font-family: "Manrope", sans-serif;
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .brand-mark {
+      width: 35px;
+      height: 35px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: var(--green);
+      color: var(--lime);
+      font-size: 19px;
+      line-height: 1;
+      transform: rotate(-5deg);
+    }
+
+    .topbar-right { display: flex; align-items: center; gap: 28px; }
+
+    .language {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .language strong { color: var(--ink); }
+    .language span { padding: 0 8px; color: #a8b0a9; }
+
+    .help-link {
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .main-content { padding: 72px 0 48px; }
+
+    .intro {
+      position: relative;
+      max-width: 740px;
+      margin: 0 auto 42px;
+      text-align: center;
+      animation: rise-in 650ms ease-out both;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 17px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--coral);
+      content: "";
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Manrope", sans-serif;
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    h1 span {
+      position: relative;
+      z-index: 0;
+      white-space: nowrap;
+    }
+
+    h1 span::after {
+      position: absolute;
+      z-index: -1;
+      right: -4px;
+      bottom: 3px;
+      left: -4px;
+      height: 15px;
+      background: var(--lime);
+      content: "";
+      transform: rotate(-1.5deg);
+    }
+
+    .intro-copy {
+      max-width: 470px;
+      margin: 18px auto 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    .role-card {
+      position: relative;
+      display: block;
+      width: 100%;
+      min-height: 290px;
+      overflow: hidden;
+      padding: 27px 29px 25px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.88);
+      color: var(--ink);
+      font: inherit;
+      text-align: left;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+      animation: rise-in 650ms ease-out both;
+    }
+
+    .role-card:nth-child(2) { animation-delay: 100ms; }
+
+    .role-card:hover {
+      border-color: #a9cabb;
+      box-shadow: 0 12px 30px rgba(23, 43, 39, 0.07);
+      transform: translateY(-3px);
+    }
+
+    .role-card[aria-pressed="true"] {
+      border: 2px solid var(--green);
+      padding: 26px 28px 24px;
+      box-shadow: 0 0 0 4px rgba(23, 107, 83, 0.09);
+    }
+
+    .role-art {
+      position: absolute;
+      top: 20px;
+      right: 21px;
+      width: 92px;
+      height: 92px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+    }
+
+    .teacher-art { background: #e3f3c3; }
+    .student-art { background: #e4efff; }
+
+    .art-sun {
+      width: 44px;
+      height: 44px;
+      border: 2px solid var(--green);
+      border-radius: 50%;
+      color: var(--green);
+      display: grid;
+      place-items: center;
+      font-family: "Manrope", sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      transform: rotate(-9deg);
+    }
+
+    .student-art .art-sun {
+      border-color: #315d98;
+      color: #315d98;
+      transform: rotate(8deg);
+    }
+
+    .role-number {
+      display: block;
+      margin-bottom: 72px;
+      color: #8a9690;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .role-card h2 {
+      margin: 0 0 9px;
+      font-family: "Manrope", sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .role-card p {
+      max-width: 300px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .card-arrow {
+      position: absolute;
+      right: 27px;
+      bottom: 25px;
+      color: var(--green);
+      font-size: 22px;
+      transition: transform 180ms ease;
+    }
+
+    .role-card:hover .card-arrow { transform: translateX(4px); }
+
+    .continue-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 28px auto 0;
+    }
+
+    .continue-button {
+      min-width: 240px;
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 0 22px;
+      border: 0;
+      border-radius: 5px;
+      background: var(--green);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 180ms ease, transform 180ms ease;
+    }
+
+    .continue-button:hover:not(:disabled) { background: var(--green-dark); transform: translateY(-2px); }
+
+    .continue-button:disabled {
+      background: #d9dfd9;
+      color: #818b84;
+      cursor: not-allowed;
+    }
+
+    .continue-button .arrow { font-size: 19px; line-height: 1; }
+
+    .student-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .game-button {
+      min-width: 150px;
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 22px;
+      border: 1px solid var(--green);
+      border-radius: 5px;
+      background: var(--white);
+      color: var(--green-dark);
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 180ms ease, transform 180ms ease;
+    }
+
+    .game-button:hover { background: #edf5ef; transform: translateY(-2px); }
+    .game-button[hidden] { display: none; }
+    .game-button .arrow { font-size: 19px; line-height: 1; }
+
+    .selection-message {
+      min-height: 22px;
+      margin: 12px 0 0;
+      color: var(--green-dark);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .lesson-preview {
+      max-width: 850px;
+      margin: 44px auto 0;
+      padding: 28px 0 12px;
+      border-top: 1px solid var(--line);
+      animation: rise-in 450ms ease-out both;
+    }
+
+    .lesson-heading { margin-bottom: 26px; }
+
+    .lesson-heading .eyebrow { margin-bottom: 10px; }
+
+    .lesson-heading h2 {
+      margin: 0;
+      font-family: "Manrope", sans-serif;
+      font-size: 27px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .lesson-description {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .lesson-groups {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px;
+    }
+
+    .lesson-group h3 {
+      margin: 0;
+      padding: 0 0 12px;
+      border-bottom: 2px solid var(--green);
+      color: var(--green-dark);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .phrase-list { margin: 0; padding: 0; list-style: none; }
+
+    .phrase-row {
+      display: grid;
+      gap: 5px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .phrase-english { font-size: 14px; font-weight: 700; }
+    .phrase-vietnamese { color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+    [hidden] { display: none !important; }
+
+    .footer {
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(23, 43, 39, 0.1);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .footer-note { display: flex; align-items: center; gap: 8px; }
+    .footer-note strong { color: var(--green); font-weight: 700; }
+
+    @keyframes rise-in {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      .page-shell { width: min(100% - 36px, 460px); }
+      .topbar { height: 72px; }
+      .topbar-right { gap: 16px; }
+      .help-link { font-size: 13px; }
+      .main-content { padding: 51px 0 38px; }
+      .intro { margin-bottom: 30px; }
+      .intro-copy { max-width: 350px; font-size: 15px; }
+      .role-grid { grid-template-columns: 1fr; gap: 13px; }
+      .role-card { min-height: 220px; padding: 22px 23px; }
+      .role-card[aria-pressed="true"] { padding: 21px 22px; }
+      .role-number { margin-bottom: 38px; }
+      .role-art { top: 16px; right: 17px; width: 75px; height: 75px; }
+      .art-sun { width: 38px; height: 38px; font-size: 19px; }
+      .role-card h2 { font-size: 21px; }
+      .role-card p { max-width: 260px; padding-right: 5px; }
+      .continue-area { margin-top: 20px; }
+      .student-actions { width: 100%; flex-direction: column; }
+      .continue-button, .game-button { width: 100%; }
+      .lesson-preview { margin-top: 34px; padding-top: 23px; }
+      .lesson-heading h2 { font-size: 23px; }
+      .lesson-groups { grid-template-columns: 1fr; gap: 24px; }
+      .footer { min-height: 58px; font-size: 11px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Lingua, trang chủ">
+        <span class="brand-mark" aria-hidden="true">L</span>
+        <span>lingua</span>
+      </a>
+      <div class="topbar-right">
+        <span class="language" aria-label="Ngôn ngữ: Tiếng Việt"><strong>VI</strong><span>/</span>EN</span>
+        <a class="help-link" href="mailto:hello@lingua.example">Cần trợ giúp?</a>
+      </div>
+    </header>
+
+    <main class="main-content" id="top">
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">Luyện giao tiếp tiếng Anh</p>
+        <h1 id="page-title">Tiếng Anh theo cách <span>của bạn.</span></h1>
+        <p class="intro-copy">Chọn vai trò của bạn để khám phá những câu tiếng Anh thường dùng trong lớp học mỗi ngày.</p>
+      </section>
+
+      <section class="role-grid" aria-label="Chọn vai trò của bạn">
+        <a class="role-card" href="teacher.html">
+          <span class="role-art teacher-art" aria-hidden="true"><span class="art-sun">A</span></span>
+          <span class="role-number">01 / DÀNH CHO NGƯỜI DẠY</span>
+          <h2>Tôi là giáo viên</h2>
+          <p>Mẫu câu giáo viên thường dùng khi hướng dẫn và trò chuyện với học sinh.</p>
+          <span class="card-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <button class="role-card" type="button" data-role="student" aria-pressed="false">
+          <span class="role-art student-art" aria-hidden="true"><span class="art-sun">文</span></span>
+          <span class="role-number">02 / DÀNH CHO NGƯỜI HỌC</span>
+          <h2>Tôi là học sinh</h2>
+          <p>Tra cứu từ vựng tiếng Anh theo từng Unit, kèm từ loại, phiên âm và nghĩa tiếng Việt.</p>
+          <span class="card-arrow" aria-hidden="true">↗</span>
+        </button>
+      </section>
+
+      <div class="continue-area">
+        <div class="student-actions">
+          <button class="continue-button" id="continue-button" type="button" disabled>
+            <span id="continue-label">Chọn vai trò để xem mẫu câu</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </button>
+          <a class="game-button" id="game-button" href="https://fenrysargyle.github.io/english-rush/" hidden>
+            <span>Trò chơi</span>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <p class="selection-message" id="selection-message" aria-live="polite"></p>
+      </div>
+
+      <section class="lesson-preview" id="lesson-preview" aria-labelledby="lesson-title" hidden>
+        <div class="lesson-heading">
+          <p class="eyebrow">Mẫu câu giao tiếp</p>
+          <h2 id="lesson-title"></h2>
+          <p class="lesson-description" id="lesson-description"></p>
+        </div>
+        <div class="lesson-groups" id="lesson-groups"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>© 2026 Lingua</span>
+      <span class="footer-note"><strong>Learn together.</strong> Grow everywhere.</span>
+    </footer>
+  </div>
+
+  <script>
+    const roleCards = document.querySelectorAll('.role-card[data-role="student"]');
+    const continueButton = document.querySelector("#continue-button");
+    const continueLabel = document.querySelector("#continue-label");
+    const gameButton = document.querySelector("#game-button");
+    const selectionMessage = document.querySelector("#selection-message");
+    const lessonPreview = document.querySelector("#lesson-preview");
+    const lessonTitle = document.querySelector("#lesson-title");
+    const lessonDescription = document.querySelector("#lesson-description");
+    const lessonGroups = document.querySelector("#lesson-groups");
+    let selectedRole = null;
+
+    const lessons = {
+      teacher: {
+        title: "Tiếng Anh giao tiếp dành cho giáo viên",
+        description: "Mẫu câu dùng trong các tình huống thường gặp: chào lớp, điểm danh, hướng dẫn hoạt động và kết thúc buổi học.",
+        groups: [
+          {
+            title: "CHÀO HỎI VÀ ỔN ĐỊNH LỚP",
+            phrases: [
+              ["Good morning, class!", "Chào buổi sáng cả lớp!"],
+              ["How are you today?", "Hôm nay các em thế nào?"],
+              ["Sit down, please.", "Mời các em ngồi xuống."],
+              ["Stand up, please.", "Mời các em đứng lên."],
+              ["Please settle down and get ready to start.", "Các em ổn định chỗ ngồi và chuẩn bị bắt đầu nhé."]
+            ]
+          },
+          {
+            title: "ĐIỂM DANH VÀ TRỰC NHẬT",
+            phrases: [
+              ["Who is absent today?", "Hôm nay bạn nào vắng mặt?"],
+              ["Is everyone here today?", "Hôm nay các em có mặt đầy đủ không?"],
+              ["Hoa is absent today.", "Hôm nay Hoa vắng mặt."],
+              ["Hoa and Lan are absent today.", "Hôm nay Hoa và Lan vắng mặt."],
+              ["Nobody is absent today.", "Hôm nay không có bạn nào vắng mặt."],
+              ["Who is on duty today?", "Hôm nay bàn nào trực nhật?"]
+            ]
+          },
+          {
+            title: "HỎI NGÀY THÁNG",
+            phrases: [
+              ["What is the date today?", "Hôm nay là ngày bao nhiêu?"],
+              ["What day is it today?", "Hôm nay là thứ mấy?"],
+              ["Today is Tuesday, March 23rd.", "Hôm nay là thứ Ba, ngày 23 tháng 3."]
+            ]
+          },
+          {
+            title: "BẮT ĐẦU BÀI HỌC",
+            phrases: [
+              ["Is everybody ready to start?", "Các em đã sẵn sàng bắt đầu chưa?"],
+              ["I think we can start now.", "Thầy/cô nghĩ chúng ta có thể bắt đầu rồi."],
+              ["Let's start now.", "Chúng ta bắt đầu nhé."],
+              ["I'm waiting for everyone to be quiet.", "Thầy/cô đang chờ cả lớp giữ trật tự."],
+              ["Hurry up so that we can start the lesson.", "Các em nhanh lên để chúng ta bắt đầu bài học nhé."]
+            ]
+          },
+          {
+            title: "SÁCH VỞ VÀ BÀI TẬP",
+            phrases: [
+              ["Please take out your books.", "Các em lấy sách ra nhé."],
+              ["Open your books to page 10.", "Mở sách đến trang 10 nhé."],
+              ["Turn to page 10, please.", "Các em mở đến trang 10 nhé."],
+              ["Close your books, please.", "Các em đóng sách lại nhé."],
+              ["Look at exercise 1 on page 10.", "Nhìn vào bài tập 1 ở trang 10 nhé."],
+              ["Let's look at the dialogue on page 10.", "Cùng xem đoạn hội thoại ở trang 10 nhé."],
+              ["Try exercise 1, please.", "Các em thử làm bài tập 1 nhé."],
+              ["You can leave out question 1.", "Các em có thể bỏ qua câu 1."],
+              ["There is no need to translate everything.", "Không cần dịch tất cả mọi thứ đâu."]
+            ]
+          },
+          {
+            title: "HƯỚNG DẪN HOẠT ĐỘNG",
+            phrases: [
+              ["Work in pairs, please.", "Các em làm việc theo cặp nhé."],
+              ["Work with the person next to you.", "Các em làm việc cùng bạn bên cạnh nhé."],
+              ["Get into groups of four.", "Các em chia thành nhóm bốn người nhé."],
+              ["Discuss it with your partner.", "Hãy thảo luận với bạn cùng cặp nhé."],
+              ["Let's read the text aloud.", "Chúng ta cùng đọc to bài đọc nhé."],
+              ["Listen and repeat after me.", "Hãy nghe và nhắc lại theo thầy/cô."],
+              ["Time's up. Please stop working.", "Hết giờ rồi. Các em dừng làm bài nhé."],
+              ["Put your pens down, please.", "Các em đặt bút xuống nhé."],
+              ["Let's take a short break.", "Chúng ta nghỉ giải lao một lát nhé."]
+            ]
+          },
+          {
+            title: "ĐẶT CÂU HỎI VÀ GỌI TRẢ LỜI",
+            phrases: [
+              ["Does anyone have a question?", "Có bạn nào có câu hỏi không?"],
+              ["Do you understand everything?", "Các em đã hiểu hết chưa?"],
+              ["Can everyone see the board?", "Cả lớp nhìn rõ bảng không?"],
+              ["Raise your hand if you know the answer.", "Bạn nào biết câu trả lời thì giơ tay nhé."],
+              ["You answer this one, Mai.", "Mai, em trả lời câu này nhé."],
+              ["Would someone like to answer?", "Có bạn nào muốn trả lời không?"],
+              ["Do you agree with your classmate?", "Em có đồng ý với bạn không?"],
+              ["Are you sure?", "Em chắc chắn chứ?"],
+              ["Would you like to write your answer on the board?", "Em có muốn lên bảng viết câu trả lời không?"],
+              ["Could you repeat what you just said?", "Em có thể nhắc lại điều vừa nói không?"]
+            ]
+          },
+          {
+            title: "TỪ VỰNG VÀ PHÁT ÂM",
+            phrases: [
+              ["What does this word mean?", "Từ này có nghĩa là gì?"],
+              ["How do you spell this word?", "Từ này được đánh vần như thế nào?"],
+              ["How do you pronounce this word?", "Từ này được phát âm như thế nào?"],
+              ["Where is the stress in this word?", "Trọng âm của từ này nằm ở đâu?"],
+              ["How do you say this in English?", "Từ này nói bằng tiếng Anh như thế nào?"],
+              ["Let's translate these sentences together.", "Chúng ta cùng dịch những câu này nhé."]
+            ]
+          },
+          {
+            title: "NHẮC NHỞ VÀ GIỮ AN TOÀN",
+            phrases: [
+              ["Please be careful.", "Các em hãy cẩn thận nhé."],
+              ["Watch your step.", "Các em chú ý bước chân nhé."],
+              ["Please don't talk during the lesson.", "Các em đừng nói chuyện trong giờ học nhé."],
+              ["Please don't open your books yet.", "Các em khoan mở sách nhé."],
+              ["Please keep quiet for a moment.", "Các em giữ yên lặng một lát nhé."]
+            ]
+          },
+          {
+            title: "LÀM VIỆC TRÊN BẢNG",
+            phrases: [
+              ["Come to the board, please.", "Em lên bảng nhé."],
+              ["Write the word on the board, please.", "Em viết từ này lên bảng nhé."],
+              ["Take a piece of chalk and write the sentence.", "Em lấy viên phấn và viết câu lên bảng nhé."],
+              ["Everyone, look at the board, please.", "Cả lớp nhìn lên bảng nhé."],
+              ["Are these sentences on the board correct?", "Những câu trên bảng có đúng không?"],
+              ["Is there anything wrong with sentence 1?", "Câu số 1 có chỗ nào sai không?"]
+            ]
+          },
+          {
+            title: "YÊU CẦU VÀ GIÚP ĐỠ",
+            phrases: [
+              ["Can you give me a hand, please?", "Em giúp thầy/cô một tay được không?"],
+              ["Could you do me a favor?", "Em giúp thầy/cô một việc được không?"],
+              ["Could you speak a little louder, please?", "Em nói to hơn một chút được không?"],
+              ["Just a minute, please.", "Chờ thầy/cô một chút nhé."],
+              ["Excuse me, may I speak with you for a minute?", "Thầy/cô có thể trao đổi với em một chút không?"]
+            ]
+          },
+          {
+            title: "SỬA LỖI VÀ XIN LỖI",
+            phrases: [
+              ["That's nearly right. Try again.", "Gần đúng rồi. Em thử lại nhé."],
+              ["Not quite. Would someone else like to try?", "Chưa hoàn toàn đúng. Bạn nào khác muốn thử không?"],
+              ["Take your time. There's no rush.", "Cứ từ từ nhé, không cần vội."],
+              ["I made a mistake on the board.", "Thầy/cô đã viết nhầm trên bảng."],
+              ["I'm sorry, I didn't notice that.", "Thầy/cô xin lỗi, thầy/cô đã không để ý điều đó."]
+            ]
+          },
+          {
+            title: "KẾT THÚC BUỔI HỌC",
+            phrases: [
+              ["It's almost time to stop.", "Sắp hết giờ học rồi."],
+              ["We'll have to stop here for today.", "Hôm nay chúng ta dừng ở đây nhé."],
+              ["We'll finish this next time.", "Chúng ta sẽ hoàn thành phần này vào buổi sau."],
+              ["We'll continue this chapter next time.", "Buổi sau chúng ta sẽ học tiếp chương này."],
+              ["Please review this lesson for Monday.", "Các em ôn lại bài này để chuẩn bị cho thứ Hai nhé."],
+              ["Remember to do your homework.", "Các em nhớ làm bài tập về nhà nhé."],
+              ["There will be a test next Monday.", "Thứ Hai tuần sau chúng ta sẽ có bài kiểm tra."],
+              ["See you on Monday. Have a good weekend!", "Hẹn gặp lại các em vào thứ Hai. Chúc các em cuối tuần vui vẻ!"]
+            ]
+          }
+        ]
+      },
+      student: {
+        title: "Tiếng Anh giao tiếp dành cho học sinh",
+        description: "Mẫu câu để trò chuyện với bạn cùng lớp và tự tin trao đổi với giáo viên trong ngày học.",
+        groups: [
+          {
+            title: "NÓI CHUYỆN VỚI BẠN",
+            phrases: [
+              ["Would you like to work together?", "Bạn muốn làm bài cùng mình không?"],
+              ["What did you get for number three?", "Câu số 3 bạn làm ra đáp án gì?"],
+              ["Can I borrow your notes?", "Mình mượn vở ghi của bạn được không?"],
+              ["Let's practice English together.", "Cùng luyện tiếng Anh nhé."]
+            ]
+          },
+          {
+            title: "NÓI CHUYỆN VỚI GIÁO VIÊN",
+            phrases: [
+              ["Could you explain that again, please?", "Thầy/cô có thể giải thích lại được không ạ?"],
+              ["How do you spell this word?", "Từ này đánh vần như thế nào ạ?"],
+              ["May I ask a question?", "Em có thể hỏi một câu được không ạ?"],
+              ["I don't understand this part.", "Em chưa hiểu phần này ạ."]
+            ]
+          }
+        ]
+      }
+    };
+
+    function showLesson(role) {
+      const lesson = lessons[role];
+      lessonTitle.textContent = lesson.title;
+      lessonDescription.textContent = lesson.description;
+      lessonGroups.replaceChildren(...lesson.groups.map((group) => {
+        const section = document.createElement("section");
+        section.className = "lesson-group";
+        const heading = document.createElement("h3");
+        heading.textContent = group.title;
+        const list = document.createElement("ul");
+        list.className = "phrase-list";
+
+        group.phrases.forEach(([english, vietnamese]) => {
+          const row = document.createElement("li");
+          row.className = "phrase-row";
+          const englishText = document.createElement("span");
+          englishText.className = "phrase-english";
+          englishText.textContent = english;
+          const vietnameseText = document.createElement("span");
+          vietnameseText.className = "phrase-vietnamese";
+          vietnameseText.textContent = vietnamese;
+          row.append(englishText, vietnameseText);
+          list.append(row);
+        });
+
+        section.append(heading, list);
+        return section;
+      }));
+      lessonPreview.hidden = false;
+      lessonPreview.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    roleCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        selectedRole = card.dataset.role;
+        roleCards.forEach((item) => item.setAttribute("aria-pressed", String(item === card)));
+        continueButton.disabled = false;
+        continueLabel.textContent = "Mở trang từ vựng";
+        gameButton.hidden = false;
+        selectionMessage.textContent = "";
+        lessonPreview.hidden = true;
+      });
+    });
+
+    continueButton.addEventListener("click", () => {
+      if (!selectedRole) return;
+      window.location.href = "student.html";
+    });
+  </script>
+</body>
+</html>

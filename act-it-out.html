@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7f1">
+  <title>Act It Out! — Lingua</title>
+  <style>
+    :root { color-scheme:light; --paper:#f7f7f1; --ink:#172b27; --muted:#697570; --line:#dfe4dc; --green:#176b53; --dark:#10543f; --white:#fff; font-family:"Segoe UI",Arial,sans-serif; }
+    * { box-sizing:border-box; } body { min-width:320px; min-height:100vh; margin:0; color:var(--ink); background:var(--paper); }
+    a,button,select,input { font:inherit; } :focus-visible { outline:3px solid #ff795f; outline-offset:3px; }
+    .shell { width:min(760px,calc(100% - 36px)); margin:auto; }
+    header { height:76px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); }
+    .brand,.back { color:var(--dark); font-weight:700; text-decoration:none; } .brand { font-size:20px; font-weight:800; }
+    main { padding:48px 0 56px; } .eyebrow { color:var(--green); font-size:12px; font-weight:700; text-transform:uppercase; }
+    h1 { margin:8px 0 10px; font-size:clamp(34px,7vw,48px); } .intro,.muted { color:var(--muted); line-height:1.6; }
+    .card { margin-top:24px; padding:24px; border:1px solid var(--line); border-radius:10px; background:var(--white); }
+    .settings { display:grid; grid-template-columns:1fr 1fr; gap:14px; } label { display:block; margin-bottom:7px; font-weight:700; }
+    select,input { width:100%; min-height:46px; padding:0 12px; border:1px solid #cbd5cc; border-radius:6px; background:white; color:var(--ink); }
+    .word-card { min-height:190px; display:grid; place-items:center; margin:18px 0; padding:20px; border-radius:8px; background:#eaf3f8; text-align:center; }
+    .word { font-size:clamp(32px,8vw,52px); font-weight:800; } .word.is-hidden { filter:blur(16px); user-select:none; }
+    .clock { margin:0 0 14px; text-align:center; font-variant-numeric:tabular-nums; font-size:48px; font-weight:800; }
+    .scoreboard { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
+    .team { padding:12px; border:1px solid var(--line); border-radius:8px; text-align:center; } .team strong { display:block; font-size:24px; }
+    .actions { display:flex; flex-wrap:wrap; gap:10px; }
+    button { min-height:46px; padding:0 16px; border:0; border-radius:6px; background:var(--green); color:white; font-weight:700; cursor:pointer; }
+    button.secondary { background:#eff5eb; color:var(--dark); } .status { min-height:24px; margin:14px 0 0; color:var(--dark); font-weight:700; }
+    @media(max-width:520px) { .card { padding:18px; } .settings { grid-template-columns:1fr; } .actions button { flex:1 1 40%; } }
+  </style>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+  <div class="shell">
+    <header><a class="brand" href="index.html">lingua</a><a class="back" href="teacher.html">← Trở về</a></header>
+    <main>
+      <p class="eyebrow">Trò chơi khởi động · 5 phút</p>
+      <h1>Act It Out!</h1>
+      <p class="intro">Diễn tả từ bí mật bằng hành động, không nói và không đánh vần! Đội mình đoán đúng bằng tiếng Anh thì ghi điểm.</p>
+      <section class="card" aria-label="Trò chơi diễn tả đoán từ">
+        <div class="settings">
+          <div>
+            <label for="category">Chủ đề</label>
+            <select id="category">
+              <option value="all">Tất cả chủ đề</option>
+              <option value="animals">Động vật</option>
+              <option value="actions">Hành động</option>
+              <option value="feelings">Cảm xúc</option>
+              <option value="jobs">Nghề nghiệp</option>
+            </select>
+          </div>
+          <div>
+            <label for="round-time">Thời gian mỗi lượt</label>
+            <select id="round-time">
+              <option value="30">30 giây</option>
+              <option value="60" selected>60 giây</option>
+              <option value="90">90 giây</option>
+            </select>
+          </div>
+        </div>
+        <div class="word-card"><span class="word is-hidden" id="word" aria-live="polite">Bốc thẻ để bắt đầu!</span></div>
+        <p class="muted" id="progress" aria-live="polite"></p>
+        <p class="clock" id="clock" aria-live="polite">01:00</p>
+        <div class="scoreboard" aria-label="Điểm số">
+          <div class="team"><label for="team-one-name">Đội 1</label><input id="team-one-name" value="Đội 1"><strong id="team-one-score">0</strong><button class="secondary score-button" data-team="one" type="button">+1 điểm</button></div>
+          <div class="team"><label for="team-two-name">Đội 2</label><input id="team-two-name" value="Đội 2"><strong id="team-two-score">0</strong><button class="secondary score-button" data-team="two" type="button">+1 điểm</button></div>
+        </div>
+        <div class="actions">
+          <button id="draw" type="button">Bốc thẻ bí mật</button>
+          <button class="secondary" id="toggle" type="button">Hiện từ</button>
+          <button class="secondary" id="start" type="button">Bắt đầu lượt</button>
+          <button class="secondary" id="stop" type="button">Dừng giờ</button>
+          <button class="secondary" id="reset" type="button">Chơi lại</button>
+        </div>
+        <p class="status" id="status" role="status">Chọn đội, bốc thẻ và bắt đầu diễn tả!</p>
+      </section>
+    </main>
+  </div>
+  <script>
+    const deck = {
+      animals: ["a cat", "a dog", "a monkey", "an elephant", "a rabbit", "a penguin", "a snake", "a frog", "a fish", "a bird", "a lion", "a kangaroo", "a turtle", "a chicken", "a butterfly"],
+      actions: ["brushing your teeth", "swimming", "dancing", "sleeping", "running", "cooking", "singing", "reading a book", "riding a bike", "playing football", "taking a photo", "flying a kite", "walking a dog", "making a cake", "washing the dishes", "climbing a tree", "playing the piano", "catching a ball", "building a snowman", "driving a car"],
+      feelings: ["happy", "sad", "angry", "sleepy", "surprised", "scared", "excited", "cold", "hot", "sick", "confused", "bored"],
+      jobs: ["a teacher", "a doctor", "a chef", "a firefighter", "a singer", "a soccer player", "a dancer", "a police officer", "a farmer", "a dentist", "a painter", "a photographer"]
+    };
+    const word = document.querySelector("#word");
+    const category = document.querySelector("#category");
+    const roundTime = document.querySelector("#round-time");
+    const clock = document.querySelector("#clock");
+    const progress = document.querySelector("#progress");
+    const status = document.querySelector("#status");
+    const scores = { one: 0, two: 0 };
+    const bags = new Map();
+    let currentWord = "";
+    let hidden = true;
+    let remaining = 60;
+    let timerId = null;
+    function formatTime(seconds) {
+      return `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
+    }
+    function getWords(key) {
+      return key === "all" ? Object.values(deck).flat() : deck[key];
+    }
+    function refillBag(key, previous = "") {
+      const words = [...getWords(key)];
+      for (let i = words.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [words[i], words[j]] = [words[j], words[i]];
+      }
+      if (words.length > 1 && words[words.length - 1] === previous) {
+        [words[words.length - 1], words[0]] = [words[0], words[words.length - 1]];
+      }
+      bags.set(key, { words, used: 0 });
+    }
+    function drawCard() {
+      const key = category.value;
+      let bag = bags.get(key);
+      let reshuffled = false;
+      if (!bag || bag.used === bag.words.length) {
+        refillBag(key, currentWord);
+        bag = bags.get(key);
+        reshuffled = Boolean(currentWord);
+      }
+      currentWord = bag.words[bag.used++];
+      hidden = true;
+      word.textContent = currentWord;
+      word.classList.add("is-hidden");
+      document.querySelector("#toggle").textContent = "Hiện từ";
+      progress.textContent = `${bag.used} / ${bag.words.length} thẻ trong bộ hiện tại`;
+      status.textContent = reshuffled ? "Hết bộ thẻ rồi! Đã xáo bộ mới, chơi tiếp nhé." : "Chỉ cho người diễn xem từ bí mật!";
+    }
+    function stopTimer(message) {
+      if (timerId !== null) window.clearInterval(timerId);
+      timerId = null;
+      status.textContent = message;
+    }
+    document.querySelector("#draw").addEventListener("click", drawCard);
+    category.addEventListener("change", () => {
+      currentWord = "";
+      word.textContent = "Bốc thẻ để bắt đầu!";
+      word.classList.add("is-hidden");
+      progress.textContent = "";
+      document.querySelector("#toggle").textContent = "Hiện từ";
+      status.textContent = "Đã đổi chủ đề. Bốc thẻ mới nhé!";
+    });
+    document.querySelector("#toggle").addEventListener("click", (event) => {
+      if (!currentWord) {
+        status.textContent = "Hãy bốc thẻ trước nhé.";
+        return;
+      }
+      hidden = !hidden;
+      word.classList.toggle("is-hidden", hidden);
+      event.currentTarget.textContent = hidden ? "Hiện từ" : "Che từ";
+    });
+    document.querySelector("#start").addEventListener("click", () => {
+      if (timerId !== null) return;
+      if (!currentWord) {
+        status.textContent = "Hãy bốc thẻ trước khi bắt đầu lượt.";
+        return;
+      }
+      remaining = Number(roundTime.value);
+      clock.textContent = formatTime(remaining);
+      status.textContent = "Bắt đầu diễn tả! Không nói nhé!";
+      timerId = window.setInterval(() => {
+        remaining -= 1;
+        clock.textContent = formatTime(remaining);
+        if (remaining <= 0) stopTimer("Hết giờ! Đổi đội thôi!");
+      }, 1000);
+    });
+    roundTime.addEventListener("change", () => {
+      if (timerId === null) {
+        remaining = Number(roundTime.value);
+        clock.textContent = formatTime(remaining);
+      }
+    });
+    document.querySelector("#stop").addEventListener("click", () => {
+      if (timerId !== null) stopTimer("Đã dừng đồng hồ.");
+    });
+    document.querySelectorAll(".score-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        const team = button.dataset.team;
+        scores[team] += 1;
+        document.querySelector(`#team-${team}-score`).textContent = scores[team];
+        status.textContent = `${document.querySelector(`#team-${team}-name`).value || `Đội ${team === "one" ? "1" : "2"}`} được 1 điểm!`;
+      });
+    });
+    document.querySelector("#reset").addEventListener("click", () => {
+      if (timerId !== null) window.clearInterval(timerId);
+      timerId = null;
+      scores.one = 0;
+      scores.two = 0;
+      document.querySelector("#team-one-score").textContent = "0";
+      document.querySelector("#team-two-score").textContent = "0";
+      bags.clear();
+      currentWord = "";
+      hidden = true;
+      remaining = Number(roundTime.value);
+      clock.textContent = formatTime(remaining);
+      word.textContent = "Bốc thẻ để bắt đầu!";
+      word.classList.add("is-hidden");
+      progress.textContent = "";
+      document.querySelector("#toggle").textContent = "Hiện từ";
+      status.textContent = "Đã bắt đầu ván mới!";
+    });
+  </script>
+</body>
+</html>

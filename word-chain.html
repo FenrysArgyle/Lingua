@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7f1">
+  <title>Word Chain — Lingua</title>
+  <style>
+    :root { color-scheme: light; --paper:#f7f7f1; --ink:#172b27; --muted:#697570; --line:#dfe4dc; --green:#176b53; --dark:#10543f; --lime:#d7f36b; --white:#fff; font-family:"Segoe UI",Arial,sans-serif; }
+    * { box-sizing:border-box; } body { min-width:320px; min-height:100vh; margin:0; color:var(--ink); background:var(--paper); }
+    a,button,input,select { font:inherit; } :focus-visible { outline:3px solid #ff795f; outline-offset:3px; }
+    .shell { width:min(760px,calc(100% - 36px)); margin:auto; } header { height:76px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); }
+    .brand { color:var(--dark); font-size:20px; font-weight:800; text-decoration:none; } .back { color:var(--dark); font-weight:700; text-decoration:none; }
+    main { padding:48px 0 56px; } .eyebrow { color:var(--green); font-size:12px; font-weight:700; text-transform:uppercase; }
+    h1 { margin:8px 0 10px; font-size:clamp(34px,7vw,48px); } .intro,.muted { color:var(--muted); line-height:1.6; }
+    .card { margin-top:24px; padding:24px; border:1px solid var(--line); border-radius:10px; background:var(--white); }
+    label { display:block; margin-bottom:7px; font-weight:700; } .row { display:flex; gap:10px; } input,select { min-width:0; min-height:48px; padding:0 12px; border:1px solid #cbd5cc; border-radius:6px; background:white; color:var(--ink); }
+    input { flex:1; } .word-entry { display:flex; flex:1; min-width:0; align-items:center; overflow:hidden; border:1px solid #cbd5cc; border-radius:6px; background:white; } .word-entry:focus-within { outline:3px solid #ff795f; outline-offset:3px; } .word-prefix { padding-left:12px; color:var(--green); font-weight:800; } .word-entry input { border:0; outline:0; } .word-entry input:focus-visible { outline:0; }
+    button { min-height:46px; padding:0 16px; border:0; border-radius:6px; background:var(--green); color:white; font-weight:700; cursor:pointer; } button.secondary { background:#eff5eb; color:var(--dark); }
+    .status { min-height:25px; margin:14px 0; color:var(--dark); font-weight:700; } .status.error { color:#b33d2c; } .chain { display:flex; flex-wrap:wrap; gap:8px; margin:0; padding:0; list-style:none; }
+    .chain li { padding:8px 11px; border-radius:20px; background:#eff5d9; font-weight:700; } .score { margin:0 0 12px; color:var(--muted); }
+    @media(max-width:520px) { .row { flex-direction:column; } .card { padding:18px; } }
+  </style>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+  <div class="shell">
+    <header><a class="brand" href="index.html">lingua</a><a class="back" href="teacher.html">← Trở về</a></header>
+    <main>
+      <p class="eyebrow">Trò chơi khởi động · 3–5 phút</p>
+      <h1>Word Chain</h1>
+      <p class="intro">Nối từ tiếng Anh được từ điển trực tuyến xác nhận (cần Internet) và không lặp lại từ đã dùng. Từ tiếp theo cần bắt đầu bằng 1, 2 hoặc 3 chữ cái cuối của từ trước; độ khó được chọn ngẫu nhiên (75% / 15% / 10%).</p>
+      <section class="card" aria-label="Trò chơi nối từ">
+        <p class="score" id="score" aria-live="polite">Đang chọn từ bắt đầu...</p>
+        <p class="muted" id="prompt">Vui lòng chờ một chút.</p>
+        <form id="word-form" aria-busy="true">
+          <label for="word-input">Nhập phần còn lại của từ</label>
+          <div class="row"><div class="word-entry"><span class="word-prefix" id="word-prefix" aria-hidden="true"></span><input id="word-input" aria-label="Phần còn lại của từ" autocomplete="off" required disabled placeholder="Nhập tiếp..." pattern="[a-zA-Z]+" title="Chỉ nhập chữ cái còn lại của từ"></div><button type="submit" disabled>Nối từ</button></div>
+        </form>
+        <p class="status" id="status" role="status">Đang chọn từ bắt đầu ngẫu nhiên...</p>
+        <ol class="chain" id="chain" aria-label="Các từ đã nối"></ol>
+        <button class="secondary" id="reset" type="button" style="margin-top:20px">Chơi lại</button>
+      </section>
+    </main>
+  </div>
+  <script>
+    const form = document.querySelector("#word-form");
+    const input = document.querySelector("#word-input");
+    const list = document.querySelector("#chain");
+    const prompt = document.querySelector("#prompt");
+    const status = document.querySelector("#status");
+    const score = document.querySelector("#score");
+    const submitButton = form.querySelector('button[type="submit"]');
+    const resetButton = document.querySelector("#reset");
+    const wordPrefix = document.querySelector("#word-prefix");
+    const starterWords = ["apple", "bridge", "cloud", "dance", "earth", "flower", "garden", "happy", "island", "jungle", "kite", "lemon", "music", "night", "orange", "pencil", "queen", "river", "school", "tiger", "umbrella", "water", "yellow", "zebra"];
+    const words = [];
+    const clean = (word) => word.trim().toLocaleLowerCase("en").replace(/[^a-z]/g, "");
+
+    function chooseLinkLength() {
+      const chance = Math.random();
+      if (chance < 0.75) return 1;
+      if (chance < 0.9) return 2;
+      return 3;
+    }
+
+    function setPrompt(suffix) {
+      wordPrefix.textContent = suffix.toLowerCase();
+      prompt.replaceChildren("Từ tiếp theo cần bắt đầu bằng ", Object.assign(document.createElement("strong"), {
+        textContent: suffix.toUpperCase()
+      }), ".");
+    }
+
+    function setGameReady(isReady) {
+      input.disabled = !isReady;
+      submitButton.disabled = !isReady;
+      resetButton.disabled = !isReady;
+      form.setAttribute("aria-busy", String(!isReady));
+    }
+
+    async function isDictionaryWord(word) {
+      const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
+      if (response.status === 404) return false;
+      if (!response.ok) throw new Error(`Từ điển phản hồi lỗi (${response.status}).`);
+      const entries = await response.json();
+      return Array.isArray(entries) && entries.length > 0;
+    }
+
+    async function startGame() {
+      setGameReady(false);
+      score.textContent = "Đang chọn từ bắt đầu...";
+      status.textContent = "Đang chọn từ bắt đầu ngẫu nhiên...";
+      status.classList.remove("error");
+      prompt.textContent = "Vui lòng chờ một chút.";
+      words.length = 0;
+      list.replaceChildren();
+
+      const starter = starterWords[Math.floor(Math.random() * starterWords.length)];
+      words.push(starter);
+      list.append(Object.assign(document.createElement("li"), { textContent: starter }));
+      setPrompt(starter.slice(-chooseLinkLength()));
+      score.textContent = `Đã nối ${words.length} từ`;
+      status.textContent = `Bắt đầu với từ ngẫu nhiên: ${starter}`;
+      setGameReady(true);
+      input.focus();
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const raw = input.value.trim();
+      const requiredPrefix = wordPrefix.textContent;
+      const word = clean(`${requiredPrefix}${raw}`);
+      let error = "";
+      if (!raw) error = "Hãy nhập phần còn lại của từ.";
+      else if (!/^[a-z]+$/i.test(raw)) error = "Mỗi lượt chỉ nhập một từ tiếng Anh.";
+      else if (words.includes(word)) error = "Từ này đã được dùng rồi. Hãy nghĩ từ khác!";
+      if (error) {
+        status.textContent = error;
+        status.classList.add("error");
+        input.select();
+        return;
+      }
+
+      setGameReady(false);
+      status.textContent = "Đang kiểm tra từ điển...";
+      status.classList.remove("error");
+      try {
+        if (!await isDictionaryWord(word)) {
+          status.textContent = "Từ này không có trong từ điển. Hãy thử một từ tiếng Anh khác!";
+          status.classList.add("error");
+          input.select();
+          return;
+        }
+      } catch (error) {
+        status.textContent = error instanceof TypeError
+          ? "Không thể kết nối từ điển. Hãy kiểm tra kết nối Internet rồi thử lại."
+          : `Không thể kiểm tra từ lúc này. ${error.message}`;
+        status.classList.add("error");
+        return;
+      } finally {
+        setGameReady(true);
+      }
+
+      words.push(word);
+      const item = document.createElement("li");
+      item.textContent = word;
+      list.append(item);
+      const suffix = word.slice(-chooseLinkLength());
+      setPrompt(suffix);
+      status.textContent = `Tốt lắm! Từ tiếp theo bắt đầu bằng ${suffix.toUpperCase()}.`;
+      status.classList.remove("error");
+      score.textContent = `Đã nối ${words.length} từ`;
+      input.value = "";
+      input.focus();
+    });
+    resetButton.addEventListener("click", () => {
+      input.value = "";
+      startGame();
+    });
+    startGame();
+  </script>
+</body>
+</html>

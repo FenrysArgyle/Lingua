@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7f1">
+  <title>Quick Draw — Lingua</title>
+  <style>
+    :root { color-scheme:light; --paper:#f7f7f1; --ink:#172b27; --muted:#697570; --line:#dfe4dc; --green:#176b53; --dark:#10543f; --white:#fff; font-family:"Segoe UI",Arial,sans-serif; }
+    * { box-sizing:border-box; } body { min-width:320px; min-height:100vh; margin:0; color:var(--ink); background:var(--paper); } a,button,select { font:inherit; } :focus-visible { outline:3px solid #ff795f; outline-offset:3px; }
+    .shell { width:min(760px,calc(100% - 36px)); margin:auto; } header { height:76px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); }
+    .brand,.back { color:var(--dark); font-weight:700; text-decoration:none; } .brand { font-size:20px; font-weight:800; } main { padding:48px 0 56px; }
+    .eyebrow { color:var(--green); font-size:12px; font-weight:700; text-transform:uppercase; } h1 { margin:8px 0 10px; font-size:clamp(34px,7vw,48px); }
+    .intro,.muted { color:var(--muted); line-height:1.6; } .card { margin-top:24px; padding:24px; border:1px solid var(--line); border-radius:10px; background:var(--white); }
+    label { display:block; margin-bottom:7px; font-weight:700; } select { width:100%; min-height:46px; padding:0 12px; border:1px solid #cbd5cc; border-radius:6px; background:white; color:var(--ink); }
+    .word { min-height:140px; display:grid; place-items:center; margin:18px 0; padding:16px; border-radius:8px; background:#f2edfa; text-align:center; font-size:clamp(28px,6vw,42px); font-weight:800; }
+    .word.is-hidden { color:transparent; user-select:none; } .clock { margin:0 0 18px; text-align:center; font-variant-numeric:tabular-nums; font-size:48px; font-weight:800; }
+    .actions { display:flex; flex-wrap:wrap; gap:10px; } button { min-height:46px; padding:0 16px; border:0; border-radius:6px; background:var(--green); color:white; font-weight:700; cursor:pointer; }
+    button.secondary { background:#eff5eb; color:var(--dark); } .status { min-height:24px; margin:14px 0 0; color:var(--dark); font-weight:700; }
+    @media(max-width:520px) { .card { padding:18px; } .actions button { flex:1; } }
+  </style>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+  <div class="shell">
+    <header><a class="brand" href="index.html">lingua</a><a class="back" href="teacher.html">← Trở về</a></header>
+    <main>
+      <p class="eyebrow">Trò chơi khởi động · 3–5 phút</p>
+      <h1>Quick Draw</h1>
+      <p class="intro">Một bạn xem từ bí mật rồi vẽ lên bảng, không viết chữ hay nói tiếng Việt. Đội đoán từ bằng tiếng Anh trước khi hết giờ!</p>
+      <section class="card" aria-label="Bốc từ vẽ nhanh">
+        <label for="category">Chủ đề</label>
+        <select id="category">
+          <option value="all">Tất cả chủ đề</option>
+          <option value="classroom">Đồ dùng trong lớp</option>
+          <option value="animals">Động vật</option>
+          <option value="weather">Thời tiết và thiên nhiên</option>
+          <option value="actions">Hoạt động</option>
+        </select>
+        <div class="word is-hidden" id="word" aria-live="polite">Chọn “Bốc từ” để bắt đầu</div>
+        <p class="muted" id="word-progress" aria-live="polite"></p>
+        <p class="clock" id="clock" aria-live="polite">01:00</p>
+        <div class="actions">
+          <button id="draw" type="button">Bốc từ</button>
+          <button class="secondary" id="toggle" type="button">Hiện từ</button>
+          <button class="secondary" id="start" type="button">Bắt đầu 60 giây</button>
+          <button class="secondary" id="stop" type="button">Dừng giờ</button>
+        </div>
+        <p class="status" id="status" role="status">Sẵn sàng chưa? Good luck!</p>
+      </section>
+    </main>
+  </div>
+  <script>
+    const deck = {
+      classroom: ["pencil", "book", "backpack", "ruler", "chair", "clock", "board", "scissors", "eraser", "notebook", "desk", "marker", "crayon", "glue", "paper", "pen", "schoolbag", "calculator", "map", "globe", "computer", "keyboard", "door", "window", "shelf", "stapler", "chalk", "sharpener", "lunchbox", "water bottle"],
+      animals: ["elephant", "cat", "butterfly", "turtle", "rabbit", "giraffe", "fish", "monkey", "lion", "tiger", "bear", "panda", "fox", "wolf", "zebra", "horse", "cow", "pig", "sheep", "goat", "chicken", "duck", "penguin", "dolphin", "whale", "shark", "octopus", "crab", "frog", "snake", "crocodile", "parrot", "owl", "eagle", "bee", "snail", "kangaroo", "koala", "camel", "hippo", "rhino", "deer", "squirrel", "hamster", "peacock", "flamingo", "hedgehog", "donkey", "ant", "spider"],
+      weather: ["rainbow", "sunny", "rain", "snowman", "cloud", "wind", "flower", "tree", "sun", "moon", "star", "thunder", "lightning", "storm", "snowflake", "umbrella", "raincoat", "puddle", "fog", "cactus", "palm tree", "mountain", "volcano", "river", "waterfall", "ocean", "beach", "island", "desert", "forest", "mushroom", "leaf", "rose", "tulip", "sunflower", "coconut", "fire", "ice", "planet", "earth", "comet", "tent", "campfire", "snowboard", "kite", "shell", "wave", "icicle", "rain boots"],
+      actions: ["swim", "dance", "sleep", "run", "cook", "sing", "read", "ride a bike", "jump", "skip", "climb", "paint", "draw", "write", "laugh", "cry", "eat", "drink", "wash your hands", "play football", "play basketball", "play tennis", "kick a ball", "catch a ball", "throw a ball", "fly a kite", "ride a horse", "drive a car", "walk the dog", "feed a cat", "open a book", "take a photo", "play the guitar", "play the piano", "make a cake", "make a sandwich", "water the flowers", "plant a tree", "build a snowman", "make a snow angel", "do homework", "make your bed", "sweep the floor", "set the table", "wash the dishes", "pack a bag", "wave hello", "stretch", "yawn"]
+    };
+    const word = document.querySelector("#word");
+    const category = document.querySelector("#category");
+    const clock = document.querySelector("#clock");
+    const status = document.querySelector("#status");
+    let currentWord = "";
+    let hidden = true;
+    let remaining = 60;
+    let timerId = null;
+    const wordBags = new Map();
+    const wordProgress = document.querySelector("#word-progress");
+    const allWords = Object.values(deck).flat();
+    const bagKeys = { all: [...new Set(allWords)], classroom: deck.classroom, animals: deck.animals, weather: [...new Set(deck.weather)], actions: deck.actions };
+    function refillBag(key, previousWord = "") {
+      const bag = [...bagKeys[key]];
+      for (let i = bag.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [bag[i], bag[j]] = [bag[j], bag[i]];
+      }
+      if (bag.length > 1 && bag[bag.length - 1] === previousWord) {
+        const swapIndex = bag.findIndex((candidate) => candidate !== previousWord);
+        [bag[bag.length - 1], bag[swapIndex]] = [bag[swapIndex], bag[bag.length - 1]];
+      }
+      wordBags.set(key, { words: bag, used: 0 });
+    }
+    function drawWord() {
+      const key = category.value;
+      let bag = wordBags.get(key);
+      let isNewBag = false;
+      if (!bag || bag.used === bag.words.length) {
+        refillBag(key, currentWord);
+        bag = wordBags.get(key);
+        isNewBag = Boolean(currentWord);
+      }
+      currentWord = bag.words[bag.used];
+      bag.used += 1;
+      hidden = true;
+      word.textContent = currentWord;
+      word.classList.add("is-hidden");
+      document.querySelector("#toggle").textContent = "Hiện từ";
+      wordProgress.textContent = `${bag.used} / ${bag.words.length} từ trong bộ hiện tại`;
+      status.textContent = isNewBag
+        ? "Đã hết từ trong chủ đề này! Bộ từ mới đã được xáo."
+        : "Đưa màn hình cho người vẽ, giữ bí mật từ nhé!";
+    }
+    function stopTimer(message) {
+      if (timerId !== null) window.clearInterval(timerId);
+      timerId = null;
+      status.textContent = message;
+    }
+    document.querySelector("#draw").addEventListener("click", drawWord);
+    category.addEventListener("change", () => {
+      currentWord = "";
+      word.textContent = "Chọn “Bốc từ” để bắt đầu";
+      word.classList.add("is-hidden");
+      document.querySelector("#toggle").textContent = "Hiện từ";
+      wordProgress.textContent = "";
+      status.textContent = "Chủ đề đã đổi. Bốc từ để bắt đầu!";
+    });
+    document.querySelector("#toggle").addEventListener("click", (event) => {
+      if (!currentWord) {
+        status.textContent = "Hãy bốc một từ trước nhé.";
+        return;
+      }
+      hidden = !hidden;
+      word.classList.toggle("is-hidden", hidden);
+      event.currentTarget.textContent = hidden ? "Hiện từ" : "Che từ";
+    });
+    document.querySelector("#start").addEventListener("click", () => {
+      if (timerId !== null) return;
+      if (!currentWord) {
+        status.textContent = "Hãy bốc một từ trước khi bắt đầu đồng hồ.";
+        return;
+      }
+      remaining = 60;
+      clock.textContent = "01:00";
+      status.textContent = "Bắt đầu vẽ! Go!";
+      timerId = window.setInterval(() => {
+        remaining -= 1;
+        clock.textContent = `00:${String(remaining).padStart(2, "0")}`;
+        if (remaining <= 0) stopTimer("Hết giờ! Đổi lượt chơi nào.");
+      }, 1000);
+    });
+    document.querySelector("#stop").addEventListener("click", () => {
+      if (timerId !== null) stopTimer("Đã dừng đồng hồ.");
+    });
+  </script>
+</body>
+</html>

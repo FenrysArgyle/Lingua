@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f7f1">
+  <title>Từ vựng tiếng Anh — Lingua</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f7f7f1;
+      --ink: #172b27;
+      --muted: #697570;
+      --line: #dfe4dc;
+      --green: #176b53;
+      --green-dark: #10543f;
+      --lime: #d7f36b;
+      --coral: #ff795f;
+      --white: #fff;
+      font-family: "DM Sans", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper) radial-gradient(#dce4d9 0.8px, transparent 0.8px);
+      background-size: auto, 20px 20px;
+    }
+    a, input, button, select { font: inherit; }
+    a:focus-visible, input:focus-visible, button:focus-visible, select:focus-visible {
+      outline: 3px solid var(--coral);
+      outline-offset: 3px;
+    }
+    .page-shell { width: min(1080px, calc(100% - 56px)); margin: 0 auto; }
+    .topbar {
+      height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(23, 43, 39, 0.1);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--ink);
+      font-family: "Manrope", sans-serif;
+      font-size: 19px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .brand-mark {
+      width: 35px;
+      height: 35px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: var(--green);
+      color: var(--lime);
+      transform: rotate(-5deg);
+    }
+    .back-link { color: var(--green-dark); font-size: 14px; font-weight: 700; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+    main { padding: 55px 0 58px; }
+    .intro { max-width: 730px; margin-bottom: 30px; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 14px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { width: 7px; height: 7px; border-radius: 50%; background: var(--coral); content: ""; }
+    h1 {
+      margin: 0;
+      font-family: "Manrope", sans-serif;
+      font-size: clamp(34px, 5vw, 52px);
+      font-weight: 800;
+      line-height: 1.12;
+    }
+    .intro-copy { max-width: 650px; margin: 14px 0 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .vocabulary-tabs {
+      display: flex;
+      gap: 8px;
+      margin: 28px 0 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .vocabulary-tab {
+      min-height: 44px;
+      padding: 0 16px;
+      border: 0;
+      border-bottom: 3px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .vocabulary-tab[aria-selected="true"] { border-bottom-color: var(--green); color: var(--green-dark); }
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(150px, 0.55fr) minmax(210px, 0.75fr) minmax(260px, 1.3fr);
+      gap: 14px;
+      margin: 0 0 18px;
+    }
+    .controls-specialized { grid-template-columns: minmax(170px, 0.8fr) minmax(220px, 1fr) minmax(260px, 1.3fr); }
+    .control-label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700; }
+    .control-input {
+      width: 100%;
+      min-height: 50px;
+      padding: 0 14px;
+      border: 1px solid #cbd5cc;
+      border-radius: 6px;
+      background: var(--white);
+      color: var(--ink);
+    }
+    .unit-info {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 14px;
+      margin: 23px 0 12px;
+    }
+    .unit-info h2 {
+      margin: 0;
+      font-family: "Manrope", sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+    }
+    .result-count { margin: 0; color: var(--muted); font-size: 13px; }
+    .table-wrap {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.94);
+    }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th {
+      padding: 13px 17px;
+      background: #edf4e9;
+      color: var(--green-dark);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    td { padding: 13px 17px; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.5; }
+    td:first-child { width: 27%; font-weight: 700; }
+    td:nth-child(2) { width: 10%; color: var(--muted); }
+    td:nth-child(3) { width: 25%; color: var(--green-dark); font-family: "DM Sans", sans-serif; }
+    .word-entry { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .word-label { cursor: pointer; }
+    .speak-button {
+      width: 34px;
+      height: 32px;
+      display: grid;
+      flex: 0 0 auto;
+      place-items: center;
+      padding: 0;
+      border: 1px solid #cbd5cc;
+      border-radius: 6px;
+      background: #f5f8f2;
+      color: var(--green-dark);
+      cursor: pointer;
+    }
+    .speak-button:hover { border-color: var(--green); background: #edf4e9; }
+    .speak-button[hidden] { display: none; }
+    .speech-status { margin: 0 0 8px; color: var(--muted); font-size: 13px; }
+    .empty-state { padding: 22px 17px; color: var(--muted); }
+    [hidden] { display: none !important; }
+    footer {
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(23, 43, 39, 0.1);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    @media (max-width: 700px) {
+      .page-shell { width: min(100% - 36px, 540px); }
+      .topbar { height: 72px; }
+      main { padding: 42px 0 38px; }
+      .controls { grid-template-columns: 1fr; gap: 12px; }
+      .vocabulary-tabs { gap: 0; }
+      .vocabulary-tab { flex: 1; padding: 0 8px; font-size: 13px; }
+      .unit-info { align-items: flex-start; flex-direction: column; gap: 5px; }
+      .table-wrap { overflow-x: auto; }
+      table { min-width: 560px; }
+      th, td { padding: 12px; }
+      footer { min-height: 56px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Lingua, trang chủ">
+        <span class="brand-mark" aria-hidden="true">L</span>
+        <span>lingua</span>
+      </a>
+      <a class="back-link" href="index.html">← Chọn vai trò</a>
+    </header>
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">Dành cho học sinh · Ôn tập và tra cứu</p>
+        <h1 id="page-title">Từ vựng tiếng Anh</h1>
+        <p class="intro-copy">Tra cứu từ mới, từ loại, phiên âm và nghĩa tiếng Việt theo lớp, Unit hoặc theo chủ đề của từng môn học.</p>
+      </section>
+      <section aria-label="Tra cứu từ vựng">
+        <div class="vocabulary-tabs" role="tablist" aria-label="Loại từ vựng">
+          <button class="vocabulary-tab" id="unit-tab" type="button" role="tab" aria-selected="true" aria-controls="unit-panel">Theo lớp · Unit</button>
+          <button class="vocabulary-tab" id="specialized-tab" type="button" role="tab" aria-selected="false" aria-controls="specialized-panel">Chuyên ngành theo môn</button>
+        </div>
+        <div id="unit-panel" role="tabpanel" aria-labelledby="unit-tab">
+        <div class="controls">
+          <div>
+            <label class="control-label" for="grade-select">Chọn khối</label>
+            <select class="control-input" id="grade-select">
+              <option value="10">Lớp 10</option>
+              <option value="11">Lớp 11</option>
+              <option value="12">Lớp 12</option>
+            </select>
+          </div>
+          <div>
+            <label class="control-label" for="unit-select">Chọn Unit</label>
+            <select class="control-input" id="unit-select"></select>
+          </div>
+          <div>
+            <label class="control-label" for="word-search">Tìm từ, từ loại, phiên âm hoặc nghĩa</label>
+            <input class="control-input" id="word-search" type="search" placeholder="Ví dụ: healthy, /ˈhelθi/, sức khỏe..." autocomplete="off">
+          </div>
+        </div>
+        </div>
+        <div id="specialized-panel" role="tabpanel" aria-labelledby="specialized-tab" hidden>
+          <div class="controls controls-specialized">
+            <div>
+              <label class="control-label" for="subject-select">Chọn môn học</label>
+              <select class="control-input" id="subject-select"></select>
+            </div>
+            <div>
+              <label class="control-label" for="topic-select">Chọn chủ đề</label>
+              <select class="control-input" id="topic-select"></select>
+            </div>
+            <div>
+              <label class="control-label" for="specialized-search">Tìm từ, từ loại, phiên âm hoặc nghĩa</label>
+              <input class="control-input" id="specialized-search" type="search" placeholder="Ví dụ: algorithm, n, /ˈ/, thuật toán..." autocomplete="off">
+            </div>
+          </div>
+        </div>
+        <div class="unit-info">
+          <h2 id="unit-title"></h2>
+          <p class="result-count" id="result-count" aria-live="polite"></p>
+        </div>
+        <p class="speech-status" id="speech-status" role="status" aria-live="polite" hidden></p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Từ mới</th><th scope="col">Từ loại</th><th scope="col">Phiên âm (IPA)</th><th scope="col">Nghĩa tiếng Việt</th></tr></thead>
+            <tbody id="vocabulary-rows"></tbody>
+          </table>
+          <p class="empty-state" id="empty-state" hidden>Không tìm thấy từ phù hợp trong Unit này. Thử từ khóa khác nhé.</p>
+        </div>
+      </section>
+    </main>
+    <footer><span>© 2026 Lingua</span><span>Learn together. Grow everywhere.</span></footer>
+  </div>
+  <script>
+    const grade10Units = [
+      { title: "Unit 1 · Family life", words: `
+Benefit|n|/ˈbenɪfɪt/|Lợi ích
+Bond|n|/bɒnd/|Sự gắn bó, kết nối
+Breadwinner|n|/ˈbredwɪnə(r)/|Người trụ cột đi làm nuôi gia đình
+Character|n|/ˈkærəktə(r)/|Tính cách
+Cheer up|v|/tʃɪə(r) ʌp/|Cổ vũ, làm cho ai đó vui lên
+Damage|v|/ˈdæmɪdʒ/|Phá hỏng, làm hỏng
+Gratitude|n|/ˈɡrætɪtjuːd/|Sự biết ơn, lòng biết ơn
+Grocery|n|/ˈɡrəʊsəri/|Thực phẩm và tạp hoá
+Heavy lifting|n|/ˌhevi ˈlɪftɪŋ/|Mang vác nặng
+Homemaker|n|/ˈhəʊmmeɪkə(r)/|Người nội trợ
+Laundry|n|/ˈlɔːndri/|Quần áo, đồ giặt là
+Manner|n|/ˈmænə(r)/|Tác phong, cách ứng xử
+Responsibility|n|/rɪˌspɒnsəˈbɪləti/|Trách nhiệm
+Routine|n|/ruːˈtiːn/|Lệ thường, công việc hằng ngày
+Rubbish|n|/ˈrʌbɪʃ/|Rác rưởi
+Spotlessly|adv|/ˈspɒtləsli/|Không tì vết
+Strengthen|v|/ˈstreŋkθn/|Củng cố, làm mạnh thêm
+Support|n, v|/səˈpɔːt/|Ủng hộ, hỗ trợ
+Truthful|adj|/ˈtruːθfl/|Trung thực
+Value|n|/ˈvæljuː/|Giá trị
+Washing-up|n|/ˌwɒʃɪŋ ˈʌp/|Rửa chén bát
+` },
+      { title: "Unit 2 · Humans and the environment", words: `
+Adopt|v|/əˈdɒpt/|Theo, chọn theo
+Appliance|n|/əˈplaɪəns/|Thiết bị, dụng cụ
+Awareness|n|/ˈweənəs/|Nhận thức
+Calculate|v|/ˈkælkjuleɪt/|Tính toán
+Carbon footprint|n|/ˌkɑːbən ˈfʊtprɪnt/|Dấu chân cacbon, vết cacbon
+Chemical|n|/ˈkemɪkl/|Hoá chất
+Eco-friendly|adj|/ˌiːkəʊ ˈfrendli/|Thân thiện với môi trường
+Electrical|adj|/ɪˈlektrɪkl/|Thuộc về điện
+Emission|n|/ɪˈmɪʃn/|Sự thải ra, thoát ra
+Encourage|v|/ɪnˈkʌrɪdʒ/|Khuyến khích, động viên
+Energy|n|/ˈenədʒi/|Năng lượng
+Estimate|v|/ˈestɪmeɪt/|Ước tính, ước lượng
+Global|adj|/ˈɡləʊbl/|Toàn cầu
+Human|n|/ˈhjuːmən/|Con người
+Issue|n|/ˈɪʃuː/|Vấn đề
+Lifestyle|n|/ˈlaɪfstaɪl/|Lối sống, cách sống
+Litter|n|/ˈliːtə(r)/|Rác thải
+Material|n|/məˈtɪəriəl/|Nguyên liệu
+Organic|adj|/ɔːˈɡænɪk/|Hữu cơ
+Public transport|n|/ˌpʌblɪk ˈtrænspɔːt/|Giao thông công cộng
+Refillable|adj|/ˌriːˈfɪləbl/|Có thể làm đầy lại
+Resource|n|/rɪˈsɔːs/|Tài nguyên
+Sustainable|adj|/ˌsəˈsteɪnəbl/|Bền vững
+` },
+      { title: "Unit 3 · Music", words: `
+Bamboo clapper|n|/ˌbæmˈbuː ˈklæpə(r)/|Phách
+Comment|n|/ˈkɒment/|Lời bình luận
+Competition|n|/ˌkɒmpəˈtɪʃn/|Cuộc tranh tài, cuộc thi
+Concert|n|/ˈkɒnsət/|Buổi hoà nhạc
+Decoration|n|/ˌdekəˈreɪʃn/|Việc trang trí
+Delay|v|/dɪˈleɪ/|Hoãn lại
+Eliminate|v|/ɪˈlɪmɪneɪt/|Loại ra, loại trừ
+Judge|n|/dʒʌdʒ/|Giám khảo
+Live|adj, adv|/laɪv/|Trực tiếp
+Location|n|/ləʊˈkeɪʃn/|Vị trí, địa điểm
+Moon-shaped lute|n|/muːn ʃeɪpt luːt/|Đàn nguyệt
+Musical instrument|n|/ˌmjuːzɪkl ˈɪnstrəmənt/|Nhạc cụ
+Participant|n|/pɑːˈtɪsɪpənt/|Người tham dự, thí sinh
+Performance|n|/pəˈfɔːməns/|Buổi biểu diễn, buổi trình diễn
+Reach|v|/riːtʃ/|Đạt được
+Single|n|/ˈsɪŋɡl/|Đĩa đơn
+Social media|n|/ˈsəʊʃl ˈmiːdiə/|Mạng xã hội
+Talented|adj|/ˈtæləntɪd/|Tài năng
+Trumpet|n|/ˈtrʌmpɪt/|Kèn trumpet
+Upload|v|/ˌʌpˈləʊd/|Tải lên
+` },
+      { title: "Unit 4 · For a better community", words: `
+Access|n|/ˈækses/|Tiếp cận với
+Announcement|n|/əˈnaʊnsmənt/|Thông báo
+Boost|v|/buːst/|Thúc đẩy, làm tăng thêm
+Cheerful|adj|/ˈtʃɪəfl/|Vui vẻ
+Community|n|/kəˈmjuːnəti/|Cộng đồng
+Community service|n|/kəˌmjuːnəti ˈsɜːvɪs/|Phục vụ cộng đồng
+Confidence|n|/ˈkɒnfɪdəns/|Sự tự tin
+Confused|adj|/kənˈfjuːzd/|Bối rối
+Deliver|v|/dɪˈlɪvə(r)/|Phân phát, giao hàng
+Donate|v|/dəʊˈneɪt/|Cho, hiến tặng
+Donation|n|/dəʊˈneɪʃn/|Đồ mang cho, đồ hiến tặng
+Generous|adj|/ˈdʒenərəs/|Hào phóng
+Involved|adj|/ɪnˈvɒlvd/|Tham gia
+Life-saving|adj|/ˈlaɪf seɪvɪŋ/|Cứu nạn, cứu sống
+Non-governmental|adj|/ˌnɒn ˌɡʌvnˈmentl/|Phi chính phủ
+Orphanage|n|/ˈɔːfənɪdʒ/|Trại trẻ mồ côi
+Participate|v|/pɑːˈtɪsɪpeɪt/|Tham gia
+Practical|adj|/ˈpræktɪkl/|Thực tế, thiết thực
+Raise|v|/reɪz/|Quyên góp
+Remote|adj|/rɪˈməʊt/|Hẻo lánh, xa xôi
+Various|adj|/ˈveəriəs/|Khác nhau, đa dạng
+Volunteer|n, v|/ˌvɒlənˈtɪə(r)/|Tình nguyện viên; làm việc thiện nguyện
+` },
+      { title: "Unit 5 · Inventions", words: `
+3D printing|n|/ˌθriː ˈdiː ˈprɪntɪŋ/|In ba chiều
+AI (artificial intelligence)|n|/ˌeɪ ˈaɪ/|Trí tuệ nhân tạo
+App|n|/æp/|Ứng dụng trên điện thoại
+Application|n|/ˌæplɪˈkeɪʃn/|Ứng dụng
+Apply|v|/əˈplaɪ/|Áp dụng
+Button|n|/ˈbʌtn/|Nút bấm
+Charge|v|/tʃɑːdʒ/|Sạc pin
+Communicate|v|/kəˈmjuːnɪkeɪt/|Giao tiếp
+Computer|n|/kəmˈpjuːtə(r)/|Máy tính
+Device|n|/dɪˈvaɪs/|Thiết bị
+Display|n, v|/dɪˈspleɪ/|Hiển thị, trưng bày
+Driverless|adj|/ˈdraɪvələs/|Không người lái
+E-reader|n|/ˈiː riːdə(r)/|Thiết bị đọc sách điện tử
+Experiment|n|/ɪkˈsperɪmənt/|Thí nghiệm
+Hardware|n|/ˈhɑːdweə(r)/|Phần cứng máy tính
+Install|v|/ɪnˈstɔːl/|Cài đặt phần mềm, chương trình máy tính
+Invention|n|/ɪnˈvenʃn/|Phát minh
+Laboratory|n|/ləˈbɒrətri/|Phòng thí nghiệm
+Laptop|n|/ˈlæptɒp/|Máy tính xách tay
+Processor|n|/ˈprəʊsesə(r)/|Bộ xử lí máy tính
+RAM (Random Access Memory)|n|/ræm/|Bộ nhớ khả biến máy tính
+Smartphone|n|/ˈsmɑːtfəʊn/|Điện thoại thông minh
+Software|n|/ˈsɒftweə(r)/|Phần mềm máy tính
+Stain|n|/steɪn/|Vết bẩn
+Storage space|n|/ˈstɔːrɪdʒ speɪs/|Dung lượng lưu trữ máy tính
+Store|v|/stɔː(r)/|Lưu trữ
+Suitable|adj|/ˈsuːtəbl/|Phù hợp
+Valuable|adj|/ˈvæljuəbl/|Có giá trị
+` },
+      { title: "Unit 6 · Gender equality", words: `
+Cosmonaut|n|/ˈkɒzmənɔːt/|Nhà du hành vũ trụ
+Domestic violence|n|/dəˈmestɪk ˈvaɪələns/|Bạo lực gia đình
+Equal|adj|/ˈiːkwəl/|Bằng nhau, bình đẳng
+Equality|n|/iˈkwɒləti/|Sự bình đẳng
+Eyesight|n|/ˈaɪsaɪt/|Thị lực
+Firefighter|n|/ˈfaɪəfaɪtə(r)/|Lính cứu hoả, chữa cháy
+Kindergarten|n|/ˈkɪndəɡɑːtn/|Trường mẫu giáo
+Mental|adj|/ˈmentl/|Thuộc tinh thần, tâm thần
+Officer|n|/ˈɒfɪsə(r)/|Sĩ quan
+Operation|n|/ˌɒpəˈreɪʃn/|Cuộc phẫu thuật
+Parachute|v|/ˈpærəʃuːt/|Nhảy dù
+Parachutist|n|/ˈpærəʃuːtɪst/|Người nhảy dù
+Patient|n|/ˈpeɪʃnt/|Bệnh nhân
+Physical|adj|/ˈfɪzɪkl/|Thuộc thể chất
+Pilot|n|/ˈpaɪlət/|Phi công
+Secretary|n|/ˈsekrətri/|Thư kí
+Shop assistant|n|/ˈʃɒp əsɪstənt/|Nhân viên, người bán hàng
+Skillful|adj|/ˈskɪlfl/|Lành nghề, khéo léo
+Soviet|n, adj|/ˈsəʊviət/|Liên Xô, thuộc Liên Xô
+Surgeon|n|/ˈsɜːdʒən/|Bác sĩ phẫu thuật
+Uneducated|adj|/ʌnˈedʒukeɪtɪd/|Được học ít, không được học
+Victim|n|/ˈvɪktɪm/|Nạn nhân
+` },
+      { title: "Unit 7 · Viet Nam and international organisations", words: `
+Aim|n, v|/eɪm/|Mục tiêu; đặt ra mục tiêu
+Commit|v|/kəˈmɪt/|Cam kết
+Competitive|adj|/kəmˈpetətɪv/|Cạnh tranh
+Economic|adj|/ˌiːkəˈnɒmɪk/|Thuộc về kinh tế
+Economy|n|/ɪˈkɒnəmi/|Nền kinh tế
+Enter|v|/ˈentə(r)/|Thâm nhập, đi vào
+Essential|adj|/ɪˈsenʃl/|Cần thiết, cấp thiết
+Expert|adj|/ˈekspɜːt/|Thuộc về chuyên môn
+Harm|n|/hɑːm/|Hiểm hoạ, sự nguy hiểm
+Invest|v|/ɪnˈvest/|Đầu tư
+Peacekeeping|adj|/ˈpiːskiːpɪŋ/|Gìn giữ hoà bình
+Poverty|n|/ˈpɒvəti/|Tình trạng đói nghèo
+Promote|v|/prəˈməʊt/|Quảng bá, khuếch trương
+Quality|n, adj|/ˈkwɒləti/|Có chất lượng
+Regional|adj|/ˈriːdʒənl/|Thuộc về khu vực
+Relation|n|/rɪˈleɪʃn/|Mối quan hệ
+Respect|v|/rɪˈspekt/|Tôn trọng, ghi nhận
+Technical|adj|/ˈteknɪkl/|Thuộc về kĩ thuật
+Trade|n|/treɪd/|Thương mại
+Vaccinate|v|/ˈvæksɪneɪt/|Tiêm vắc-xin
+Welcome|v|/ˈwelkəm/|Đón chào, hoan nghênh
+` },
+      { title: "Unit 8 · New ways to learn", words: `
+Blended learning|n|/ˌblendɪd ˈlɜːnɪŋ/|Phương pháp học tập kết hợp
+Communicate|v|/kəˈmjuːnɪkeɪt/|Giao tiếp, trao đổi
+Control|n|/kənˈtrəʊl/|Sự kiểm soát
+Digital|adj|/ˈdɪdʒɪtl/|Kĩ thuật số
+Distraction|n|/dɪˈstrækʃn/|Sự xao nhãng, mất tập trung
+Exchange|v|/ɪksˈtʃeɪndʒ/|Trao đổi
+Face-to-face|adj|/ˌfeɪs tə ˈfeɪs/|Trực tiếp
+Flow chart|n|/ˈfləʊ tʃɑːt/|Lưu đồ, sơ đồ quy trình
+Focus|v|/ˈfəʊkəs/|Tập trung
+High-speed|adj|/ˌhaɪ ˈspiːd/|Tốc độ cao
+Immediately|adv|/ɪˈmiːdiətli/|Ngay lập tức
+Install|v|/ɪnˈstɔːl/|Lắp đặt
+Online learning|n|/ˌɒnˈlaɪn ˈlɜːnɪŋ/|Học trực tuyến
+Original|adj|/əˈrɪdʒənl/|Sáng tạo, độc đáo
+Real-world|adj|/ˈriːəl wɜːld/|Thực tế
+Resource|n|/rɪˈsɔːs/|Nguồn lực
+Schedule|n|/ˈʃedjuːl/|Lịch trình
+Strategy|n|/ˈstrætədʒi/|Chiến lược
+Teamwork|n|/ˈtiːmwɜːk/|Hoạt động nhóm
+Voice recorder|n|/vɔɪs rɪˈkɔːdə(r)/|Máy thu âm
+` },
+      { title: "Unit 9 · Protecting the environment", words: `
+Balance|n|/ˈbæləns/|Sự cân bằng
+Biodiversity|n|/ˌbaɪəʊdaɪˈvɜːsəti/|Đa dạng sinh học
+Climate change|n|/ˈklaɪmət tʃeɪndʒ/|Sự thay đổi khí hậu
+Consequence|n|/ˈkɒnsɪkwəns/|Hậu quả
+Deforestation|n|/ˌdiːˌfɒrɪˈsteɪʃn/|Nạn phá rừng
+Ecosystem|n|/ˈiːkəʊsɪstəm/|Hệ sinh thái
+Endangered|adj|/ɪnˈdeɪndʒəd/|Bị nguy hiểm
+Environmental protection|n|/ɪnˌvaɪrənˈmentl prəˈtekʃn/|Bảo vệ môi trường
+Extreme|adj|/ɪkˈstriːm/|Cực đoan, khắc nghiệt
+Giant|adj|/ˈdʒaɪənt/|To lớn, khổng lồ
+Habitat|n|/ˈhæbɪtæt/|Môi trường sống
+Heatwave|n|/ˈhiːtweɪv/|Sóng nhiệt, đợt không khí nóng
+Ice melting|n|/aɪs ˈmeltɪŋ/|Sự tan băng
+Issue|n|/ˈɪʃuː/|Vấn đề
+Panda|n|/ˈpændə/|Gấu trúc
+Practical|adj|/ˈpræktɪkl/|Thực tế, thiết thực
+Respiratory|adj|/rəˈspɪrətri/|Thuộc về hô hấp
+Tortoise|n|/ˈtɔːtəs/|Con rùa
+Trade|n|/treɪd/|Buôn bán
+Upset|v|/ˌʌpˈset/|Làm rối loạn, xáo trộn
+Wildlife|n|/ˈwaɪldlaɪf/|Động vật hoang dã
+` },
+      { title: "Unit 10 · Ecotourism", words: `
+Aware|adj|/əˈweə(r)/|Có nhận thức, ý thức được
+Brochure|n|/ˈbrəʊʃə(r)/|Tờ quảng cáo
+Craft|n|/krɑːft/|Đồ thủ công
+Crowd|v|/kraʊd/|Đổ về, kéo về
+Culture|n|/ˈkʌltʃə(r)/|Văn hoá
+Damage|v|/ˈdæmɪdʒ/|Làm hư hại
+Ecotourism|n|/ˈiːkəʊtʊərɪzəm/|Du lịch sinh thái
+Explore|v|/ɪkˈsplɔː(r)/|Khám phá
+Floating market|n|/ˈfləʊtɪŋ ˈmɑːkɪt/|Chợ nổi
+Follow|v|/ˈfɒləʊ/|Đi theo
+Host|n|/həʊst/|Chủ nhà
+Hunt|v|/hʌnt/|Săn bắn
+Impact|n|/ˈɪmpækt/|Tác động
+Local|adj|/ˈləʊkl/|Tại địa phương
+Mass|adj|/mæs/|Theo số đông
+Path|n|/pɑːθ/|Lối đi
+Profit|n|/ˈprɒfɪt/|Lợi nhuận
+Protect|v|/prəˈtekt/|Bảo vệ
+Responsible|adj|/rɪˈspɒnsəbl/|Có trách nhiệm
+Souvenir|n|/ˌsuːvəˈnɪə(r)/|Quà lưu niệm
+Stalactite|n|/ˈstæləktaɪt/|Nhũ đá trong hang động
+Trail|n|/treɪl/|Đường mòn
+Waste|v|/weɪst/|Lãng phí
+Weave|v|/wiːv/|Dệt
+` }
+    ];
+    const grade11Units = [
+      { title: "Unit 1 · A long and healthy life", words: "antibiotic|n|/ˌæntibaɪˈɒtɪk/|thuốc kháng sinh\nbacteria|n|/bækˈtɪəriə/|vi khuẩn\nbalanced (diet)|adj|/ˈbælənst/|(chế độ ăn) cân bằng, cân đối\ncut down on|phr.v|/kʌt daʊn ɒn/|cắt giảm\ndiameter|n|/daɪˈæmɪtər/|đường kính\ndiet|n|/ˈdaɪət/|chế độ ăn kiêng\ndisease|n|/dɪˈziːz/|bệnh tật\nenergy|n|/ˈenədʒi/|năng lượng\nexamine|v|/ɪɡˈzæmɪn/|khám bệnh\nexercise|n, v|/ˈeksəsaɪz/|bài tập, tập thể dục\nfitness|n|/ˈfɪtnəs/|sự khỏe khoắn, thể chất tốt\nfood poisoning|n.p|/ˈfuːd pɔɪzənɪŋ/|ngộ độc thực phẩm\nfull of|adj|/fʊl əv/|tràn đầy\ngerm|n|/dʒɜːm/|mầm bệnh, vi trùng\nget over|phr.v|/ɡet ˈəʊvər/|vượt qua, bình phục\ngive up|phr.v|/ɡɪv ʌp/|từ bỏ\nhabit|n|/ˈhæbɪt/|thói quen\nheadache|n|/ˈhedeɪk/|chứng đau đầu\nhealthy|adj|/ˈhelθi/|khỏe mạnh, lành mạnh\nhealthy lifestyle|n.p|/ˈhelθi ˈlaɪfstaɪl/|lối sống lành mạnh\nillness|n|/ˈɪlnəs/|sự ốm đau\nimmune system|n.p|/ɪˈmjuːn sɪstəm/|hệ miễn dịch\nimportant|adj|/ɪmˈpɔːrtnt/|quan trọng\ninfection|n|/ɪnˈfekʃn/|sự lây nhiễm\ningredient|n|/ɪnˈɡriːdiənt/|thành phần (trong món ăn)\njunk food|n.p|/ˈdʒʌŋk fuːd/|đồ ăn vặt, đồ ăn nhanh\nlife expectancy|n.p|/ˈlaɪf ɪkspektənsi/|tuổi thọ\nlongevity|n|/lɒnˈdʒevəti/|tuổi thọ, sự trường thọ\nmuscle|n|/ˈmʌsl/|cơ bắp\nmyth|n|/mɪθ/|quan niệm sai lầm, hoang đường\nnutrient|n|/ˈnjuːtriənt/|chất dinh dưỡng\norganism|n|/ˈɔːɡənɪzəm/|sinh vật, thực thể sống\npress-up|n|/ˈpres ʌp/|động tác hít đất\nprevent|v|/prɪˈvent/|ngăn ngừa, phòng tránh\nproperly|adv|/ˈprɒpəli/|một cách đúng đắn, hợp lý\nrecipe|n|/ˈresəpi/|công thức nấu ăn\nregular|adj|/ˈreɡjələr/|đều đặn, thường xuyên\nregularly|adv|/ˈreɡjələli/|một cách đều đặn\nsleep|n, v|/sliːp/|giấc ngủ, ngủ\nspread|v|/spred/|lan truyền, lây lan\nstar jump|n|/ˈstɑːr dʒʌmp/|động tác nhảy dang tay chân\nstay in shape|v.p|/steɪ ɪn ʃeɪp/|giữ dáng, giữ cơ thể cân đối\nstay up late|v.p|/steɪ ʌp leɪt/|thức khuya\nstrength|n|/streŋθ/|sức mạnh, sự dẻo dai\nstress|n|/stres/|sự căng thẳng\nsuffer from|v|/ˈsʌfər frəm/|chịu đựng, bị bệnh\nsurvive|v|/sərˈvaɪv/|sống sót, tồn tại\nsymptom|n|/ˈsɪmptəm/|triệu chứng\ntreatment|n|/ˈtriːtmənt/|sự điều trị\ntuberculosis|n|/tjuːˌbɜːrkjuˈloʊsɪs/|bệnh lao\nvegetarian|n|/ˌvedʒəˈteriən/|người ăn chay\nvirus|n|/ˈvaɪrəs/|vi-rút\nweight|n|/weɪt/|cân nặng\nwork out|phr.v|/wɜːk aʊt/|tập thể dục" },
+      { title: "Unit 2 · The Generation Gap", words: "adapt|v|/əˈdæpt/|thích nghi, thích ứng\nadvice|n|/ədˈvaɪs/|lời khuyên\nargument|n|/ˈɑːɡjumənt/|sự tranh luận, tranh cãi\nAsian American|n.p|/ˌeɪʒn əˈmerɪkən/|người Mỹ gốc Á\nbelief|n|/bɪˈliːf/|niềm tin, tín ngưỡng\nbreadwinner|n|/ˈbredwɪnər/|người trụ cột gia đình\nburden|n|/ˈbɜːdn/|gánh nặng\ncharacteristic|n|/ˌkærəktəˈrɪstɪk/|đặc điểm, đặc tính\nchildcare|n|/ˈtʃaɪldker/|việc chăm sóc con cái\ncommon|adj|/ˈkɒmən/|chung, phổ biến\nconflict|n|/ˈkɒnflɪkt/|sự xung đột, mâu thuẫn\nconservative|adj|/kənˈsɜːvətɪv/|bảo thủ\ncurious|adj|/ˈkjʊəriəs/|tò mò, hiếu kỳ\ncultural|adj|/ˈkʌltʃərəl/|thuộc về văn hóa\ncustom|n|/ˈkʌstəm/|phong tục, tục lệ\ndigital native|n.p|/ˈdɪdʒɪtl ˈneɪtɪv/|người sinh ra trong thời đại số\nexperience|n, v|/ɪkˈspɪəriəns/|kinh nghiệm, trải nghiệm\nextended family|n.p|/ɪkˈstendɪd ˈfæməli/|gia đình đa thế hệ\nexperiment|v|/ɪkˈsperɪment/|thử nghiệm\nfail|v|/feɪl/|thất bại\nfollow in sb\u0027s footsteps|idiom||nối nghiệp, theo bước chân ai đó\nforce|v|/fɔːs/|ép buộc\nfreedom|n|/ˈfriːdəm/|sự tự do\nhairstyle|n|/ˈherstaɪl/|kiểu tóc\nhire|v|/ˈhaɪər/|thuê, tuyển dụng\nhonesty|n|/ˈɒnəsti/|sự trung thực\nhousework|n|/ˈhaʊswɜːk/|việc nhà\nimpose|v|/ɪmˈpəʊz/|áp đặt\nindividualism|n|/ˌɪndɪˈvɪdʒuəlɪzəm/|chủ nghĩa cá nhân\ninfluence|v|/ˈɪnfluəns/|ảnh hưởng, tác động\ninteract|v|/ˌɪntərˈækt/|tương tác\njudge|v|/dʒʌdʒ/|phán xét, đánh giá\nlifestyle|n|/ˈlaɪfstaɪl/|lối sống\nlimit|v|/ˈlɪmɪt/|giới hạn\nlose|v|/luːz/|mất, đánh mất\nmanners|n|/ˈmænərz/|cách cư xử, thái độ\nMillennials|n|/mɪˈleniəlz/|thế hệ Millennials (sinh 1980-1990s)\nmultigenerational|adj|/ˌmʌltiˌdʒenəˈreɪʃənl/|đa thế hệ\nnative|adj|/ˈneɪtɪv/|bản địa, bản xứ\nnuclear family|n.p|/ˈnjuːkliə ˈfæməli/|gia đình hạt nhân\nobey|v|/əˈbeɪ/|vâng lời, tuân theo\nopinion|n|/əˈpɪnjən/|ý kiến, quan điểm\npermission|n|/pəˈmɪʃn/|sự cho phép\npierce|v|/pɪəs/|xỏ khuyên\nprivacy|n|/ˈprɪvəsi/|sự riêng tư" },
+      { title: "Unit 3 · Cities of the future", words: "advantage|n|/ədˈvɑːntɪdʒ/|lợi thế, ưu điểm\nAI technology|n.p|/ˌeɪˈaɪ tekˈnɒlədʒi/|công nghệ trí tuệ nhân tạo\nair pollution|n.p|/eə pəˈluːʃən/|ô nhiễm không khí\nannoying|adj|/əˈnɔɪɪŋ/|phiền phức, khó chịu\ncarbon footprint|n.p|/ˈkɑːbən ˈfʊtprɪnt/|dấu chân carbon\ncard reader|n.p|/ˈkɑːd ˌriːdər/|đầu đọc thẻ\ncity dweller|n.p|/ˈsɪti ˈdwelər/|cư dân thành phố\nclean energy|n.p|/kliːn ˈenədʒi/|năng lượng sạch\ncongested|adj|/kənˈdʒestɪd/|tắc nghẽn\nconvenient|adj|/kənˈviːniənt/|thuận tiện\ncrowded|adj|/ˈkraʊdɪd/|đông đúc\ncybercrime|n|/ˈsaɪbəkraɪm/|tội phạm mạng\ndetect|v|/dɪˈtekt/|phát hiện, dò tìm\ndisadvantage|n|/ˌdɪsədˈvɑːntɪdʒ/|bất lợi, nhược điểm\neco-friendly|adj|/ˈiːkəʊ ˈfrendli/|thân thiện với môi trường\neffectively|adv|/ɪˈfektɪvli/|một cách hiệu quả\nefficiently|adv|/ɪˈfɪʃntli/|một cách hiệu quả, năng suất\nelectronic device|n.p|/ɪˌlekˈtrɒnɪk dɪˈvaɪs/|thiết bị điện tử\nexhibition|n|/ˌeksɪˈbɪʃn/|cuộc triển lãm\nexpress|v|/ɪkˈspres/|bày tỏ, thể hiện\nfeature|n|/ˈfiːtʃər/|đặc điểm, tính năng\ngas emissions|n.p|/ɡæs ɪˈmɪʃənz/|khí thải\ngreen area|n.p|/ɡriːn ˈeəriə/|khu vực xanh\ngreen city|n.p|/ɡriːn ˈsɪti/|thành phố xanh\nhigh-rise building|n.p|/ˈhaɪ raɪz ˈbɪldɪŋ/|tòa nhà cao tầng\nhousehold chores|n.p|/ˈhaʊshəʊld tʃɔːz/|việc nhà\nhousing problem|n.p|/ˈhaʊzɪŋ ˈprɒbləm/|vấn đề nhà ở\nimprove|v|/ɪmˈpruːv/|cải thiện\ninfrastructure|n|/ˈɪnfrəˌstrʌktʃər/|cơ sở hạ tầng\ninhabitant|n|/ɪnˈhæbɪtənt/|cư dân\ninnovation|n|/ˌɪnəˈveɪʃn/|sự đổi mới, sáng kiến\ninstall|v|/ɪnˈstɔːl/|lắp đặt, cài đặt\nintelligent|adj|/ɪnˈtelɪdʒənt/|thông minh\ninteract|v|/ˌɪntərˈækt/|tương tác\nliveable|adj|/ˈlɪvəbl/|đáng sống\nlocation|n|/ləʊˈkeɪʃn/|vị trí, địa điểm\nmodern|adj|/ˈmɒdən/|hiện đại\nmodel|n|/ˈmɒdl/|mô hình\nnegative impact|n.p|/ˈneɡətɪv ˈɪmpækt/|tác động tiêu cực\noperate|v|/ˈɒpəreɪt/|vận hành, hoạt động\npedestrian|n|/pəˈdestriən/|người đi bộ\npersonal information|n.p|/ˌpɜːsənl ˌɪnfəˈmeɪʃən/|thông tin cá nhân\npollution|n|/pəˈluːʃən/|sự ô nhiễm\npopulation|n|/ˌpɒpjuˈleɪʃn/|dân số\nprivacy|n|/ˈprɪvəsi/|sự riêng tư\nprivate vehicle|n.p|/ˈpraɪvət ˈviːəkl/|phương tiện cá nhân\nprovide|v|/prəˈvaɪd/|cung cấp\npublic transport|n.p|/ˈpʌblɪk ˈtrænspɔːt/|giao thông công cộng\nquality of life|n.p|/ˌkwɒləti əv ˈlaɪf/|chất lượng cuộc sống\nreduce|v|/rɪˈdjuːs/|giảm bớt\nrenewable energy|n.p|/rɪˈnjuːəbl ˈenədʒi/|năng lượng tái tạo\nrobot|n|/ˈrəʊbɒt/|người máy\nroof garden|n.p|/ˈruːf ɡɑːdn/|vườn trên sân thượng\nsensor|n|/ˈsensər/|cảm biến\nskyscraper|n|/ˈskaɪskreɪpər/|nhà chọc trời\nsmart city|n.p|/smɑːt ˈsɪti/|thành phố thông minh\nsolution|n|/səˈluːʃn/|giải pháp\nsolve|v|/sɒlv/|giải quyết\nsustainable|adj|/səˈsteɪnəbl/|bền vững\ntechnology|n|/tekˈnɒlədʒi/|công nghệ\ntraffic jam|n.p|/ˈtræfɪk dʒæm/|tắc đường\nunderground|adj, adv|/ˌʌndəˈɡraʊnd/|dưới lòng đất\nurban|adj|/ˈɜːbən/|thuộc về đô thị\nurban centre|n.p|/ˈɜːbən ˈsentər/|trung tâm đô thị\nurban dweller|n.p|/ˈɜːbən ˈdwelər/|cư dân đô thị\nurban plan|n.p|/ˈɜːbən plæn/|quy hoạch đô thị\nwaste collection|n.p|/weɪst kəˈlekʃən/|thu gom rác thải" },
+      { title: "Unit 4 · ASEAN and Viet Nam", words: "aim|n|/eɪm/|mục tiêu, mục đích\napply for|v.p|/əˈplaɪ fɔːr/|nộp đơn, ứng tuyển\nASEAN|n|/ˈɑːsiɑːn/|Hiệp hội các quốc gia Đông Nam Á\naware of|adj.p|/əˈweər əv/|nhận thức về\nbenefit|n|/ˈbenɪfɪt/|lợi ích\nbrochure|n|/ˈbrəʊʃər/|tờ rơi quảng cáo\nBuddhism|n|/ˈbʊdɪzəm/|Phật giáo\ncelebrate|v|/ˈselɪbreɪt/|kỷ niệm, ăn mừng\ncelebration|n|/ˌselɪˈbreɪʃn/|lễ kỷ niệm\ncharity|n|/ˈtʃærəti/|từ thiện\ncollaboration|n|/kəˌlæbəˈreɪʃn/|sự hợp tác\ncommission|n|/kəˈmɪʃn/|ủy ban, hội đồng\ncommunity|n|/kəˈmjuːnəti/|cộng đồng\nconfident|adj|/ˈkɒnfɪdənt/|tự tin\ncontribution|n|/ˌkɒntrɪˈbjuːʃn/|sự đóng góp\ncooperation|n|/kəʊˌɒpəˈreɪʃn/|sự hợp tác\ncoordinate|v|/kəʊˈɔːdɪneɪt/|phối hợp, điều phối\ncultural exchange|n.p|/ˈkʌltʃərəl ɪksˈtʃeɪndʒ/|trao đổi văn hóa\ncurrent|adj|/ˈkʌrənt/|hiện tại, hiện hành\ncurrent issue|n.p|/ˈkʌrənt ˈɪʃuː/|vấn đề hiện tại\ncustom|n|/ˈkʌstəm/|phong tục, tập quán\ndecoration|n|/ˌdekəˈreɪʃn/|sự trang trí\ndevelopment|n|/dɪˈveləpmənt/|sự phát triển\ndonation|n|/dəʊˈneɪʃn/|sự quyên góp\neconomy|n|/ɪˈkɒnəmi/|nền kinh tế\neffective|adj|/ɪˈfektɪv/|hiệu quả\neffort|n|/ˈefərt/|nỗ lực\nenergetic|adj|/ˌenərˈdʒetɪk/|năng động, tràn đầy năng lượng\nessential|adj|/ɪˈsenʃəl/|thiết yếu, cần thiết\neye-opening|adj|/ˈaɪˌəʊpənɪŋ/|mở rộng tầm mắt\nfestival|n|/ˈfestɪvəl/|lễ hội\nforeign|adj|/ˈfɒrən/|nước ngoài\ngoal|n|/ɡəʊl/|mục tiêu\nheritage|n|/ˈherɪtɪdʒ/|di sản\nhonor|v|/ˈɒnər/|tôn vinh, vinh danh\nhuge|adj|/hjuːdʒ/|to lớn, khổng lồ\nhuman|n|/ˈhjuːmən/|con người\nimprove|v|/ɪmˈpruːv/|cải thiện\ninternational|adj|/ˌɪntərˈnæʃənəl/|quốc tế\nissue|n|/ˈɪʃuː/|vấn đề\njoin|v|/dʒɔɪn/|tham gia\nleadership skills|n.p|/ˈliːdərʃɪp skɪlz/|kỹ năng lãnh đạo\nlive-stream|v|/ˈlaɪv striːm/|phát trực tiếp\nlocal|adj|/ˈləʊkəl/|địa phương\nluck|n|/lʌk/|may mắn\nmain|adj|/meɪn/|chính, chủ yếu\nmember|n|/ˈmembər/|thành viên\nofficial|adj|/əˈfɪʃəl/|chính thức\nopportunity|n|/ˌɒpərˈtuːnəti/|cơ hội\norganize|v|/ˈɔːrɡənaɪz/|tổ chức\nparticipant|n|/pɑːrˈtɪsɪpənt/|người tham gia\npeace|n|/piːs/|hòa bình\nposter|n|/ˈpəʊstər/|áp phích, tranh cổ động\nprogramme|n|/ˈprəʊɡræm/|chương trình\npromote|v|/prəˈməʊt/|thúc đẩy, quảng bá\nproposal|n|/prəˈpəʊzəl/|bản đề xuất\nprovide|v|/prəˈvaɪd/|cung cấp\nqualified|adj|/ˈkwɒlɪfaɪd/|đủ điều kiện, đủ tiêu chuẩn\nregion|n|/ˈriːdʒən/|khu vực, vùng\nscholarship|n|/ˈskɒlərʃɪp/|học bổng\nselect|v|/sɪˈlekt/|lựa chọn\nsolve|v|/sɒlv/|giải quyết\nstrengthen|v|/ˈstreŋθən/|củng cố, làm mạnh thêm\nsupport|v|/səˈpɔːrt/|hỗ trợ\nteamwork|n|/ˈtiːmwɜːrk/|làm việc nhóm\ntheme|n|/θiːm/|chủ đề\ntradition|n|/trəˈdɪʃən/|truyền thống\ntraditional|adj|/trəˈdɪʃənəl/|thuộc về truyền thống\nunforgettable|adj|/ˌʌnfərˈɡetəbl/|không thể quên\nvalues|n|/ˈvæljuːz/|những giá trị\nvolunteer|n, v|/ˌvɒlənˈtɪər/|tình nguyện viên, đi tình nguyện\nwebsite|n|/ˈwebsaɪt/|trang web\nworkshop|n|/ˈwɜːrkʃɒp/|hội thảo\nyouth|n|/juːθ/|thanh niên" },
+      { title: "Unit 5 · Global warming", words: "absorb|v|/əbˈzɔːb/|hấp thụ\nagreement|n|/əˈɡriːmənt/|hiệp định, sự thỏa thuận\natmosphere|n|/ˈætməsfɪər/|khí quyển\nbalance|n|/ˈbæləns/|sự cân bằng\nban|v|/bæn/|cấm\nblack carbon|n.p|/blæk ˈkɑːbən/|carbon đen\ncampaign|n|/kæmˈpeɪn/|chiến dịch\ncapture|v|/ˈkæptʃər/|bắt giữ, giữ lại\ncarbon|n|/ˈkɑːbən/|carbon\ncarbon dioxide|n.p|/ˌkɑːbən daɪˈɒksaɪd/|khí CO₂\ncatastrophic|adj|/ˌkætəˈstrɒfɪk/|thảm khốc, thảm họa\nclimate change|n.p|/ˈklaɪmət tʃeɪndʒ/|biến đổi khí hậu\ncoal|n|/kəʊl/|than đá\nconference|n|/ˈkɒnfərəns/|hội nghị\nconsequence|n|/ˈkɒnsɪkwəns/|hậu quả\ncrop|n|/krɒp/|mùa màng, cây trồng\ncut down|phr.v|/kʌt daʊn/|chặt hạ, đốn ngã\ndangerous|adj|/ˈdeɪndʒərəs/|nguy hiểm\ndeforestation|n|/diːˌfɒrɪˈsteɪʃn/|sự phá rừng\ndestroy|v|/dɪˈstrɔɪ/|phá hủy\ndisaster|n|/dɪˈzɑːstər/|thảm họa\ndisease|n|/dɪˈziːz/|bệnh tật\ndrought|n|/draʊt/|hạn hán\necological|adj|/ˌiːkəˈlɒdʒɪkl/|thuộc về sinh thái\necosystem|n|/ˈiːkəʊˌsɪstəm/|hệ sinh thái\nemission|n|/ɪˈmɪʃn/|sự phát thải, khí thải\nenergy|n|/ˈenədʒi/|năng lượng\nenvironment|n|/ɪnˈvaɪrənmənt/|môi trường\nenvironmental|adj|/ɪnˌvaɪrənˈmentl/|thuộc về môi trường\nfarming|n|/ˈfɑːmɪŋ/|nông nghiệp\nflood|n|/flʌd/|lũ lụt\nfossil fuel|n.p|/ˈfɒsl fjuːəl/|nhiên liệu hóa thạch\ngas|n|/ɡæs/|khí\nglobal|adj|/ˈɡləʊbl/|toàn cầu\nglobal warming|n.p|/ˌɡləʊbl ˈwɔːmɪŋ/|sự nóng lên toàn cầu\ngreenhouse|n|/ˈɡriːnhaʊs/|nhà kính\ngreenhouse gas|n.p|/ˈɡriːnhaʊs ɡæs/|khí nhà kính\nheat|n|/hiːt/|nhiệt, sức nóng\nheat-trapping|adj|/ˈhiːtˌtræpɪŋ/|giữ nhiệt\nhuman activity|n.p|/ˈhjuːmən ækˈtɪvəti/|hoạt động của con người\nice cap|n.p|/ˈaɪs kæp/|chỏm băng\nimpact|n|/ˈɪmpækt/|tác động, ảnh hưởng\nincrease|v|/ɪnˈkriːs/|tăng lên\nlandfill|n|/ˈlændfɪl/|bãi rác\nleaflet|n|/ˈliːflət/|tờ rơi\nlevel|n|/ˈlevl/|mức độ, cấp độ\nmelt|v|/melt/|tan chảy\nmethane|n|/ˈmiːθeɪn/|khí metan\noil|n|/ɔɪl/|dầu mỏ\npollutant|n|/pəˈluːtənt/|chất gây ô nhiễm\nreduce|v|/rɪˈdjuːs/|giảm\nrelease|v|/rɪˈliːs/|thải ra, giải phóng\nrenewable|adj|/rɪˈnjuːəbl/|có thể tái tạo\nsea level|n.p|/ˈsiː levl/|mực nước biển\nsoil|n|/sɔɪl/|đất\nsoot|n|/sʊt/|bồ hóng, muội than\nstore|v|/stɔːr/|lưu trữ\ntemperature|n|/ˈtemprətʃər/|nhiệt độ\ntrap|v|/træp/|giữ lại, bẫy\nwaste|n|/weɪst/|rác thải\nwildfire|n|/ˈwaɪldfaɪər/|cháy rừng" },
+      { title: "Unit 6 · Preserving our heritage", words: "absorb|v|/əbˈzɔːb/|hấp thụ\nair conditioner|n|/eə kənˈdɪʃənə/|điều hòa\nancient|adj|/ˈeɪnʃənt/|cổ kính\nappreciate|v|/əˈpriːʃieɪt/|đánh giá cao\narchitecture|n|/ˈɑːkɪtektʃə(r)/|kiến trúc\natmosphere|n|/ˈætməsfɪər/|khí quyển\nbalance|n|/ˈbæləns/|sự cân bằng\nban|v|/bæn/|cấm\nbase on|v.phr|/beɪs ɒn/|dựa vào\nbin|n|/bɪn/|thùng rác\nblack carbon|n.p|/blæk ˈkɑːbən/|carbon đen\nboat|n|/bəʊt/|thuyền\ncampaign|n|/kæmˈpeɪn/|chiến dịch\ncapture|v|/ˈkæptʃər/|bắt giữ, giữ lại\ncarbon|n|/ˈkɑːbən/|carbon\ncarbon dioxide|n.p|/ˌkɑːbən daɪˈɒksaɪd/|khí CO₂\ncatastrophic|adj|/ˌkætəˈstrɒfɪk/|thảm khốc, thảm họa\ncave|n|/keɪv/|hang động\ncitadel|n|/ˈsɪtədəl/|thành luỹ\nclimate change|n.p|/ˈklaɪmət tʃeɪndʒ/|biến đổi khí hậu\ncomplex|n|/ˈkɒmpleks/|quần thể, tổ hợp\nconsequence|n|/ˈkɒnsɪkwəns/|hậu quả\ncrowdfunding|n|/ˈkraʊd.fʌn.dɪŋ/|huy động vốn từ cộng đồng\ncultural|adj|/ˈkʌltʃərəl/|thuộc về văn hóa\ncustom|n|/ˈkʌstəm/|phong tục, tục lệ\ndamage|v|/ˈdæmɪdʒ/|gây thiệt hại\ndangerous|adj|/ˈdeɪndʒərəs/|nguy hiểm\ndeforestation|n|/diːˌfɒrɪˈsteɪʃn/|sự phá rừng\ndie out|v.phr|/ˈdaɪ aʊt/|chết dần, mai một\ndonation|n|/dəʊˈneɪʃn/|quyên góp\ndrought|n|/draʊt/|hạn hán\neco-tour|n|/ˈiːkəʊ tʊə/|du lịch sinh thái\necological|adj|/ˌiːkəˈlɒdʒɪkl/|thuộc về sinh thái\necosystem|n|/ˈiːkəʊˌsɪstəm/|hệ sinh thái\nelectricity|n|/ɪˌlekˈtrɪsəti/|điện\nentry|n|/ˈentri/|bài viết\nexplore|v|/ɪkˈsplɔː(r)/|khám phá\nfashionable|adj|/ˈfæʃnəbl/|sành điệu\nfield|n|/fiːld/|thực địa\nfine|n|/faɪn/|tiền phạt\nfloating|adj|/ˈfləʊ.tɪŋ/|nổi\nfolk|adj|/fəʊk/|thuộc về dân gian\nfossil fuel|n.p|/ˈfɒsl fjuːəl/|nhiên liệu hóa thạch\ngive voice to sth|idiom||đưa ra tiếng nói\nglobal|adj|/ˈɡləʊbl/|toàn cầu\nglobal warming|n.p|/ˌɡləʊbl ˈwɔːmɪŋ/|sự nóng lên toàn cầu\ngreenhouse|n|/ˈɡriːnhaʊs/|nhà kính\ngreenhouse gas|n.p|/ˈɡriːnhaʊs ɡæs/|khí nhà kính\nhabitat|n|/ˈhæbɪtæt/|môi trường sống\nharsh|adj|/hɑːʃ/|khắc nghiệt\nheritage|n|/ˈherɪtɪdʒ/|di sản\nhistoric|adj|/hɪˈstɒrɪk/|quan trọng, có giá trị lịch sử\nhistorical|adj|/hɪˈstɒrɪkl/|thuộc về lịch sử\nimperial|adj|/ɪmˈpɪəriəl/|hoàng gia\nimpact|n|/ˈɪmpækt/|tác động, ảnh hưởng\nincrease|v|/ɪnˈkriːs/|tăng lên\ninstrument|n|/ˈɪnstrəmənt/|nhạc cụ\njoke|n|/dʒəʊk/|trò đùa\nlandscape|n|/ˈlændskeɪp/|phong cảnh\nleaflet|n|/ˈliːflət/|tờ rơi\nlevel|n|/ˈlevl/|mức độ, cấp độ\nlimestone|n|/ˈlaɪmstəʊn/|đá vôi\nlocal authority|n|/ˌləʊ.kəl ɔːˈθɒr.ɪ.ti/|chính quyền địa phương\nmass|adj|/mæs/|đại chúng\nmethod|n|/ˈmeθəd/|phương pháp\nmonument|n|/ˈmɒnjumənt/|đài tưởng niệm, công trình kiến trúc\nmountain|n|/ˈmaʊntən/|núi\nmuseum|n|/mjuˈziːəm/|bảo tàng\nnon-profit|adj|/ˌnɒn ˈprɒfɪt/|phi lợi nhuận\noriginal|adj|/əˈrɪdʒənl/|ban đầu\npagoda|n|/pəˈɡəʊdə/|chùa" },
+      { title: "Unit 7 · Education options for school-leavers", words: "Academic|a|/ˌækəˈdemɪk/|có tính chất học thuật, liên quan tới học tập\nAdvertisement|n|/ədˈvɜːtɪsmənt/|quảng cáo\nAlternatively|adv|/ɔːlˈtɜːnətɪvli/|ngoài ra\nApply|v|/əˈplaɪ/|nộp đơn\nApprentice|n|/əˈprentɪs/|người học việc\nApprenticeship|n|/əˈprentɪʃɪp/|học nghề\nattend|v|/əˈtend/|tham dự\nbachelor’s degree|n.p|/ˌbætʃ.əl.əz dɪˈɡriː/|bằng cử nhân\nBiology|n|/baɪˈɒlədʒi/|sinh học\nBroad|a|/brɔːd/|nhiều, rộng\nBrochure|n|/ˈbrəʊʃə(r)/|tài liệu quảng cáo\ncritical thinking|n.p|/ˌkrɪt̬.ɪ.kəl ˈθɪŋ.kɪŋ/|tư duy phản biện\ndegree|n|/dɪˈɡriː/|bằng cấp\ndoctorate|n|/ˈdɒktərət/|bằng tiến sĩ\nduration|n|/dʒʊəˈreɪ.ʃən/|khoảng thời gian\neducation fair|n.p|/ˌedʒ.ʊˈkeɪ.ʃən feər/|hội chợ giáo dục\nentrance exam|n.p|/ˈen.trəns ɪɡˌzæm/|kì thi đầu vào\nfee|n|/fiː/|học phí\nfocus on|phr.v|/ˈfəʊkəs ɒn/|tập trung\nFormal|a|/ˈfɔːml/|chính thức\ngo on|phr.v|/gəʊ ɒn/|tiếp tục\ngraduation|n|/ˌɡrædʒuˈeɪʃn/|tốt nghiệp\nHands-on|a|/ˌhændz ˈɒn/|thực tế\nhigher education|n.p|/ˌhaɪ.ər ed.jʊˈkeɪ.ʃən/|giáo dục cao hơn\nImmediately|adv|/ɪˈmiːdiətli/|ngay lập tức\nIndependently|adv|/ˌɪn.dɪˈpen.dənt.li/|độc lập\ninstitution|n|/ˌɪnstɪˈtjuːʃn/|hành trình\nManage|v|/ˈmænɪdʒ/|quản lý\nmaster’s degree|n.p|/ˌmɑː.stəz dɪˈɡriː/|bằng thạc sĩ\nMechanic|a|/məˈkænɪk/|thợ cơ khí\noption|n|/ˈɒpʃn/|lựa chọn\npractical skill|n.p|/ˈpræk.tɪ.kəl skɪl/|kỹ năng thực tế\npresentation|n|/ˌpreznˈteɪʃn/|bài thuyết trình\nProfessional|a|/prəˈfeʃənl/|chuyên nghiệp\nPursue|v|/pəˈsjuː/|theo đuổi\nqualification|n|/ˌkwɒlɪfɪˈkeɪʃn/|bằng cấp\nrefer|v|/rɪˈfɜː(r)/|nhắc đến\nsalary|n|/ˈsæləri/|tiền lương cố định\nschool-leaver|n|/ˌskuːlˈliː.vər/|học sinh tốt nghiệp trung học phổ thông\nscientist|n|/ˈsaɪəntɪst/|nhà khoa học\nSensible|a|/ˈsensəbl/|hợp lý\nsixth-form college|n.p|/ˈsɪksθ ˌfɔːm ˈkɒl.ɪdʒ/|trường dành cho học sinh 16–19 tuổi\nspecific|a|/spəˈsɪfɪk/|cụ thể\nSuit|v|/suːt/|phù hợp\ntechnical|a|/ˈteknɪkl/|kỹ thuật\ntrade|v|/treɪd/|nghề nghiệp\nuseful|a|/ˈjuːs.fəl/|hữu ích\nvocational school|n.p|/vəʊˈkeɪ.ʃən.əl ˌskuːl/|trường dạy nghề\nwage|n|/weɪdʒ/|tiền lương theo khối lượng công việc" },
+      { title: "Unit 8 · Becoming independent", words: "contact|n|/ˈkɒntækt/|liên hệ\nconfidence|n|/ˈkɒnfɪdəns/|sự tự tin\nconvince|v|/kənˈvɪns/|thuyết phục\ndo laundry|v.phr|/də ˈlɔːn.dri/|giặt quần áo\nclean the house|v.phr|/kliːn ðə haʊs/|dọn dẹp nhà cửa\nschedule|n|/ˈʃedjuːl/|kế hoạch\napp|n|/æp/|ứng dụng\nencourage|v|/ɪnˈkʌrɪdʒ/|khuyến khích\npart-time job|n.phr|/ˌpɑːtˈtaɪm dʒɒb/|công việc bán thời gian\ndeal with|v.phr|/diːl wɪð/|giải quyết, đối phó\ngood at|adj.phr|/ɡʊd æt/|giỏi về\nindependent|adj|/ˌɪndɪˈpendənt/|độc lập, không lệ thuộc\nresponsibility|n|/rɪˌspɒnsəˈbɪləti/|trách nhiệm\nresponsible|adj|/rɪˈspɒnsəbl/|có trách nhiệm\nbelief|n|/bɪˈliːf/|niềm tin\nsoftware|n|/ˈsɒftweə(r)/|phần mềm\npay attention|v.phr|/peɪ əˈtenʃən/|chú ý\nself-motivated|adj|/ˌself ˈməʊtɪveɪtɪd/|năng động\nself-study|n|/ˌself ˈstʌdi/|sự tự học\nmanage|v|/ˈmænɪdʒ/|quản lý\ntrust|n|/trʌst/|tin tưởng\nlife skill|n|/laɪf skɪl/|kỹ năng sống\ntime-management skill|n.phr|/ˈtaɪm ˌmæn.ɪdʒ.mənt skɪl/|kỹ năng quản lý thời gian\ntime-management tool|n.phr|/ˈtaɪm ˌmæn.ɪdʒ.mənt tuːl/|công cụ quản lý thời gian\nget around|phrasal verb|/gɛt əˈraʊnd/|đi lại\nachieve|v|/əˈtʃiːv/|đạt được, giành được\nindependence|n|/ˌɪndɪˈpendəns/|sự độc lập\ncome up with|phrasal verb|/kʌm ʌp wɪð/|nghĩ ra, nảy ra\ncarry out|phrasal verb|/\u0027kæri \u0027aut/|tiến hành\nget into the habit of|v.phr|/ɡet ˈɪn.tuː ðiː ˈhæb.ɪt əv/|tạo thói quen\nmake use of|v.phr|/meɪk juːz əv/|tận dụng\nmaking decision|n.phr|/meɪ dɪˈsɪʒən/|đưa ra quyết định\nidentify|v|/aɪˈdentɪfaɪ/|xác định\nto-do-list|n|/təˈduː ˌlɪst/|danh sách việc cần làm\nhang|v|/hæŋ/|treo\nfold|v|/fəʊld/|gấp\nstore|v|/stɔː(r)/|cất\nremove|v|/rɪˈmuːv/|lấy ra, loại bỏ\nwashing powder|n|/ˈwɒʃ.ɪŋ ˌpaʊ.dər/|bột giặt\nsort|v|/sɔːt/|phân loại\nseparate|v|/ˈseprət/|chia ra\ndryer|n|/ˈdraɪ.ər/|máy sấy\niron|v|/ˈaɪən/|ủi\nwardrobe|n|/ˈwɔːdrəʊb/|tủ quần áo\npacket|n|/ˈpækɪt/|gói\nrinse|v|/rɪns/|rửa sạch\ncombine|v|/kəmˈbaɪn/|kết hợp\ndrawer|n|/drɔː(r)/|ngăn kéo\nrice cooker|n.phr|/raɪs ˈkʊk.ər/|nồi cơm điện\nwashing machine|n|/ˈwɒʃɪŋ məʃiːn/|máy giặt\nlearner|n|/ˈlɜː.nər/|người học\nsense of responsibility|n.phr|/sens əv rɪˌspɒn.sɪˈbɪl.ə.ti/|tinh thần trách nhiệm\ngive up|phrasal verb|/gɪv ʌp/|bỏ cuộc\ncurious|adj|/ˈkjʊəriəs/|tò mò\ncharacteristic|n|/ˌkærəktəˈrɪstɪk/|đặc điểm\nfreedom|n|/ˈfriːdəm/|tự do\nlearning goal|n.phr|/ˈlɜː.nɪŋ ɡəʊl/|mục tiêu học tập\nacademic skill|n.phr|/ˌæk.əˈdem.ɪk skɪl/|kỹ năng học thuật\ndiploma|n|/dɪˈpləʊmə/|bằng tốt nghiệp\nextracurricular|adj|/ˌekstrəkəˈrɪkjələ(r)/|ngoại khóa\nbabysitting|n|/ˈbeɪ.biˌsɪt̬.ɪŋ/|trông trẻ\nadmission|n|/ədˈmɪʃn/|nhận vào\ndog walking|n.phr|/dɒɡ ˈwɔː.kɪŋ/|dắt chó đi dạo\nfood bank|n|/ˈfuːd ˌbæŋk/|ngân hàng thực phẩm\npocket money|n|/ˈpɑː.kɪt ˌmʌn.i/|tiền tiêu vặt\ndecision-maker|n|/dɪˈsɪʒn meɪkə(r)/|người ra quyết định\npresentation|n|/ˌpreznˈteɪʃn/|thuyết trình" },
+      { title: "Unit 9 · Social issues", words: "campaign|n|/kæmˈpeɪn/|chiến dịch\ncrime|n|/kraɪm/|tội phạm\noverpopulation|n|/ˌəʊvəˌpɒpjuˈleɪʃn/|sự quá tải dân số\nbullying|n|/ˈbʊliɪŋ/|bắt nạt\npeer pressure|n|/ˈpɪə ˌpreʃ.ər/|áp lực từ bạn bè\nbody shaming|n|/ˈbɒd.i ˌʃeɪ.mɪŋ/|sự chế nhạo ngoại hình người khác\nsocial issue|n.phr|/ˈsəʊ.ʃəl ˈɪʃ.uː/|vấn đề xã hội\nstruggle|v|/\u0027strʌgl/|đấu tranh\nawareness|n|/əˈweənəs/|nhận thức\ndecide on|phrasal verb|/dɪˈsaɪd ɒn/|quyết định\ncomfortable|adj|/ˈkʌmftəbl/|thoải mái\nalcohol|n|/ˈælkəhɒl/|đồ uống có cồn\nwine|n|/waɪn/|rượu\nfrighten|v|/ˈfraɪtn/|hoảng sợ\nviolent|adj|/ˈvaɪələnt/|bạo lực\npoverty|n|/ˈpɒvəti/|sự nghèo đói\nthe odd one out|idiom|/ðiː ɒd wʌn aʊt/|người khác biệt\nfingernail|n|/ˈfɪŋ.ɡə.neɪl/|móng tay\ndepression|n|/dɪˈpreʃn/|sự trầm cảm\nself-confidence|n|/ˌselfˈkɒn.fɪ.dəns/|sự tự tin vào bản thân\nperformance|n|/pəˈfɔːməns/|hiệu suất\nsurvey|n|/ˈsɜːveɪ/|khảo sát\nstand up to|phrasal verb|/stænd ʌp tuː/|đứng lên chống lại\nhesitate|v|/ˈhezɪteɪt/|ngần ngại\nhang out|phrasal verb|/hæŋ aʊt/|đi chơi\napprove|v|/əˈpruːv/|chấp thuận\nappearance|n|/əˈpɪərəns/|ngoại hình\nvalued|adj|/ˈvæljuːd/|được đánh giá cao\nslim|adj|/slɪm/|mỏng\nobey|v|/əˈbeɪ/|tuân thủ\nskip|v|/skɪp/|bỏ, trốn\npretend|v|/prɪˈtend/|giả vờ\npermission|n|/pəˈmɪʃn/|sự cho phép\nabsent|adj|/ˈæbsənt/|nghỉ học\nlie|n|/laɪ/|lời nói dối\nrevise|v|/rɪˈvaɪz/|ôn tập\nconsequence|n|/ˈkɒnsɪkwəns/|hậu quả\nfrequently|adv|/ˈfriːkwəntli/|thường xuyên\noffensive|adj|/əˈfen.sɪv/|gây xúc phạm\napologize|v|/əˈpɒlədʒaɪz/|xin lỗi\nashamed|adj|/əˈʃeɪmd/|xấu hổ\nembarrassed|adj|/ɪmˈbærəst/|xấu hổ\ncyberbullying|n|/ˈsaɪbəbʊliɪŋ/|bắt nạt trên mạng\nphysical|adj|/ˈfɪzɪkl/|về mặt thể chất\nverbal|adj|/ˈvɜːbl/|bằng lời\nproposal|n|/prəˈpəʊzl/|đề xuất\nvictim|n|/ˈvɪktɪm/|nạn nhân\npolicy|n|/ˈpɒləsi/|chính sách\ndisappointment|n|/ˌdɪsəˈpɔɪntmənt/|sự thất vọng\nsympathy|n|/ˈsɪmpəθi/|sự thông cảm\npainful|adj|/ˈpeɪnfl/|đau đớn\ngrow up|phrasal verb|/ɡrəʊ ʌp/|lớn lên\nanxiety|n|/æŋˈzaɪəti/|sự lo lắng\nadmit|v|/ədˈmɪt/|thú nhận\nthe poverty line|n.phr|/ðiː ˈpɒv.ə.ti ˌlaɪn/|ngưỡng nghèo\ntake care of|v.phr|/teɪk ker ɒv/|chăm sóc\nillegal|adj|/ɪˈliːɡl/|bất hợp pháp" },
+      { title: "Unit 10 · The ecosystem", words: "insect|n|/ˈɪnsekt/|côn trùng\nbutterfly|n|/ˈbʌtəflaɪ/|bươm bướm\necosystem|n|/ˈiːkəʊsɪstəm/|hệ sinh thái\nflora|n|/ˈflɔːrə/|thực vật\nfauna|n|/ˈfɔːnə/|động vật\nessential|adj|/ɪˈsenʃl/|cần thiết\nnatural resource|n|/ˈnætʃ·ər·əl ˈri·sɔrs/|tài nguyên thiên nhiên\nbiodiversity|n|/ˌbaɪəʊdaɪˈvɜːsəti/|sự đa dạng sinh học\nnational park|n|/ˈnæʃənl pɑːk/|vườn quốc gia\noveruse|v|/ˌəʊ.vəˈjuːz/|sử dụng quá mức\ndestroy|v|/di\u0027strɔi/|phá hủy\nnative|adj|/ˈneɪtɪv/|bản địa\ntropical forest|n.phr|/ˈtrɒp.ɪ.kəl ˈfɒr.ɪst/|rừng nhiệt đới\nspecies|n|/ˈspi·ʃiz/|loài\nconservation|n|/ˌkɒnsəˈveɪʃn/|bảo tồn\nmammal|n|/ˈmæm.əl/|động vật có vú\nmangrove|n|/ˈmæŋ.ɡrəʊv/|rừng ngập mặn\npangolin|n|/pæŋˈɡəʊ.lɪn/|tê tê\ndelta|n|/ˈdeltə/|đồng bằng\nrare|adj|/reə(r)/|quý hiếm\nwetland|n|/ˈwet.lənd/|vùng đất ngập nước\nhabitat|n|/ˈhæbɪtæt/|môi trường sống\neagle|n|/ˈiːɡl/|đại bàng\nendanger|v|/in\u0027deindʒə(r)/|nguy cơ tuyệt chủng\nbat|n|/bæt/|dơi\nattract|v|/əˈtrækt/|hấp dẫn\nhunt|v|/hʌnt/|săn bắn\nban|v|/bæn/|cấm\nshelter|n|/ˈʃeltə(r)/|nơi ở\ndisappear|v|/ˌdɪsəˈpɪə(r)/|biến mất\nharm|n|/hɑːm/|gây hại\neffect on|v.phr|/ɪˈfekt ɒn/|ảnh hưởng\ncoral reef|n|/ˌkɔːr.əl ˈriːf/|rạn san hô\nfood chain|n|/ˈfuːd ˌtʃeɪn/|chuỗi thức ăn\nrun out|phrasal verb|/ˈrʌn aʊt/|hết\nbreak down|phrasal verb|/breɪk daʊn/|phá vỡ\ndisaster|n|/dɪˈzɑːstə(r)/|thiên tai\nrestore|v|/rɪˈstɔː(r)/|khôi phục\nimpact on|v.phr|/ˈɪm.pækt ɒn/|tác động\ninvest|v|/ɪnˈvest/|đầu tư\nunemployment|n|/ˌʌnɪmˈplɔɪmənt/|thất nghiệp\naffect|v|/əˈfekt/|ảnh hưởng\nfancy|v|/ˈfænsi/|thích\ncreature|n|/ˈkriːtʃə(r)/|sinh vật\nbird-watching|n|/bɜːd wɒtʃɪŋ/|ngắm chim\nrestoration|n|/ˌrestəˈreɪʃn/|phục hồi\ncontinent|n|/ˈkɒntɪnənt/|lục địa\necological|adj|/ˌiːkəˈlɒdʒɪkl/|sinh thái\ngreen|adj|/ɡriːn/|(lối sống xanh)\nreef|n|/riːf/|rạn san hô\nscuba diving|n|/ˈskuːbə ˈdaɪvɪŋ/|hoạt động lặn biển\nsnorkeling|n|/ˈsnɔː.kəl.ɪŋ/|ống thở\ndeclare|v|/dɪˈkleər/|tuyên bố\nreserve|v|/riˈzəːv/|bảo tồn\nget off|phrasal verb|/ɡet ɒf/|xuống xe\nsightsee|v|/ˈsaɪt.siː/|tham quan\nwildlife|n|/ˈwaɪldlaɪf/|động vật hoang dã" }
+    ];
+    const grade12Units = [
+      { title: "Unit 1 · Life stories we admire", words: "account|n|/ə\u0027kaʊnt/|câu chuyện\nachievement|n|/ə\u0027tʃi:vmənt/|thành tích, thành tựu\nadmire|v|/əd\u0027maɪə/|ngưỡng mộ\nadopt|v|/ə\u0027dɒpt/|nhận con nuôi\nanimated|adj|/\u0027ænɪmeɪtɪd/|hoạt hình\nattack|n,v|/ə\u0027tæk/|cuộc tấn công, tấn công\nattend (school/college)|v|/ə\u0027tend (sku:l/kɒlɪdʒ)/|đi học (trường, trường đại học, cao đẳng)\nbattle|n|/\u0027bætl/|chiến trường\nbiography|n|/baɪ\u0027ɒgrəfi/|tiểu sử\nbiological|adj|/,baɪə\u0027lɒdʒɪkl/|(quan hệ) ruột thịt\nbond|v|/bɒnd/|kết thân (với ai)\ncancer|n|/\u0027kænsə/|ung thư\ncarry out||/\u0027kæri aʊt/|tiến hành\nchildhood|n|/\u0027tʃaɪldhʊd/|tuổi thơ\nCommunist Party of Viet Nam||/\u0027kɒmjənɪst pa:ti əv vi:et\u0027na:m/|Đảng Cộng sản Việt Nam\ndeath|n|/deθ/|cái chết\ndefeat|v|/dɪ\u0027fi:t/|đánh bại\ndevote to||/dɪ\u0027vaʊt tə/|cống hiến (cho)\ndrop out (of)||/\u0027drɒp aʊt (ɒv)/|bỏ học\nenemy|n|/\u0027enəmi/|kẻ thù\ngenius|n|/\u0027dʒi:niəs/|thiên tài\nhero|n|/\u0027hɪərəʊ/|anh hùng\nmarriage|n|/\u0027mærɪdʒ/|cuộc hôn nhân\nmilitary|n|/\u0027mɪlɪtri/|quân đội\non cloud nine/on top of the world/over the moon||/ɒn klaʊd naɪn/ɒn tɒp ɒv ðə wɜ:ld//\u0027əʊvə ðə mu:n/|rất vui sướng, hạnh phúc\npancreatic|adj|/,pæŋkri\u0027ætɪk/|liên quan tới tuyến tụy\npass away||/pɑ:s ə\u0027weɪ/|qua đời\npoem|n|/\u0027pəʊm/|bài thơ\npoetry|n|/\u0027pəʊətri/|thơ ca\nresign|v|/rɪ\u0027zaɪn/|từ chức\nresistance war||/rɪ\u0027zɪstəns wɔ:/|cuộc kháng chiến\nrule|n, v|/ru:l/|sự trị vì, trị vì\nyouth|n|/ju:θ/|tuổi trẻ" },
+      { title: "Unit 2 · A multicultural world", words: "admire|v|/əd\u0027maɪə/|ngắm nhìn, chiêm ngưỡng\nanxiety|n|/æŋ\u0027zaɪəti/|sự bồn chồn, lo lắng\nappreciate|v|/ə\u0027pri:ʃieɪt/|thưởng thức, trân trọng\nbamboo dancing|np|/,bæm\u0027bu: \u0027dænsɪŋ/|nhảy sạp\ncaptivate|v|/\u0027kæptɪveɪt/|thu hút, cuốn hút\ncelebrate|v|/\u0027selɪbreɪt/|tổ chức, mừng\nconfusion|n|/kən\u0027fju:ʒn/|sự khó hiểu, sự hỗn độn, sự rối rắm\ncostume|n|/\u0027kɒstju:m/|trang phục\ncuisine|n|/kwɪ\u0027zi:n/|ẩm thực\ncultural|adj|/\u0027kʌltʃərəl/|thuộc về văn hóa\nculture shock|n|/\u0027kʌltʃə ʃɒk/|sốc văn hóa\ncustom|n|/\u0027kʌstəm/|phong tục\ndiversity|n|/daɪ\u0027vɜ:səti/|sự đa dạng\nextracurricular|adj|/,ekstrəkə\u0027rɪkjələ/|ngoại khóa\nfestivity|n|/fe\u0027stɪvəti/|ngày hội\nglobalisation|n|/,gləʊbəlaɪ\u0027zeɪʃn/|sự toàn cầu hóa\nidentity|n|/aɪ\u0027dentəti/|bản sắc, đặc điểm nhận dạng\nkeep up with||/\u0027ki:p ʌp wɪθ/|bắt kịp với, theo kịp\nlifestyle|n|/\u0027laɪfstaɪl/|lối sống\nmulticultural|adj|/,mʌlti\u0027kʌltʃərəl/|tính đa văn hóa\norigin|n|/\u0027ɒrɪdʒɪn/|nguồn gốc\npopularity|n|/,pɒpju\u0027lærəti/|sự phổ biến, sự thông dụng\nspeciality|n|/,speʃi\u0027æləti/|đặc sản\nstaple|adj|/\u0027steɪpl/|cơ bản, chủ yếu\ntasty|adj|/\u0027teɪsti/|ngon\ntraditional|adj|/trə\u0027dɪʃənl/|truyền thống\ntrend|n|/trend/|xu hướng\ntug of war|n|/,tʌg əv \u0027wɔ:/|trò chơi kéo co" },
+      { title: "Unit 3 · Green living", words: "carbon footprint|n|/,ka:bən \u0027fʊtprɪnt/|tổng lượng phát thải khí nhà kính\ncardboard|n, adj|/\u0027ka:dbɔ:d/|bìa cứng, làm bằng bìa cứng\nclean up||/\u0027kli:n ʌp/|dọn dẹp\ncompost|n|/\u0027kɒmpɒst/|phân hữu cơ\ncontainer|n|/kən\u0027teɪnə/|thùng, hộp, gói\ncontaminated|adj|/kən\u0027tæmɪneɪtɪd/|nhiễm độc, nhiễm khuẩn\ndecompose|v|/,di:kəm\u0027pəʊz/|phân hủy\neco-friendly|adj|/,i:kəʊ \u0027frendli/|thân thiện/tốt cho hệ sinh thái, môi trường\nfruit peel|np|/\u0027fru:t pi:l/|vỏ hoa quả\nhousehold waste|np|/\u0027haʊshəʊld weɪst/|rác thải sinh hoạt\nin the long run||/ɪn ðə lɒŋ rʌn/|về lâu dài\nin the long/medium/short term||/ɪn ðə lɒŋ/ \u0027mi:diəm/ ʃɔ:t tɜ:m/|về lâu dài/trong thời gian không xa/trong thời gian trước mắt\nlandfill|n|/\u0027lændfɪl/|bãi chôn rác\nlayer|n|/\u0027leɪə/|lớp\nleftover|n, adj|/\u0027leftəʊvə/|thức ăn thừa\npackaging|n|/\u0027pækɪdʒɪŋ/|bao bì\npile|n|/paɪl/|chồng, đống\nreusable|adj|/ri:\u0027ju:zəbl/|tái sử dụng được\nreuse|v|/ri:\u0027ju:z/|tái sử dụng\nrinse out||/\u0027rɪns aʊt/|xối nước, rửa sạch\nsingle-use|adj|/,sɪŋgl \u0027ju:s/|dùng một lần\nwaste|n|/weɪst/|rác thải" },
+      { title: "Unit 4 · Urbanisation", words: "afford|v|/ə\u0027fɔ:d/|có đủ tiền, có khả năng chi trả\ncolonial|adj|/kə\u0027ləʊniəl/|thuộc địa, thuộc dân\nconcern|n|/kən\u0027sɜ:n/|sự lo lắng\ndecrease|v|/dɪ\u0027kri:s/|giảm, hạ xuống\nexpand|v|/ɪk\u0027spænd/|mở rộng (về diện tích)\ngradually|adv|/\u0027grædʒuəli/|dần dần, từ từ\nhousing|n|/\u0027haʊzɪŋ/|nhà ở\nleisure|n|/\u0027leʒə/|sự giải trí, thư giãn\nproportion|n|/prə\u0027pɔ:ʃn/|tỉ lệ\nrapidly|adv|/\u0027ræpɪdli/|rất nhanh, với tốc độ cao\nreliable|adj|/rɪ\u0027laɪəbl/|đáng tin cậy\nresident|n|/\u0027rezɪdənt/|người dân\nrush hour||/\u0027rʌʃ aʊə/|giờ cao điểm\nseek|v|/si:k/|tìm kiếm\nunemployment|n|/,ʌnɪm\u0027plɔɪmənt/|tình trạng thất nghiệp, số người không có việc làm\nurban|adj|/\u0027ɜ:bən/|thuộc về đô thị" },
+      { title: "Unit 5 · The world of work", words: "application letter|n|/,æplɪ\u0027keɪʃn \u0027letə/|thư xin việc\nbonus|n|/\u0027bəʊnəs/|tiền thưởng\ncasual|adj|/\u0027kæʒuəl/|theo thời vụ, tạm thời\nchallenging|adj|/\u0027tʃælɪndʒɪŋ/|thách thức\nflexible|adj|/\u0027fleksəbl/|linh hoạt\nfootstep|n|/\u0027fʊtstep/|bước chân; truyền thống gia đình\nemploy|v|/ɪm\u0027plɔɪ/|tuyển dụng\nnine-to-five|adj|/\u0027naɪn tə faɪv/|giờ hành chính\non-the-job|adj|/ɒn ðə \u0027dʒɒb/|trong công việc, khi đang làm việc\novertime|adv|/\u0027əʊvətaɪm/|ngoài giờ\npart-time|adj|/,pɑːt \u0027taɪm/|bán thời gian\nrepetitive|adj|/rɪ\u0027petətɪv/|lặp đi lặp lại\nrewarding|adj|/rɪ\u0027wɔːdɪŋ/|xứng đáng\nshift|n|/ʃɪft/|ca làm việc\nstressful|adj|/\u0027stresfl/|áp lực, căng thẳng\nunpaid|adj|/,ʌn\u0027peɪd/|không được trả lương\nwage|n|/weɪdʒ/|tiền công (trả theo giờ hoặc theo khối lượng công việc)\nwait on tables||/weɪt ɒn \u0027teɪblz/|phục vụ đồ ăn thức uống cho khách trong nhà hàng\nwell-paid|adj|/,wel \u0027peɪd/|được trả lương cao\nvacancy|n|/\u0027veɪkənsi/|vị trí công việc còn trống" },
+      { title: "Unit 6 · Artificial intelligence", words: "activate|v|/\u0027æktɪveɪt/|kích hoạt, khởi động\nadvanced|adj|/əd\u0027vɑːnst/|tiên tiến, trình độ cao\nanalyse|v|/\u0027ænəlaɪz/|phân tích\napplication|n|/,æplɪ\u0027keɪʃn/|sự ứng dụng, sự áp dụng\nartificial intelligence (AI)|n|/,ɑːtɪ\u0027fɪʃl ɪn\u0027telɪdʒəns/ (,eɪ \u0027aɪ)/|trí thông minh nhân tạo\ncapable|adj|/\u0027keɪpəbl/|có khả năng\nchatbot|n|/\u0027tʃætbɒt/|hộp trò chuyện\ndata|n|/\u0027deɪtə/|dữ liệu\ndigital|adj|/\u0027dɪdʒɪtl/|thuộc kĩ thuật số\nevolution|n|/,iːvə\u0027luːʃn/|sự tiến hóa, sự phát triển\nfacial recognition|n|/,feɪʃl rekəg\u0027nɪʃn/|khả năng nhận diện khuôn mặt\nfunction|n|/\u0027fʌŋkʃn/|chức năng, nhiệm vụ\nhands-on|adj|/,hændz \u0027ɒn/|thực tiễn, trực tiếp\nhuman-like|adj|/\u0027hjuːmən laɪk/|giống con người\ninteract|v|/,ɪntər\u0027ækt/|tương tác\npersonalised|adj|/\u0027pɜːsənəlaɪzd/|được cá nhân hóa\nplatform|n|/\u0027plætfɔːm/|nền tảng (công nghệ)\nportfolio|n|/pɔːt\u0027fəʊliəʊ/|hồ sơ\nprogramme|v|/\u0027prəʊgræm/|lập trình\nrobotic|adj|/rəʊ\u0027bɒtɪk/|thuộc rô bốt\nupgrade|v|/ʌp\u0027greɪd/|nâng cấp\nvirtual reality|n|/,vɜːtʃuəl ri\u0027æləti/|thực tế ảo\nvoice command|np|/vɔɪs kə\u0027mɑːnd/|ra lệnh bằng giọng nói" },
+      { title: "Unit 7 · The world of mass media", words: "accessible|adj|/ək\u0027sesəbl/|có thể tiếp cận được\naccount for||/ə\u0027kaʊnt fɔː/|chiếm (tỉ lệ)\nadvert|n|/\u0027ædvɜːt/|quảng cáo\nas opposed to||/æz ə\u0027pəʊzd tuː/|khác với, đối lập với\naudio|adj|/\u0027ɔːdiəʊ/|bằng/có âm thanh\nbias|n|/\u0027baɪəs/|thiên kiến, thiên vị\nbroadcast|n, v|/\u0027brɔːdkɑːst/|(chương trình) phát sóng\nby contrast||/baɪ \u0027kɒntrɑːst/|ngược lại\ncredible|adj|/\u0027kredəbl/|đáng tin cậy\ndigital billboard|np|/\u0027dɪdʒɪtl \u0027bɪlbɔːd/|bảng quảng cáo kỹ thuật số\ndiscount|n|/\u0027dɪskaʊnt/|sự hạ giá\ndistribute|v|/dɪ\u0027strɪbjuːt/|phân phát, phân phối\nfact-check|v|/\u0027fækt tʃek/|kiểm chứng thông tin\nfake news|n|/feɪk \u0027njuːz/|tin giả, tin bịa đặt\ninstant|adj|/\u0027ɪnstənt/|nhanh chóng, ngay lập tức\ninteractive|adj|/ɪntər\u0027æktɪv/|có thể tương tác được\nloudspeaker|n|/laʊd\u0027spiːkə/|loa phát thanh\nmass media|n|/mæs \u0027miːdiə/|phương tiện truyền thông đại chúng\nmeanwhile|adv|/\u0027miːnwaɪl/|trong khi đó\nplace|v|/pleɪs/|đặt, rao, đăng (tin, quảng cáo)\npresence|n|/\u0027prezns/|sức thu hút, sức ảnh hưởng\nprofit-making|adj|/\u0027prɒfɪt meɪkɪŋ/|tạo lợi nhuận\npublicity|n|/pʌb\u0027lɪsəti/|sự quan tâm, chú ý của công chúng\nreliable|adj|/rɪ\u0027laɪəbl/|xác thực\nsource|n|/sɔːs/|nguồn tin\nspread|v|/spred/|lan truyền\nthe press|n|/ðə pres/|báo chí\nupdate|v|/ʌp\u0027deɪt/|cập nhật\nviewer|n|/\u0027vjuːə/|người xem\nvisual|adj|/\u0027vɪʒuəl/|bằng/có hình ảnh" },
+      { title: "Unit 8 · Wildlife conservation", words: "body part|np|/\u0027bɒdi pɑːt/|bộ phận cơ thể\ncaptivity|n|/kæp\u0027tɪvəti/|sự nuôi nhốt\nconservation|n|/,kɒnsə\u0027veɪʃn/|sự bảo vệ, sự bảo tồn\nconserve|v|/kən\u0027sɜːv/|bảo vệ, bảo tồn\ncoral|n|/\u0027kɒrəl/|san hô\ncritically endangered||/\u0027krɪtɪkli ɪn\u0027deɪndʒəd/|bị đe dọa nghiêm trọng\ndebris|n|/\u0027debriː/|mảnh vỡ, mảnh vụn\ndegrade|v|/dɪ\u0027greɪd/|xuống cấp\nenclosure|n|/ɪn\u0027kləʊʒə/|chuồng thú\nendangered|adj|/ɪn\u0027deɪndʒəd/|bị đe dọa, gặp nguy hiểm\nextinct|adj|/ɪk\u0027stɪŋkt/|tuyệt chủng\nforest clearance|np|/\u0027fɒrɪst \u0027klɪərəns/|sự chặt, phá rừng\nhouse|v|/haʊs/|cung cấp nơi ở\nmammal|n|/\u0027mæml/|động vật có vú\nmarine|adj|/mə\u0027riːn/|thuộc về biển\nmonitor|v|/\u0027mɒnɪtə/|giám sát\nnursery|n|/\u0027nɜːsəri/|vườn ươm\npoach|v|/pəʊtʃ/|săn bắn bất hợp pháp\nprimate|n|/\u0027praɪmeɪt/|bộ (họ) linh trưởng\nrare|adj|/reə/|hiếm, quý hiếm\nrelease|v|/rɪ\u0027liːs/|thả\nrescue|v|/\u0027reskjuː/|giải cứu\nsea turtle|n|/\u0027siː tɜːtl/|rùa biển\nsign language|n|/\u0027saɪn læŋgwɪdʒ/|ngôn ngữ ký hiệu\nspawning ground|np|/\u0027spɔːnɪŋ graʊnd/|nơi đẻ trứng\nsurvive|v|/sə\u0027vaɪv/|tồn tại\nthreatened|adj|/\u0027θretnd/|bị đe dọa\nvulnerable|adj|/\u0027vʌlnərəbl/|dễ bị tổn thương" },
+      { title: "Unit 9 · Career paths", words: "automate|v|/ˈɔːtəmeɪt/|tự động hóa\nadapt|v|/əˈdæpt/|thay đổi cho phù hợp, thích ứng theo, thích nghi\ncharacter|n|/ˈkærəktə/|phẩm chất, đặc điểm tính cách\nchildminder|n|/ˈtʃaɪldmaɪndə/|người trông trẻ\ncut down on||/ˈkʌt daʊn ɒn/|cắt giảm, giảm bớt\nCV (curriculum vitae)||/siː ˈviː/ (/kəˌrɪkjələm ˈviːtaɪ)/|sơ yếu lí lịch\nfascinating|adj|/ˈfæsɪneɪtɪŋ/|cực kì thú vị và hấp dẫn\nin demand||/ɪn dɪˈmɑːnd/|có nhu cầu, được mọi người mong muốn\nget on with||/ˈget ɒn wɪθ/|hòa hợp với, có mối quan hệ tốt với\ngo in for||/ˈgəʊ ɪn fɔː/|đam mê, theo đuổi một sở thích\nlive up to||/ˈlɪv ʌp tə/|làm theo sự mong muốn, kì vọng của ai đó\nlook down on||/ˈlʊk daʊn ɒn/|coi thường người khác, cho rằng mình hơn người\nobsolete|adj|/ˈɒbsəliːt/|lỗi thời, không còn được sử dụng, không thịnh hành\npassion|n|/ˈpæʃn/|niềm đam mê, say mê\npassionate|adj|/ˈpæʃənət/|có niềm đam mê với/dành cho\nposition|n|/pəˈzɪʃn/|vị trí việc làm\npursue|v|/pəˈsjuː/|theo đuổi\nput up with||/ˈpʊt ʌp wɪθ/|chịu đựng\nsoft skills|n|/ˈsɒft skɪlz/|các kĩ năng mềm\nspecialty|n|/ˈspeʃəlti/|chuyên ngành\ntake into account||/ˈteɪk ɪntə əˈkaʊnt/|cân nhắc, xem xét\ntutor|n|/ˈtjuːtə/|gia sư, giáo viên dạy kèm nhóm học sinh\nwork experience|n|/ˈwɜːk ɪkˈspɪəriəns/|kinh nghiệm làm việc" },
+      { title: "Unit 10 · Lifelong learning", words: "acquire|v|/ə\u0027kwaɪə/|có được, đạt được\nadult education|n|/,ædʌlt edʒu\u0027keɪʃn/|giáo dục cho người lớn\nboost|v|/bu:st/|tăng cường, cải thiện\nbroaden|v|/\u0027brɔ:dn/|mở mang, mở rộng\nbrush up||/\u0027brʌʃ ʌp/|ôn lại, học lại\ncomplex|adj|/\u0027kɒmpleks/|phức tạp\ndetermination|n|/dɪ,tɜ:mɪ\u0027neɪʃn/|sự quyết tâm\ndistance learning|n|/,dɪstəns \u0027lɜ:nɪŋ/|học từ xa\ndistraction|n|/dɪ\u0027strækʃn/|sự phân tâm, sự sao lãng\nhardship|n|/\u0027hɑ:dʃɪp/|sự khó khăn, vất vả\ngoverness|n|/\u0027gʌvənəs/|gia sư, giáo viên dạy kèm tại nhà\nimprison|v|/ɪm\u0027prɪzn/|giam cầm, cầm tù\ninformed|adj|/ɪn\u0027fɔ:md/|có kiến thức về, có hiểu biết, được cung cấp đầy đủ thông tin\nintelligence|n|/ɪn\u0027telɪdʒəns/|trí thông minh, tình báo\nlearning community|np|/\u0027lɜ:nɪŋ kə,mju:nəti/|cộng đồng học tập\nmaintain|v|/meɪn\u0027teɪn/|duy trì, giữ được\nmartial art|n|/,mɑ:ʃl \u0027ɑ:t/|võ thuật\nMolecular Biology|np|/mə\u0027lekjələ baɪ\u0027ɒlədʒi/|ngành sinh học phân tử\nnight school|n|/\u0027naɪt sku:l/|lớp học buổi tối (dành cho người lớn)\npsychology|n|/saɪ\u0027kɒlədʒi/|ngành tâm lí học\nrelevant|adj|/\u0027reləvənt/|phù hợp, thích hợp\nwell-rounded|adj|/,wel \u0027raʊndɪd/|được phát triển một cách toàn diện\nwiden|v|/\u0027waɪdn/|mở rộng, tăng thêm\nwonder|v|/\u0027wʌndə/|thắc mắc, băn khoăn" }
+    ];
+    const specializedSubjects = [
+      { name: "Tin học", topics: [
+        { title: "Máy tính và phần mềm", words: `
+Algorithm|n|/ˈælgɜːˌɪðʌm/|Thuật toán
+Application|n|/ˌæplʌkˈeɪʃʌn/|Ứng dụng
+Artificial Intelligence (AI)|n|/ˌɑrtʌfˈɪʃʌl ˌɪntˈelʌdʒʌns ˈaɪ/|Trí tuệ nhân tạo
+Backup|n|/bˈækˌʌp/|Sao lưu
+Browser|n|/brˈaʊzɜː/|Trình duyệt
+Byte|n|/bˈaɪt/|Byte
+Computer|n|/kʌmpjˈuːtɜː/|Máy tính
+Cursor|n|/kˈɜːsɜː/|Con trỏ
+Data|n|/dˈeɪtʌ/|Dữ liệu
+Database|n|/dˈeɪtʌbˌeɪs/|Cơ sở dữ liệu
+Debugging|n|/diːbˈʌgɪŋ/|Gỡ lỗi
+Digital|adj|/dˈɪdʒʌtʌl/|Kỹ thuật số
+File|n|/fˈaɪl/|Tệp tin
+Hardware|n|/hˈɑrdwˌer/|Phần cứng
+Interface|n|/ˈɪntɜːfˌeɪs/|Giao diện
+Multimedia|n|/mˌʌltiːmˈiːdiːʌ/|Đa phương tiện
+Operating System|n|/ˈɑpɜːˌeɪtɪŋ sˈɪstʌm/|Hệ điều hành
+Program|n|/prˈoʊgrˌæm/|Chương trình
+Software|n|/sˈɔftwˌer/|Phần mềm
+Virus|n|/vˈaɪrʌs/|Vi-rút
+Website|n|/wˈebsˌaɪt/|Trang web
+` },
+        { title: "Mạng và an toàn thông tin", words: `
+Bandwidth|n|/bˈændwɪdθ/|Băng thông
+Biometrics|n|/baɪˈoʊmetrɪks/|Sinh trắc học
+Cloud Computing|n|/klˈaʊd kʌmpjˈuːtɪŋ/|Điện toán đám mây
+Cybersecurity|n|/ˈsaɪbərsɪkjʊərəti/|An ninh mạng
+DNS (Domain Name System)|n|/dˌiːˌenˈes doʊmˈeɪn nˈeɪm sˈɪstʌm/|Hệ thống phân giải tên miền
+Encryption|n|/enkrˈɪpʃʌn/|Mã hóa
+Firewall|n|/fˈaɪrwɑl/|Tường lửa
+Gateway|n|/gˈeɪtwˌeɪ/|Cổng kết nối mạng
+IP Address|n|/ˈaɪpˈiː ˈædrˌes/|Địa chỉ IP
+Malware|n|/mˈælwˌer/|Phần mềm độc hại
+Modem|n|/mˈoʊdʌm/|Modem
+Network|n|/nˈetwˌɜːk/|Mạng máy tính
+Password|n|/pˈæswˌɜːd/|Mật khẩu
+Protocol|n|/prˈoʊtʌkˌɑl/|Giao thức
+Router|n|/rˈuːtɜː/|Bộ định tuyến
+Two-Factor Authentication|n|/tˈuː fˈæktɜː ɔθˌentʌkˈeɪʃʌn/|Xác thực hai yếu tố
+Troubleshoot|n|/trˈʌbʌlʃˌuːt/|Khắc phục sự cố
+Vulnerability|n|/vˌʌlnɜːʌbˈɪlɪtiː/|Lỗ hổng bảo mật
+` }
+      ] },
+      { name: "Mĩ thuật", topics: [
+        { title: "Màu sắc và yếu tố tạo hình", words: `
+Color|n|/kˈʌlɜː/|Màu sắc
+Hue|n|/hjˈuː/|Sắc độ
+Primary color|n|/prˈaɪmˌeriː kˈʌlɜː/|Màu cơ bản
+Secondary color|n|/sˈekʌndˌeriː kˈʌlɜː/|Màu thứ cấp
+Complementary colors|n|/kˌɑmplʌmˈentriː kˈʌlɜːz/|Các màu bổ túc
+Warm colors|n|/wˈɔrm kˈʌlɜːz/|Màu nóng
+Cool colors|n|/kˈuːl kˈʌlɜːz/|Màu lạnh
+Shade|n|/ʃˈeɪd/|Sắc tối
+Tint|n|/tˈɪnt/|Sắc sáng
+Tone|n|/tˈoʊn/|Sắc điệu
+Line|n|/lˈaɪn/|Đường nét
+Shape|n|/ʃˈeɪp/|Hình dạng
+Form|n|/fˈɔrm/|Khối hình
+Texture|n|/tˈekstʃɜː/|Chất liệu, bề mặt
+Space|n|/spˈeɪs/|Không gian
+Value|n|/vˈæljuː/|Độ sáng tối
+` },
+        { title: "Bố cục và chất liệu", words: `
+Composition|n|/kˌɑmpʌzˈɪʃʌn/|Bố cục
+Balance|n|/bˈælʌns/|Sự cân bằng
+Contrast|n|/kˈɑntræst/|Sự tương phản
+Emphasis|n|/ˈemfʌsʌs/|Điểm nhấn
+Pattern|n|/pˈætɜːn/|Họa tiết lặp
+Proportion|n|/prʌpˈɔrʃʌn/|Tỷ lệ
+Perspective|adj|/pɜːspˈektɪv/|Phối cảnh
+Symmetry|n|/sˈɪmʌtriː/|Tính đối xứng
+Drawing|n|/drˈɔɪŋ/|Bản vẽ, sự vẽ
+Painting|n|/pˈeɪntɪŋ/|Tranh vẽ, hội họa
+Portrait|n|/pˈɔrtrʌt/|Tranh chân dung
+Landscape|n|/lˈændskˌeɪp/|Tranh phong cảnh
+Still life|n|/stˈɪl lˈaɪf/|Tranh tĩnh vật
+Sketch|n|/skˈetʃ/|Phác họa
+Canvas|n|/kˈænvʌs/|Vải vẽ
+Brush|n|/brˈʌʃ/|Cọ vẽ
+Palette|n|/pˈælʌt/|Bảng pha màu
+Sculpture|n|/skˈʌlptʃɜː/|Điêu khắc
+Collage|n|/kʌlˈɑʒ/|Tranh ghép
+Printmaking|n|/prˈɪntmˌeɪkɪŋ/|Nghệ thuật in
+` }
+      ] },
+      { name: "Vật lý", topics: [
+        { title: "Cơ học và lực", words: `
+Acceleration|n|/ˌæksˌelɜːˈeɪʃʌn/|Gia tốc
+Accelerator|n|/æksˈelɜːˌeɪtɜː/|Máy gia tốc
+Action|n|/ˈækʃʌn/|Tác dụng
+Angular Moment|v|/ˈæŋgjʌlɜː mˈoʊmʌnt/|Mô-men động lượng
+Angular Velocity|n|/ˈæŋgjʌlɜː vʌlˈɑsʌtiː/|Vận tốc góc
+Centrifugal|adj|/sˈentrɪfjˌuːgʌl/|Ly tâm
+Centripetal|adj|/senˈtrɪpɪtl/|Hướng tâm
+Collision|n|/kʌlˈɪʒʌn/|Va chạm
+Density|n|/dˈensʌtiː/|Mật độ
+Displacement|v|/dɪsplˈeɪsmʌnt/|Độ dịch chuyển
+Elasticity|n|/ˌiːlˌæstˈɪsʌtiː/|Tính đàn hồi
+Equilibrium|n|/ˌiːkwʌlˈɪbriːʌm/|Cân bằng
+Force|n|/fˈɔrs/|Lực
+Friction|n|/frˈɪkʃʌn/|Ma sát
+Gravity|n|/grˈævʌtiː/|Trọng lực
+Inertia|n|/ˌɪnˈɜːʃʌ/|Quán tính
+Kinematics|n|/ˌkɪnəˈmætɪks/|Động học
+Kinetic Energy|n|/kʌnˈetɪk ˈenɜːdʒiː/|Động năng
+Mass|n|/mˈæs/|Khối lượng
+Momentum|n|/moʊmˈentʌm/|Động lượng
+Newton's First Law of Motion|n|/nˈuːtʌnz fˈɜːst lˈɔ ˈʌv mˈoʊʃʌn/|Định luật I Newton
+Newton's Second Law of Motion|n|/nˈuːtʌnz sˈekʌnd lˈɔ ˈʌv mˈoʊʃʌn/|Định luật II Newton
+Newton's Third Law of Motion|n|/nˈuːtʌnz θˈɜːd lˈɔ ˈʌv mˈoʊʃʌn/|Định luật III Newton
+Pendulum|n|/pˈendʒʌlʌm/|Con lắc
+Potential Energy|n|/pʌtˈenʃʌl ˈenɜːdʒiː/|Thế năng
+Power|n|/pˈaʊɜː/|Công suất
+Pressure|n|/prˈeʃɜː/|Áp suất
+Pulley|n|/pˈʊliː/|Ròng rọc
+Speed|n|/spˈiːd/|Tốc độ
+Velocity|n|/vʌlˈɑsʌtiː/|Vận tốc
+Weight|n|/wˈeɪt/|Trọng lượng
+` },
+        { title: "Điện, từ và mạch điện", words: `
+Alternating Current|adj|/ˈɔltɜːnˌeɪtɪŋ kˈɜːʌnt/|Dòng điện xoay chiều
+Amplifier|n|/ˈæmplʌfˌaɪɜː/|Bộ khuếch đại
+Anode|n|/ˈænˌoʊd/|Anốt
+Battery|n|/bˈætɜːiː/|Pin
+Capacitance|n|/kʌpˈæsʌtʌns/|Điện dung
+Cathode|n|/kˈæθˌoʊd/|Catốt
+Conductor|n|/kʌndˈʌktɜː/|Vật dẫn
+Direct Current|adj|/dɜːˈekt kˈɜːʌnt/|Dòng điện một chiều
+Electric Charge|n|/ɪlˈektrɪk tʃˈɑrdʒ/|Điện tích
+Electric Circuit|n|/ɪlˈektrɪk sˈɜːkʌt/|Mạch điện
+Electric Current|adj|/ɪlˈektrɪk kˈɜːʌnt/|Dòng điện
+Electric Field|n|/ɪlˈektrɪk fˈiːld/|Điện trường
+Electric Resistance|n|/ɪlˈektrɪk rɪzˈɪstʌns/|Điện trở
+Electromotive Force|n|/fˈɔrs/|Suất điện động
+Electrode|n|/ˌɪlˈektroʊd/|Điện cực
+Electron|n|/ˌɪlˈektrɑn/|Electron
+Fuse|n|/fjˈuːz/|Cầu chì
+Generator|n|/dʒˈenɜːˌeɪtɜː/|Máy phát điện
+Magnetic Field|n|/mægnˈetɪk fˈiːld/|Từ trường
+Magnetic Force|n|/mægnˈetɪk fˈɔrs/|Lực từ
+Resistance|n|/rɪzˈɪstʌns/|Điện trở
+Solenoid|n|/ˈsoʊlənɔɪd/|Cuộn dây hình ống
+Transformer|n|/trænsfˈɔrmɜː/|Máy biến áp
+Voltmeter|n|/ˈvoʊltmiːtə/|Vôn kế
+Watt|n|/wˈɑt/|Oát
+` },
+        { title: "Quang học, sóng và nhiệt", words: `
+Angle of Incidence|n|/ˈæŋgʌl ˈʌv ˈɪnsʌdʌns/|Góc tới
+Angle of Reflection|n|/ˈæŋgʌl ˈʌv rɪflˈekʃʌn/|Góc phản xạ
+Concave Lens|n|/kɑnkˈeɪv lˈenz/|Thấu kính lõm
+Concave Mirror|n|/kɑnkˈeɪv mˈɪrɜː/|Gương cầu lõm
+Convex Lens|n|/kʌnvˈeks lˈenz/|Thấu kính lồi
+Convex Mirror|n|/kʌnvˈeks mˈɪrɜː/|Gương cầu lồi
+Diffraction|n|/dɪfrˈækʃʌn/|Nhiễu xạ
+Focal Length|n|/fˈoʊkʌl lˈeŋkθ/|Tiêu cự
+Frequency|n|/frˈiːkwʌnsiː/|Tần số
+Interference|n|/ˌɪntɜːfˈɪrʌns/|Sự giao thoa
+Light|n|/lˈaɪt/|Ánh sáng
+Longitudinal Wave|n|/lˌɑndʒʌtˈuːdʌnʌl wˈeɪv/|Sóng dọc
+Magnifying Power|n|/mˈægnʌfˌaɪɪŋ pˈaʊɜː/|Độ phóng đại
+Optics|n|/ˈɑptɪks/|Quang học
+Plane Mirror|n|/plˈeɪn mˈɪrɜː/|Gương phẳng
+Reflection|n|/rɪflˈekʃʌn/|Sự phản xạ
+Refraction|n|/rɪˈfrækʃən/|Sự khúc xạ
+Spectrum|n|/spˈektrʌm/|Quang phổ
+Surface Tension|n|/sˈɜːfʌs tˈenʃʌn/|Sức căng bề mặt
+Temperature|n|/tˈemprʌtʃɜː/|Nhiệt độ
+Thermodynamics|n|/θˌɜːmoʊdˌaɪnˈæmɪks/|Nhiệt động lực học
+Ultrasonic Waves|n|/ˌʌltrʌsˈɑnɪk wˈeɪvz/|Sóng siêu âm
+Ultraviolet Rays|n|/ˌʌltrʌvˈaɪʌlɪt rˈeɪz/|Tia cực tím
+Wavelength|n|/wˈeɪvlˌeŋθ/|Bước sóng
+X-rays|n|/ˈeks rˈeɪz/|Tia X
+` },
+        { title: "Nguyên tử và hạt nhân", words: `
+Atom|n|/ˈætʌm/|Nguyên tử
+Atomic Number|n|/ʌtˈɑmɪk nˈʌmbɜː/|Số nguyên tử
+Binding Energy|n|/bˈaɪndɪŋ ˈenɜːdʒiː/|Năng lượng liên kết
+Ion|n|/ˈaɪʌn/|Ion
+Ionization|n|/ˌaɪʌnʌzˈeɪʃʌn/|Sự ion hóa
+Isotope|n|/ˈaɪsʌtˌoʊp/|Đồng vị
+Nuclear Energy|n|/nˈuːkliːɜː ˈenɜːdʒiː/|Năng lượng hạt nhân
+Nuclear Fission|n|/nˈuːkliːɜː fˈɪʃʌn/|Sự phân hạch hạt nhân
+Nuclear Fusion|n|/nˈuːkliːɜː fjˈuːʒʌn/|Phản ứng tổng hợp hạt nhân
+Nuclear Radiation|n|/nˈuːkliːɜː rˌeɪdiːˈeɪʃʌn/|Bức xạ hạt nhân
+Nucleus|n|/nˈuːkliːʌs/|Hạt nhân
+Quantum|n|/kwˈɑntʌm/|Lượng tử
+Quantum Mechanics|n|/kwˈɑntʌm mʌkˈænɪks/|Cơ học lượng tử
+Radioactivity|n|/rˈeɪdiːoʊˌæktˌɪvʌtˌiː/|Tính phóng xạ
+` }
+      ] },
+      { name: "Hóa học", topics: [
+        { title: "Nguyên tử, phân tử và liên kết", words: `
+Atom|n|/ˈætʌm/|Nguyên tử
+Molecule|n|/mˈɑlʌkjˌuːl/|Phân tử
+Ion|n|/ˈaɪʌn/|Ion
+Compound|n|/kˈɑmpaʊnd/|Hợp chất
+Element|v|/ˈelʌmʌnt/|Nguyên tố
+Chemical Formula|n|/kˈemʌkʌl fˈɔrmjʌlʌ/|Công thức hóa học
+Valence|n|/vˈeɪlʌns/|Hóa trị
+Chemical Bond|n|/kˈemʌkʌl bˈɑnd/|Liên kết hóa học
+Covalent Bond|n|/koʊvˈɑlʌnt bˈɑnd/|Liên kết cộng hóa trị
+Ionic Bond|n|/ˌaɪˈɑnɪk bˈɑnd/|Liên kết ion
+Substance|n|/sˈʌbstʌns/|Chất
+Mixture|n|/mˈɪkstʃɜː/|Hỗn hợp
+` },
+        { title: "Hóa học hữu cơ", words: `
+Hydrocarbon|n|/hˌaɪdroʊkˈɑrbʌn/|Hiđrocacbon
+Alkane|n|/ˈælkeɪn/|Ankan
+Alkene|n|/ˈælkˌiːn/|Anken
+Alkyne|n|/ˈælkaɪn/|Ankin
+Aromatic Compound|n|/ˌerʌmˈætɪk kˈɑmpaʊnd/|Hợp chất thơm
+Functional Group|n|/fˈʌŋkʃʌnʌl grˈuːp/|Nhóm chức
+Alcohol|n|/ˈælkʌhˌɑl/|Ancol, rượu
+Aldehyde|n|/ˈældɪhaɪd/|Anđehit
+Ketone|n|/kˈiːtoʊn/|Xeton
+Carboxylic Acid|adj|/kɑrbɔksˈɪlɪk ˈæsʌd/|Axit cacboxylic
+Ester|n|/ˈestɜː/|Este
+Polymer|n|/pˈɑlʌmɜː/|Polime
+Isomer|n|/ˈaɪsʌmɜː/|Đồng phân
+` },
+        { title: "Hóa học vô cơ", words: `
+Acid|adj|/ˈæsʌd/|Axit
+Base|n|/bˈeɪs/|Bazơ
+Salt|n|/sˈɔlt/|Muối
+pH Scale|n|/pˈiːˈeɪtʃ skˈeɪl/|Thang pH
+Oxide|n|/ˈɑksˌaɪd/|Ôxít
+Acidic Oxide|n|/ʌsˈɪdɪk ˈɑksˌaɪd/|Ôxít axit
+Basic Oxide|n|/bˈeɪsɪk ˈɑksˌaɪd/|Ôxít bazơ
+Metal|adj|/mˈetʌl/|Kim loại
+Non-metal|adj|/nˈɑn mˈetʌl/|Phi kim
+Coordination Compound|n|/koʊˌɔrdʌnˈeɪʃʌn kˈɑmpaʊnd/|Hợp chất phối trí
+Alloy|n|/ˈælˌɔɪ/|Hợp kim
+Mineral|adj|/mˈɪnɜːʌl/|Khoáng vật
+` },
+        { title: "Dụng cụ phòng thí nghiệm", words: `
+Beaker|n|/bˈiːkɜː/|Cốc thủy tinh
+Test Tube|n|/tˈest tˈuːb/|Ống nghiệm
+Burette|n|/bjʊˈret/|Buret
+Pipette|n|/pˌaɪpˈet/|Pipet
+Funnel|n|/fˈʌnʌl/|Phễu
+Balance|n|/bˈælʌns/|Cân
+Microscope|n|/mˈaɪkrʌskˌoʊp/|Kính hiển vi
+` },
+        { title: "Phản ứng và dung dịch", words: `
+Chemical Reaction|n|/kˈemʌkʌl riːˈækʃʌn/|Phản ứng hóa học
+Reactant|n|/riˈæktənt/|Chất phản ứng
+Reagent|adj|/riːˈeɪdʒʌnt/|Thuốc thử
+Product|n|/prˈɑdʌkt/|Sản phẩm
+Catalyst|n|/kˈætʌlʌst/|Chất xúc tác
+Synthesis|n|/sˈɪnθʌsʌs/|Phản ứng tổng hợp
+Decomposition|n|/dˌiːkʌmpoʊzˈɪʃʌn/|Phản ứng phân hủy
+Single Displacement|v|/sˈɪŋgʌl dɪsplˈeɪsmʌnt/|Phản ứng thế đơn
+Double Displacement|v|/dˈʌbʌl dɪsplˈeɪsmʌnt/|Phản ứng trao đổi
+Oxidation-Reduction (Redox)|n|/ˌɑksʌdˈeɪʃʌn rʌdˈʌkʃʌn/|Phản ứng ôxi hóa - khử
+Neutralization|n|/nˌuːtrʌlʌzˈeɪʃʌn/|Phản ứng trung hòa
+Precipitation|n|/prɪsˌɪpɪtˈeɪʃʌn/|Phản ứng kết tủa
+Solution|n|/sʌlˈuːʃʌn/|Dung dịch
+Solute|n|/sˈɑljuːt/|Chất tan
+Solvent|adj|/sˈɑlvʌnt/|Dung môi
+Concentration|n|/kˌɑnsʌntrˈeɪʃʌn/|Nồng độ
+` }
+      ] },
+      { name: "Địa lý", topics: [
+        { title: "Địa hình và thủy quyển", words: `
+Mountain Range|n|/mˈaʊntʌn rˈeɪndʒ/|Dãy núi
+Ocean|n|/ˈoʊʃʌn/|Đại dương
+Island|n|/ˈaɪlʌnd/|Hòn đảo
+Peninsula|n|/pʌnˈɪnsʌlʌ/|Bán đảo
+Continent|adj|/kˈɑntʌnʌnt/|Lục địa
+Valley|n|/vˈæliː/|Thung lũng
+River|n|/rˈɪvɜː/|Sông
+Lake|n|/lˈeɪk/|Hồ
+Forest|n|/fˈɔrʌst/|Rừng
+Desert|n|/dˈezɜːt/|Sa mạc
+Volcano|n|/vɑlkˈeɪnoʊ/|Núi lửa
+Plateau|n|/plætˈoʊ/|Cao nguyên
+Plain|n|/plˈeɪn/|Đồng bằng
+Glacier|n|/glˈeɪʃɜː/|Sông băng
+Landform|n|/lˈændfˌɔrm/|Địa hình
+` },
+        { title: "Khí hậu và thiên tai", words: `
+Climate|v|/klˈaɪmʌt/|Khí hậu
+Weather|n|/wˈeðɜː/|Thời tiết
+Elevation|n|/ˌelʌvˈeɪʃʌn/|Độ cao
+Sea Level|n|/sˈiː lˈevʌl/|Mực nước biển
+Equator|n|/ɪkwˈeɪtɜː/|Xích đạo
+Hemisphere|n|/hˈemɪsfˌɪr/|Bán cầu
+Latitude|n|/lˈætʌtˌuːd/|Vĩ độ
+Longitude|n|/lˈɑndʒʌtˌuːd/|Kinh độ
+Tropic of Cancer|n|/trˈɑpɪk ˈʌv kˈænsɜː/|Chí tuyến Bắc
+Tropic of Capricorn|n|/trˈɑpɪk ˈʌv kˈæprʌkɔrn/|Chí tuyến Nam
+Arctic Circle|n|/ˈɑrktɪk sˈɜːkʌl/|Vòng Bắc Cực
+Antarctic Circle|n|/æntˈɑrktɪk sˈɜːkʌl/|Vòng Nam Cực
+Earthquake|n|/ˈɜːθkwˌeɪk/|Động đất
+Tsunami|n|/tsuːnˈɑmiː/|Sóng thần
+Hurricane|n|/hˈɜːʌkˌeɪn/|Bão
+Typhoon|n|/tˌaɪfˈuːn/|Bão nhiệt đới
+Cyclone|n|/sɪklˈoʊn/|Lốc xoáy
+Flood|n|/flˈʌd/|Lũ lụt
+Drought|n|/drˈaʊt/|Hạn hán
+Seismic Activity|n|/sˈaɪzmɪk æktˈɪvʌtiː/|Hoạt động địa chấn
+Geological Fault|n|/dʒˌiːʌlˈɑdʒɪkʌl fˈɔlt/|Đứt gãy địa chất
+Tectonic Plate|v|/tektˈɑnɪk plˈeɪt/|Mảng kiến tạo
+Precipitation|n|/prɪsˌɪpɪtˈeɪʃʌn/|Lượng mưa, giáng thủy
+Humidity|n|/hjuːmˈɪdʌtiː/|Độ ẩm
+Atmospheric Pressure|n|/ˌætmʌsfˈerɪk prˈeʃɜː/|Áp suất khí quyển
+Wind Direction|n|/wˈaɪnd dɜːˈekʃʌn/|Hướng gió
+Wind Speed|n|/wˈaɪnd spˈiːd/|Tốc độ gió
+` },
+        { title: "Môi trường và tài nguyên", words: `
+Biosphere|n|/bˈaɪoʊsfˌɪr/|Sinh quyển
+Atmosphere|n|/ˈætmʌsfˌɪr/|Khí quyển
+Lithosphere|n|/ˈlɪθəˌsfɪər/|Thạch quyển
+Hydrosphere|n|/ˈhaɪdrəˌsfɪər/|Thủy quyển
+Ecosystem|n|/ˈiːkoʊsˌɪstʌm/|Hệ sinh thái
+Habitat|n|/hˈæbʌtˌæt/|Môi trường sống
+Deforestation|n|/dɪfˌɔrɪstˈeɪʃʌn/|Sự phá rừng
+Desertification|n|/dɪˌzɜːrtɪfɪˈkeɪʃən/|Sa mạc hóa
+Natural Resource|n|/nˈætʃɜːʌl rˈiːsɔrs/|Tài nguyên thiên nhiên
+Renewable Resource|n|/riːnˈuːʌbʌl rˈiːsɔrs/|Tài nguyên tái tạo
+Non-renewable Resource|n|/nˈɑn riːnˈuːʌbʌl rˈiːsɔrs/|Tài nguyên không tái tạo
+Biodiversity|n|/bˌaɪoʊdaɪvˈɜːsʌtiː/|Đa dạng sinh học
+Erosion|n|/ɪrˈoʊʒʌn/|Sự xói mòn
+Sediment|v|/sˈedʌmʌnt/|Trầm tích
+Geothermal Energy|n|/dʒˌiːoʊθˈɜːmʌl ˈenɜːdʒiː/|Năng lượng địa nhiệt
+Hydroelectric Power|n|/hˌaɪdroʊɪlˈektrɪk pˈaʊɜː/|Thủy điện
+Solar Energy|n|/sˈoʊlɜː ˈenɜːdʒiː/|Năng lượng mặt trời
+Wind Energy|n|/wˈaɪnd ˈenɜːdʒiː/|Năng lượng gió
+Natural Disaster|n|/nˈætʃɜːʌl dɪzˈæstɜː/|Thảm họa thiên nhiên
+Soil Erosion|n|/sˈɔɪl ɪrˈoʊʒʌn/|Xói mòn đất
+Air Pollution|n|/ˈer pʌlˈuːʃʌn/|Ô nhiễm không khí
+Water Pollution|n|/wˈɔtɜː pʌlˈuːʃʌn/|Ô nhiễm nước
+Sustainable Development|v|/sʌstˈeɪnʌbʌl dɪvˈelʌpmʌnt/|Phát triển bền vững
+Climate Change|n|/klˈaɪmʌt tʃˈeɪndʒ/|Biến đổi khí hậu
+Greenhouse Gases|n|/grˈiːnhˌaʊs gˈæsʌz/|Khí nhà kính
+Ozone Layer|n|/ˈoʊzˌoʊn lˈeɪɜː/|Tầng ôzôn
+Fossil Fuel|n|/fˈɑsʌl fjˈuːʌl/|Nhiên liệu hóa thạch
+Global Warming|n|/glˈoʊbʌl wˈɔrmɪŋ/|Sự nóng lên toàn cầu
+Conservation|n|/kˌɑnsɜːvˈeɪʃʌn/|Bảo tồn
+Renewable Energy|n|/riːnˈuːʌbʌl ˈenɜːdʒiː/|Năng lượng tái tạo
+` },
+        { title: "Dân cư và bản đồ", words: `
+Map|n|/mˈæp/|Bản đồ
+Compass|n|/kˈʌmpʌs/|La bàn
+Compass Rose|n|/kˈʌmpʌs rˈoʊz/|Hoa gió, hình hoa chỉ phương
+North Pole|n|/nˈɔrθ pˈoʊl/|Bắc Cực
+South Pole|n|/sˈaʊθ pˈoʊl/|Nam Cực
+Population Density|n|/pˌɑpjʌlˈeɪʃʌn dˈensʌtiː/|Mật độ dân số
+Urban Area|n|/ˈɜːbʌn ˈeriːʌ/|Khu vực đô thị
+Rural Area|n|/rˈʊrʌl ˈeriːʌ/|Khu vực nông thôn
+Human Geography|n|/hjˈuːmʌn dʒiːˈɑgrʌfiː/|Địa lý nhân văn
+Physical Geography|n|/fˈɪzɪkʌl dʒiːˈɑgrʌfiː/|Địa lý tự nhiên
+Cartography|n|/kɑːrˈtɑːgrəfi/|Bản đồ học
+Topography|n|/tʌpˈɑgrʌfiː/|Địa hình học
+Economic Geography|n|/ˌekʌnˈɑmɪk dʒiːˈɑgrʌfiː/|Địa lý kinh tế
+Climatic Zone|n|/klaɪmˈætɪk zˈoʊn/|Vùng khí hậu
+Geomorphology|n|/dʒˌiːʌmˌɔrfˈɑlʌdʒiː/|Địa mạo học
+` }
+      ] },
+      { name: "Lịch sử", topics: [
+        { title: "Nhà nước và xã hội", words: `
+Civilization|n|/sˌɪvʌlɪzˈeɪʃʌn/|Nền văn minh
+Culture|n|/kˈʌltʃɜː/|Văn hóa
+Dynasty|n|/dˈaɪnʌstiː/|Triều đại
+Empire|n|/ˈempaɪɜː/|Đế quốc
+Monarchy|n|/mˈɑnɑrkiː/|Chế độ quân chủ
+Democracy|n|/dɪmˈɑkrʌsiː/|Chế độ dân chủ
+Treaty|n|/trˈiːtiː/|Hiệp ước
+Colonization|n|/kˌɑlʌnɪzˈeɪʃʌn/|Sự thuộc địa hóa
+Independence|n|/ˌɪndɪpˈendʌns/|Độc lập
+Republic|adj|/riːpˈʌblʌk/|Cộng hòa
+Dictatorship|n|/dɪktˈeɪtɜːʃˌɪp/|Chế độ độc tài
+Federation|n|/fˌedɜːˈeɪʃʌn/|Liên bang
+Alliance|n|/ʌlˈaɪʌns/|Liên minh
+Constitution|n|/kˌɑnstʌtˈuːʃʌn/|Hiến pháp
+Sovereignty|n|/sˈɑvrʌntiː/|Chủ quyền
+Territory|adj|/tˈerɪtˌɔriː/|Lãnh thổ
+Feudalism|n|/fjˈuːdʌlˌɪzʌm/|Chế độ phong kiến
+Aristocracy|n|/ˌerʌstˈɑkrʌsiː/|Tầng lớp quý tộc
+Diplomacy|n|/dɪplˈoʊmʌsiː/|Ngoại giao
+Nationalism|n|/nˈæʃʌnʌlˌɪzʌm/|Chủ nghĩa dân tộc
+Industrialization|n|/ˌɪndˌʌstriːʌlɪzˈeɪʃʌn/|Công nghiệp hóa
+Heritage|n|/hˈerʌtʌdʒ/|Di sản
+Chronology|n|/krʌnˈɑlʌdʒiː/|Niên đại học
+` },
+        { title: "Chiến tranh và sự kiện", words: `
+War|adj|/wˈɔr/|Chiến tranh
+Battle|n|/bˈætʌl/|Trận đánh
+Army|n|/ˈɑrmiː/|Quân đội
+Soldier|n|/sˈoʊldʒɜː/|Binh sĩ
+Conflict|n|/kˈɑnflɪkt/|Xung đột
+Tactic|adj|/tˈæktɪk/|Chiến thuật
+Strategy|n|/strˈætʌdʒiː/|Chiến lược
+Ceasefire|n|/sˈiːsfˈaɪɜː/|Lệnh ngừng bắn
+Victory|adj|/vˈɪktɜːiː/|Chiến thắng
+Defeat|n|/dɪfˈiːt/|Thất bại
+Invasion|n|/ˌɪnvˈeɪʒʌn/|Sự xâm lược
+Occupation|n|/ˌɑkjʌpˈeɪʃʌn/|Sự chiếm đóng
+Resistance|n|/rɪzˈɪstʌns/|Sự kháng cự
+Siege|n|/sˈiːdʒ/|Cuộc bao vây
+Weapon|n|/wˈepʌn/|Vũ khí
+Campaign|n|/kæmpˈeɪn/|Chiến dịch
+Casualty|n|/kˈæʒʌwʌltiː/|Thương vong
+Commander|n|/kʌmˈændɜː/|Chỉ huy
+Guerrilla|n|/gɜːˈɪlʌ/|Du kích
+Armistice|n|/ˈɑrmʌstʌs/|Hiệp định đình chiến
+Rebellion|n|/rɪbˈeljʌn/|Cuộc nổi loạn
+Insurrection|n|/ˌɪnsɜːˈekʃʌn/|Cuộc khởi nghĩa
+Independence Declaration|n|/ˌɪndɪpˈendʌns dˌeklɜːˈeɪʃʌn/|Tuyên ngôn độc lập
+August Revolution|n|/ˈɑgʌst rˌevʌlˈuːʃʌn/|Cách mạng Tháng Tám
+Battle of Bach Dang|n|/bˈætʌl ˈʌv bˈɑk dˈæŋ/|Trận Bạch Đằng
+Battle of Dien Bien Phu|n|/bˈætʌl ˈʌv bˈiːn fˈuː/|Trận Điện Biên Phủ
+Paris Peace Accords|n|/pˈerɪs pˈiːs ʌkˈɔrdz/|Hiệp định Paris
+` },
+        { title: "Lòng yêu nước và tư tưởng", words: `
+Patriotism|n|/pˈeɪtriːʌtˌɪzʌm/|Lòng yêu nước
+Liberty|n|/lˈɪbɜːtˌiː/|Tự do
+Freedom|n|/frˈiːdʌm/|Quyền tự do
+Homeland|n|/hˈoʊmlˌænd/|Tổ quốc
+Ideology|n|/ˌaɪdiːˈɑlʌdʒiː/|Ý thức hệ
+Allegiance|n|/ʌlˈiːdʒʌns/|Lòng trung thành
+Martyr|n|/mˈɑrtɜː/|Người tử đạo
+Heroism|n|/hˈeroʊˌɪzʌm/|Chủ nghĩa anh hùng
+Bravery|n|/brˈeɪvɜːiː/|Sự dũng cảm
+Duty|n|/dˈuːtiː/|Bổn phận
+Unity|n|/jˈuːnʌtiː/|Sự đoàn kết
+Sacrifice|n|/sˈækrʌfˌaɪs/|Sự hy sinh
+Solidarity|n|/sˌɑlʌdˈerʌtiː/|Tình đoàn kết
+Liberation|n|/lˌɪbˌɜːˈeɪʃʌn/|Sự giải phóng
+Resilience|n|/rɪzˈɪliːʌns/|Sự kiên cường
+` }
+      ] },
+      { name: "Toán học", topics: [
+        { title: "Đại số và số học", words: `
+Integer|n|/ˈɪntʌdʒɜː/|Số nguyên
+Fraction|n|/frˈækʃʌn/|Phân số
+Numerator|n|/nˈuːmʌrˌeɪtɜː/|Tử số
+Denominator|n|/dɪnˈɑmʌnˌeɪtɜː/|Mẫu số
+Variable|adj|/vˈeriːʌbʌl/|Biến số
+Coefficient|adj|/kˌoʊʌfˈɪʃʌnt/|Hệ số
+Expression|n|/ɪksprˈeʃʌn/|Biểu thức
+Equation|n|/ɪkwˈeɪʒʌn/|Phương trình
+Inequality|n|/ˌɪnɪkwˈɑlʌtiː/|Bất phương trình
+Polynomial|adj|/pˌɑlˌiːnˈoʊmiːʌl/|Đa thức
+Factor|n|/fˈæktɜː/|Thừa số
+Exponent|adj|/ˈekspˌoʊnʌnt/|Số mũ
+Square Root|n|/skwˈer rˈuːt/|Căn bậc hai
+Absolute Value|n|/ˈæbsʌlˌuːt vˈæljuː/|Giá trị tuyệt đối
+Ratio|n|/rˈeɪʃiːˌoʊ/|Tỷ số
+Proportion|n|/prʌpˈɔrʃʌn/|Tỷ lệ
+` },
+        { title: "Hình học và đo lường", words: `
+Point|n|/pˈɔɪnt/|Điểm
+Line|n|/lˈaɪn/|Đường thẳng
+Line Segment|v|/lˈaɪn sˈegmʌnt/|Đoạn thẳng
+Angle|n|/ˈæŋgʌl/|Góc
+Acute Angle|n|/ʌkjˈuːt ˈæŋgʌl/|Góc nhọn
+Right Angle|n|/rˈaɪt ˈæŋgʌl/|Góc vuông
+Obtuse Angle|n|/ɑbtˈuːs ˈæŋgʌl/|Góc tù
+Triangle|n|/trˈaɪˌæŋgʌl/|Tam giác
+Quadrilateral|n|/ˌkwɑːdrɪˈlætrəl/|Tứ giác
+Circle|n|/sˈɜːkʌl/|Đường tròn
+Radius|n|/rˈeɪdiːʌs/|Bán kính
+Diameter|n|/daɪˈæmʌtɜː/|Đường kính
+Circumference|n|/sˌɜːkˈʌmfrʌns/|Chu vi đường tròn
+Area|n|/ˈeriːʌ/|Diện tích
+Perimeter|n|/pɜːˈɪmʌtɜː/|Chu vi
+Volume|n|/vˈɑljuːm/|Thể tích
+Parallel Lines|n|/pˈerʌlˌel lˈaɪnz/|Các đường thẳng song song
+Perpendicular|adj|/pˌɜːpʌndˈɪkjʌlɜː/|Vuông góc
+` },
+        { title: "Thống kê và xác suất", words: `
+Mean|n|/mˈiːn/|Giá trị trung bình
+Median|n|/mˈiːdiːʌn/|Trung vị
+Mode|n|/mˈoʊd/|Mốt
+Range|n|/rˈeɪndʒ/|Khoảng biến thiên
+Data|n|/dˈeɪtʌ/|Dữ liệu
+Statistics|n|/stʌtˈɪstɪks/|Thống kê
+Probability|n|/prˌɑbʌbˈɪlʌtˌiː/|Xác suất
+Outcome|n|/ˈaʊtkˌʌm/|Kết quả
+Event|adj|/ɪvˈent/|Biến cố
+Graph|n|/grˈæf/|Đồ thị
+Coordinate|v|/koʊˈɔrdʌnʌt/|Tọa độ
+Function|n|/fˈʌŋkʃʌn/|Hàm số
+` }
+      ] },
+      { name: "Ngữ văn", topics: [
+        { title: "Thể loại và yếu tố văn học", words: `
+Literature|n|/lˈɪtɜːʌtʃɜː/|Văn học
+Poetry|n|/pˈoʊʌtriː/|Thơ ca
+Poem|n|/pˈoʊʌm/|Bài thơ
+Prose|n|/prˈoʊz/|Văn xuôi
+Fiction|n|/fˈɪkʃʌn/|Truyện hư cấu
+Short Story|adj|/ʃˈɔrt stˈɔriː/|Truyện ngắn
+Novel|n|/nˈɑvʌl/|Tiểu thuyết
+Drama|n|/drˈɑmʌ/|Kịch
+Playwright|n|/plˈeɪrˌaɪt/|Nhà viết kịch
+Narrator|n|/nˈereɪtɜː/|Người kể chuyện
+Character|n|/kˈerɪktɜː/|Nhân vật
+Setting|n|/sˈetɪŋ/|Bối cảnh
+Plot|n|/plˈɑt/|Cốt truyện
+Theme|n|/θˈiːm/|Chủ đề
+Conflict|n|/kˈɑnflɪkt/|Xung đột
+` },
+        { title: "Biện pháp tu từ và phân tích", words: `
+Metaphor|n|/mˈetʌfɔr/|Ẩn dụ
+Simile|n|/ˈsɪməli/|Phép so sánh
+Personification|n|/pɜːsˌɑnʌfʌkˈeɪʃʌn/|Nhân hóa
+Symbolism|n|/sˈɪmbʌlˌɪzʌm/|Tính biểu tượng
+Imagery|n|/ˈɪmʌdʒriː/|Hình ảnh gợi tả
+Irony|n|/ˈaɪrʌniː/|Phép mỉa mai
+Alliteration|n|/ʌlˈɪtɜːˌeɪʃʌn/|Phép điệp phụ âm đầu
+Rhyme|n|/rˈaɪm/|Vần thơ
+Rhythm|n|/rˈɪðʌm/|Nhịp điệu
+Stanza|n|/stˈænzʌ/|Khổ thơ
+Verse|n|/vˈɜːs/|Câu thơ
+Tone|n|/tˈoʊn/|Giọng điệu
+Mood|n|/mˈuːd/|Sắc thái, tâm trạng
+Point of View|n|/pˈɔɪnt ˈʌv vjˈuː/|Ngôi kể, điểm nhìn
+Analysis|n|/ʌnˈælʌsʌs/|Sự phân tích
+Evidence|n|/ˈevʌdʌns/|Dẫn chứng
+` }
+      ] },
+      { name: "Chủ đề chung", topics: [
+        { title: "Trường học và môn học", words: `
+Kindergarten|v|/kˈɪndɜːgˌɑrtʌn/|Trường mẫu giáo
+Primary School|n|/prˈaɪmˌeriː skˈuːl/|Trường tiểu học
+Secondary School|n|/sˈekʌndˌeriː skˈuːl/|Trường trung học
+High School|n|/hˈaɪ skˈuːl/|Trường trung học phổ thông
+University|n|/jˌuːnʌvˈɜːsʌtiː/|Đại học
+College|n|/kˈɑlɪdʒ/|Cao đẳng
+Graduate School|n|/grˈædʒʌwʌt skˈuːl/|Trường sau đại học
+Preschool|n|/priːskˈuːl/|Trường mầm non
+Middle School|n|/mˈɪdʌl skˈuːl/|Trường trung học cơ sở
+Public School|n|/pˈʌblɪk skˈuːl/|Trường công lập
+Private School|n|/prˈaɪvʌt skˈuːl/|Trường tư thục
+Boarding School|n|/bˈɔrdɪŋ skˈuːl/|Trường nội trú
+Vocational School|n|/voʊkˈeɪʃʌnʌl skˈuːl/|Trường nghề
+International School|n|/ˌɪntɜːnˈæʃʌnʌl skˈuːl/|Trường quốc tế
+Mathematics|n|/mˌæθʌmˈætɪks/|Toán học
+Science|n|/sˈaɪʌns/|Khoa học
+History|adj|/hˈɪstɜːiː/|Lịch sử
+Geography|n|/dʒiːˈɑgrʌfiː/|Địa lý
+Literature|n|/lˈɪtɜːʌtʃɜː/|Văn học
+Physics|n|/fˈɪzɪks/|Vật lý
+Chemistry|n|/kˈemʌstriː/|Hóa học
+Biology|n|/baɪˈɑlʌdʒiː/|Sinh học
+Art|n|/ˈɑrt/|Mỹ thuật
+Music|adj|/mjˈuːzɪk/|Âm nhạc
+Computer Science|n|/kʌmpjˈuːtɜː sˈaɪʌns/|Khoa học máy tính
+` },
+        { title: "Đồ dùng và hoạt động học tập", words: `
+Blackboard|n|/blˈækbˌɔrd/|Bảng đen
+Whiteboard|n|/ˈwaɪtbɔːrd/|Bảng trắng
+Chalk|n|/tʃˈɑk/|Phấn viết bảng
+Marker|n|/mˈɑrkɜː/|Bút lông
+Desk|n|/dˈesk/|Bàn học
+Chair|n|/tʃˈer/|Ghế
+Textbook|n|/tˈekstbˌʊk/|Sách giáo khoa
+Notebook|n|/nˈoʊtbˌʊk/|Vở ghi chép
+Pen|v|/pˈen/|Bút bi
+Pencil|n|/pˈensʌl/|Bút chì
+Eraser|n|/ɪrˈeɪsɜː/|Cục tẩy
+Ruler|n|/rˈuːlɜː/|Thước kẻ
+Calculator|n|/kˈælkjʌlˌeɪtɜː/|Máy tính cầm tay
+Projector|n|/prʌdʒˈektɜː/|Máy chiếu
+Computer|n|/kʌmpjˈuːtɜː/|Máy tính
+Curriculum|n|/kɜːˈɪkjʌlʌm/|Chương trình học
+Syllabus|n|/sˈɪlʌbʌs/|Giáo trình
+Assignment|v|/ʌsˈaɪnmʌnt/|Bài tập
+Exam|n|/ɪgzˈæm/|Kỳ thi
+Grade|n|/grˈeɪd/|Điểm số
+Homework|n|/hˈoʊmwˌɜːk/|Bài tập về nhà
+Lecture|n|/lˈektʃɜː/|Bài giảng
+Scholarship|n|/skˈɑlɜːʃˌɪp/|Học bổng
+Tuition Fees|n|/tjuːˈɪʃʌn fˈiːz/|Học phí
+Higher Education|n|/hˈaɪɜː ˌedʒʌkˈeɪʃʌn/|Giáo dục đại học
+Online Learning|n|/ˈɔnlˌaɪn lˈɜːnɪŋ/|Học trực tuyến
+Digital Literacy|n|/dˈɪdʒʌtʌl lˈɪtɜːʌsiː/|Kiến thức số
+` }
+      ] }
+    ];
+    const unitsByGrade = { "10": grade10Units, "11": grade11Units, "12": grade12Units };
+    let units = grade10Units;
+    const gradeSelect = document.querySelector("#grade-select");
+    const unitSelect = document.querySelector("#unit-select");
+    const subjectSelect = document.querySelector("#subject-select");
+    const topicSelect = document.querySelector("#topic-select");
+    const searchInput = document.querySelector("#word-search");
+    const specializedSearchInput = document.querySelector("#specialized-search");
+    const unitTitle = document.querySelector("#unit-title");
+    const resultCount = document.querySelector("#result-count");
+    const vocabularyRows = document.querySelector("#vocabulary-rows");
+    const emptyState = document.querySelector("#empty-state");
+    const speechStatus = document.querySelector("#speech-status");
+    const unitPanel = document.querySelector("#unit-panel");
+    const specializedPanel = document.querySelector("#specialized-panel");
+    const unitTab = document.querySelector("#unit-tab");
+    const specializedTab = document.querySelector("#specialized-tab");
+
+    function parseWords(unit) {
+      return unit.words.trim().split("\n").map((line) => {
+        const [word, partOfSpeech, ipa, meaning] = line.split("|");
+        return { word, partOfSpeech, ipa, meaning };
+      });
+    }
+
+    function createVocabularyRow({ word, partOfSpeech, ipa, meaning }) {
+      const row = document.createElement("tr");
+      const wordCell = document.createElement("td");
+      const wordEntry = document.createElement("span");
+      const wordLabel = document.createElement("span");
+      const speakButton = document.createElement("button");
+
+      wordEntry.className = "word-entry";
+      wordLabel.className = "word-label";
+      wordLabel.textContent = word;
+      speakButton.className = "speak-button";
+      speakButton.type = "button";
+      speakButton.textContent = "🔊";
+      speakButton.hidden = true;
+      speakButton.dataset.word = word;
+      speakButton.setAttribute("aria-label", `Phát âm ${word}`);
+      speakButton.title = `Phát âm ${word}`;
+      wordEntry.append(wordLabel, speakButton);
+      wordCell.append(wordEntry);
+      row.append(wordCell);
+
+      [partOfSpeech, ipa, meaning].forEach((value) => {
+        const cell = document.createElement("td");
+        cell.textContent = value;
+        row.append(cell);
+      });
+      return row;
+    }
+
+    function showSpeechStatus(message) {
+      speechStatus.textContent = message;
+      speechStatus.hidden = !message;
+    }
+
+    function speakText(text) {
+      if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
+        showSpeechStatus("Trình duyệt này không hỗ trợ phát âm bằng giọng nói.");
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-US";
+      utterance.rate = 0.9;
+      showSpeechStatus(`Đang phát âm: ${text}`);
+      utterance.onstart = () => showSpeechStatus(`Đang phát âm: ${text}`);
+      utterance.onend = () => showSpeechStatus("");
+      utterance.onerror = (event) => {
+        if (event.error !== "canceled" && event.error !== "interrupted") {
+          showSpeechStatus("Không thể phát âm. Hãy kiểm tra cài đặt giọng nói của trình duyệt.");
+        }
+      };
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function showSpeakButton(wordEntry, word) {
+      vocabularyRows.querySelectorAll(".word-entry.is-active").forEach((entry) => {
+        entry.classList.remove("is-active");
+        entry.querySelector(".speak-button").hidden = true;
+      });
+      const button = wordEntry.querySelector(".speak-button");
+      button.dataset.word = word;
+      button.setAttribute("aria-label", `Phát âm ${word}`);
+      button.title = `Phát âm ${word}`;
+      button.hidden = false;
+      wordEntry.classList.add("is-active");
+    }
+
+    function renderVocabulary() {
+      const unit = units[Number(unitSelect.value)];
+      if (!unit) return;
+      const query = searchInput.value.trim().toLocaleLowerCase("vi");
+      const filteredWords = parseWords(unit).filter(({ word, partOfSpeech, ipa, meaning }) =>
+        `${word} ${partOfSpeech} ${ipa} ${meaning}`.toLocaleLowerCase("vi").includes(query)
+      );
+
+      unitTitle.textContent = unit.title;
+      resultCount.textContent = `${filteredWords.length} / ${parseWords(unit).length} từ`;
+      vocabularyRows.replaceChildren(...filteredWords.map(createVocabularyRow));
+      emptyState.hidden = filteredWords.length > 0;
+    }
+
+    function parseSpecializedWords(topic) {
+      return topic.words.trim().split("\n").filter(Boolean).map((line) => {
+        const fields = line.split("|");
+        if (fields.length >= 4) {
+          const [word, partOfSpeech, ipa, meaning] = fields;
+          return { word, partOfSpeech, ipa, meaning };
+        }
+        const [word, meaning] = fields;
+        return { word, partOfSpeech: "—", ipa: "—", meaning };
+      });
+    }
+
+    function renderSpecializedVocabulary() {
+      const subject = specializedSubjects[Number(subjectSelect.value)];
+      const topic = subject && subject.topics[Number(topicSelect.value)];
+      if (!subject || !topic) return;
+      const query = specializedSearchInput.value.trim().toLocaleLowerCase("vi");
+      const words = parseSpecializedWords(topic);
+      const filteredWords = words.filter(({ word, partOfSpeech, ipa, meaning }) =>
+        `${word} ${partOfSpeech} ${ipa} ${meaning} ${topic.title} ${subject.name}`.toLocaleLowerCase("vi").includes(query)
+      );
+
+      unitTitle.textContent = `${subject.name} · ${topic.title}`;
+      resultCount.textContent = `${filteredWords.length} / ${words.length} từ`;
+      vocabularyRows.replaceChildren(...filteredWords.map(createVocabularyRow));
+      emptyState.textContent = "Không tìm thấy từ phù hợp trong chủ đề này. Thử từ khóa khác nhé.";
+      emptyState.hidden = filteredWords.length > 0;
+    }
+
+    vocabularyRows.addEventListener("click", (event) => {
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target) return;
+
+      const speakButton = target.closest(".speak-button");
+      if (speakButton) {
+        speakText(speakButton.dataset.word);
+        return;
+      }
+
+      const wordLabel = target.closest(".word-label");
+      if (wordLabel) showSpeakButton(wordLabel.closest(".word-entry"), wordLabel.textContent);
+    });
+
+    document.addEventListener("selectionchange", () => {
+      const selection = window.getSelection();
+      const selectedText = selection ? selection.toString().trim() : "";
+      if (!selectedText || selectedText.length >= 60) return;
+
+      const anchor = selection.anchorNode;
+      const anchorElement = anchor && anchor.nodeType === Node.ELEMENT_NODE ? anchor : anchor && anchor.parentElement;
+      const wordLabel = anchorElement && anchorElement.closest(".word-label");
+      if (wordLabel) showSpeakButton(wordLabel.closest(".word-entry"), selectedText);
+    });
+
+    function populateUnits() {
+      units = unitsByGrade[gradeSelect.value];
+      unitSelect.replaceChildren(...units.map((unit, index) => {
+        const option = document.createElement("option");
+        option.value = String(index);
+        option.textContent = unit.title;
+        return option;
+      }));
+      emptyState.textContent = "Không tìm thấy từ phù hợp trong Unit này. Thử từ khóa khác nhé.";
+      renderVocabulary();
+    }
+
+    function populateTopics() {
+      const subject = specializedSubjects[Number(subjectSelect.value)];
+      topicSelect.replaceChildren(...subject.topics.map((topic, index) => {
+        const option = document.createElement("option");
+        option.value = String(index);
+        option.textContent = topic.title;
+        return option;
+      }));
+      renderSpecializedVocabulary();
+    }
+
+    function selectVocabularyTab(showSpecialized) {
+      unitPanel.hidden = showSpecialized;
+      specializedPanel.hidden = !showSpecialized;
+      unitTab.setAttribute("aria-selected", String(!showSpecialized));
+      specializedTab.setAttribute("aria-selected", String(showSpecialized));
+      if (showSpecialized) renderSpecializedVocabulary();
+      else renderVocabulary();
+    }
+
+    subjectSelect.replaceChildren(...specializedSubjects.map((subject, index) => {
+      const option = document.createElement("option");
+      option.value = String(index);
+      option.textContent = subject.name;
+      return option;
+    }));
+    gradeSelect.addEventListener("change", populateUnits);
+    unitSelect.addEventListener("change", renderVocabulary);
+    searchInput.addEventListener("input", renderVocabulary);
+    subjectSelect.addEventListener("change", populateTopics);
+    topicSelect.addEventListener("change", renderSpecializedVocabulary);
+    specializedSearchInput.addEventListener("input", renderSpecializedVocabulary);
+    unitTab.addEventListener("click", () => selectVocabularyTab(false));
+    specializedTab.addEventListener("click", () => selectVocabularyTab(true));
+    populateTopics();
+    populateUnits();
+  </script>
+</body>
+</html>

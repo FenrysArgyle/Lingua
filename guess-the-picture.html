@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7f1">
+  <title>Guess the Picture — Lingua</title>
+  <style>
+    :root { color-scheme:light; --paper:#f7f7f1; --ink:#172b27; --muted:#697570; --line:#dfe4dc; --green:#176b53; --dark:#10543f; --white:#fff; font-family:"Segoe UI",Arial,sans-serif; }
+    * { box-sizing:border-box; } body { min-width:320px; min-height:100vh; margin:0; color:var(--ink); background:var(--paper); } a,button,input { font:inherit; } :focus-visible { outline:3px solid #ff795f; outline-offset:3px; }
+    .shell { width:min(760px,calc(100% - 36px)); margin:auto; } header { height:76px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); }
+    .brand,.back { color:var(--dark); font-weight:700; text-decoration:none; } .brand { font-size:20px; font-weight:800; } main { padding:48px 0 56px; }
+    .eyebrow { color:var(--green); font-size:12px; font-weight:700; text-transform:uppercase; } h1 { margin:8px 0 10px; font-size:clamp(34px,7vw,48px); }
+    .intro,.muted { color:var(--muted); line-height:1.6; } .card { margin-top:24px; padding:24px; border:1px solid var(--line); border-radius:10px; background:var(--white); }
+    .picture { min-height:180px; display:grid; place-items:center; margin-bottom:18px; border-radius:8px; background:#fff0e9; font-size:clamp(64px,18vw,112px); }
+    .picture.hidden { color:transparent; user-select:none; } label { display:block; margin-bottom:7px; font-weight:700; } .row { display:flex; gap:10px; }
+    input { flex:1; min-width:0; min-height:48px; padding:0 12px; border:1px solid #cbd5cc; border-radius:6px; } button { min-height:46px; padding:0 16px; border:0; border-radius:6px; background:var(--green); color:white; font-weight:700; cursor:pointer; }
+    button.secondary { background:#eff5eb; color:var(--dark); } .actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:15px; }
+    .feedback { min-height:26px; margin:14px 0 0; font-weight:700; } .feedback.error { color:#b33d2c; } .score { color:var(--muted); }
+    @media(max-width:520px) { .row { flex-direction:column; } .card { padding:18px; } }
+  </style>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+  <div class="shell">
+    <header><a class="brand" href="index.html">lingua</a><a class="back" href="teacher.html">← Trở về</a></header>
+    <main>
+      <p class="eyebrow">Trò chơi khởi động · 5 phút</p>
+      <h1>Guess the Picture</h1>
+      <p class="intro">Đoán từ tiếng Anh từ hình gợi ý. Có thể che hình để cả lớp đoán trước, rồi mở hình để kiểm tra.</p>
+      <section class="card" aria-label="Trò chơi đoán hình">
+        <div class="picture" id="picture" role="img" aria-label="Hình gợi ý">🐘</div>
+        <p class="muted" id="round-progress" aria-live="polite"></p>
+        <p class="muted" id="hint">Gợi ý: An animal with a very long nose.</p>
+        <form id="guess-form">
+          <label for="guess-input">Đáp án tiếng Anh</label>
+          <div class="row"><input id="guess-input" autocomplete="off" required placeholder="Type your guess"><button type="submit">Trả lời</button></div>
+        </form>
+        <p class="feedback" id="feedback" role="status"></p>
+        <p class="score" id="score" aria-live="polite">Điểm: 0</p>
+        <div class="actions">
+          <button class="secondary" id="toggle-picture" type="button">Che hình</button>
+          <button class="secondary" id="show-answer" type="button">Hiện đáp án</button>
+          <button id="next" type="button">Câu tiếp theo →</button>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script>
+    const rounds = [
+      { word: "elephant", picture: "🐘", hint: "An animal with a very long nose." },
+      { word: "rainbow", picture: "🌈", hint: "You may see this in the sky after rain." },
+      { word: "bicycle", picture: "🚲", hint: "A vehicle with two wheels." },
+      { word: "sunflower", picture: "🌻", hint: "A tall yellow flower that turns toward the sun." },
+      { word: "pizza", picture: "🍕", hint: "A round Italian dish with cheese." },
+      { word: "butterfly", picture: "🦋", hint: "An insect with colorful wings." },
+      { word: "guitar", picture: "🎸", hint: "A musical instrument with strings." },
+      { word: "turtle", picture: "🐢", hint: "A slow animal with a shell." },
+      { word: "apple", picture: "🍎", hint: "A crunchy fruit that can be red or green." },
+      { word: "banana", picture: "🍌", hint: "A long, yellow fruit." },
+      { word: "watermelon", picture: "🍉", hint: "A large green fruit with a juicy red center." },
+      { word: "strawberry", picture: "🍓", hint: "A small red fruit with tiny seeds on the outside." },
+      { word: "carrot", picture: "🥕", hint: "An orange vegetable that grows underground." },
+      { word: "broccoli", picture: "🥦", hint: "A green vegetable that looks like a tiny tree." },
+      { word: "cake", picture: "🎂", hint: "A sweet dessert often eaten at birthdays." },
+      { word: "ice cream", picture: "🍦", hint: "A cold, sweet dessert served in a cone." },
+      { word: "hamburger", picture: "🍔", hint: "A sandwich with a patty inside a bun." },
+      { word: "sushi", picture: "🍣", hint: "A Japanese dish often made with rice and fish." },
+      { word: "cat", picture: "🐈", hint: "A small pet that says 'meow'." },
+      { word: "dog", picture: "🐕", hint: "A loyal pet that says 'woof'." },
+      { word: "lion", picture: "🦁", hint: "A big cat known as the king of the jungle." },
+      { word: "giraffe", picture: "🦒", hint: "A tall animal with a very long neck." },
+      { word: "monkey", picture: "🐒", hint: "An animal that climbs trees and likes bananas." },
+      { word: "rabbit", picture: "🐇", hint: "A small animal with long ears that hops." },
+      { word: "penguin", picture: "🐧", hint: "A black-and-white bird that cannot fly and loves cold places." },
+      { word: "dolphin", picture: "🐬", hint: "A clever sea animal that jumps out of the water." },
+      { word: "octopus", picture: "🐙", hint: "A sea animal with eight arms." },
+      { word: "whale", picture: "🐳", hint: "A huge animal that lives in the ocean." },
+      { word: "frog", picture: "🐸", hint: "A green animal that jumps and says 'ribbit'." },
+      { word: "bee", picture: "🐝", hint: "A flying insect that makes honey." },
+      { word: "owl", picture: "🦉", hint: "A bird that is awake at night and says 'hoot'." },
+      { word: "snail", picture: "🐌", hint: "A very slow animal that carries its home." },
+      { word: "house", picture: "🏠", hint: "A place where people live." },
+      { word: "school", picture: "🏫", hint: "A place where students learn." },
+      { word: "hospital", picture: "🏥", hint: "A place where doctors help sick people." },
+      { word: "train", picture: "🚂", hint: "A long vehicle that travels on tracks." },
+      { word: "airplane", picture: "✈️", hint: "A vehicle that flies people through the sky." },
+      { word: "boat", picture: "⛵", hint: "A vehicle that travels on water." },
+      { word: "rocket", picture: "🚀", hint: "A vehicle that travels into space." },
+      { word: "key", picture: "🔑", hint: "You use this to open a lock." },
+      { word: "umbrella", picture: "☂️", hint: "You hold this over your head when it rains." },
+      { word: "camera", picture: "📷", hint: "You use this to take photos." },
+      { word: "telephone", picture: "☎️", hint: "You use this to call and talk to someone far away." },
+      { word: "computer", picture: "💻", hint: "You use this to type, study, and go online." },
+      { word: "book", picture: "📚", hint: "You read stories and learn from these pages." },
+      { word: "clock", picture: "⏰", hint: "You look at this to know the time." },
+      { word: "glasses", picture: "👓", hint: "You wear these to help you see." },
+      { word: "shoes", picture: "👟", hint: "You wear these on your feet when you walk." },
+      { word: "heart", picture: "❤️", hint: "This red shape can mean love." },
+      { word: "star", picture: "⭐", hint: "You can see this shining in the night sky." },
+      { word: "moon", picture: "🌙", hint: "You can see this in the night sky." },
+      { word: "mountain", picture: "⛰️", hint: "A very high area of land." },
+      { word: "volcano", picture: "🌋", hint: "A mountain that can send out hot lava." },
+      { word: "camping", picture: "🏕️", hint: "Sleeping in a tent outdoors is called this." },
+      { word: "snowman", picture: "⛄", hint: "You build this from snow in winter." },
+      { word: "football", picture: "⚽", hint: "A popular team sport played with a round ball." },
+      { word: "basketball", picture: "🏀", hint: "A sport where players throw a ball through a hoop." },
+      { word: "tennis", picture: "🎾", hint: "A sport played with a racket and a small fuzzy ball." },
+      { word: "swimming", picture: "🏊", hint: "Moving through water using your arms and legs." },
+      { word: "dancing", picture: "💃", hint: "Moving your body to music." },
+      { word: "painting", picture: "🎨", hint: "Making a picture with colors and a brush." },
+      { word: "music", picture: "🎵", hint: "Sounds with a rhythm or melody." },
+      { word: "gift", picture: "🎁", hint: "A present you give someone for a special day." },
+      { word: "birthday", picture: "🎈", hint: "The day each year when you celebrate being born." },
+      { word: "fireworks", picture: "🎆", hint: "Bright colorful lights that explode in the night sky." },
+      { word: "rain", picture: "🌧️", hint: "Water that falls from clouds." },
+      { word: "lightning", picture: "🌩️", hint: "A bright flash in the sky during a storm." },
+      { word: "cactus", picture: "🌵", hint: "A spiky plant that can live in the desert." },
+      { word: "palm tree", picture: "🌴", hint: "A tall tropical tree with leaves at the top." },
+      { word: "mushroom", picture: "🍄", hint: "A small fungus often drawn with a spotted cap." },
+      { word: "cheese", picture: "🧀", hint: "A yellow food made from milk." },
+      { word: "popcorn", picture: "🍿", hint: "A snack people often eat at the cinema." },
+      { word: "chocolate", picture: "🍫", hint: "A sweet treat made from cocoa." },
+      { word: "lemon", picture: "🍋", hint: "A yellow citrus fruit with a sour taste." },
+      { word: "cherry", picture: "🍒", hint: "A small round red fruit that often grows in pairs." },
+      { word: "panda", picture: "🐼", hint: "A black-and-white bear that eats bamboo." },
+      { word: "fox", picture: "🦊", hint: "A clever wild animal with a bushy tail." },
+      { word: "pig", picture: "🐷", hint: "A pink farm animal that says 'oink'." },
+      { word: "chicken", picture: "🐔", hint: "A farm bird that lays eggs." },
+      { word: "snake", picture: "🐍", hint: "A long animal with no legs." },
+      { word: "koala", picture: "🐨", hint: "An Australian animal that lives in trees and eats eucalyptus." },
+      { word: "camel", picture: "🐫", hint: "A desert animal with one or two humps." },
+      { word: "bus", picture: "🚌", hint: "A large vehicle that carries many passengers." },
+      { word: "taxi", picture: "🚕", hint: "A car you can pay to take you somewhere." },
+      { word: "motorcycle", picture: "🏍️", hint: "A two-wheeled vehicle with an engine." },
+      { word: "submarine", picture: "🚢", hint: "A vessel that travels deep under the sea." },
+      { word: "pencil", picture: "✏️", hint: "You use this to write or draw on paper." },
+      { word: "scissors", picture: "✂️", hint: "You use these to cut paper." },
+      { word: "backpack", picture: "🎒", hint: "You carry books and school things in this bag." },
+      { word: "crown", picture: "👑", hint: "A king or queen wears this on their head." },
+      { word: "globe", picture: "🌍", hint: "A round model that shows the Earth." },
+      { word: "mailbox", picture: "📮", hint: "Letters are delivered to this box." },
+      { word: "candle", picture: "🕯️", hint: "A stick of wax that gives light when it burns." },
+      { word: "raincoat", picture: "🧥", hint: "You wear this to stay dry in wet weather." }
+    ];
+    const picture = document.querySelector("#picture");
+    const hint = document.querySelector("#hint");
+    const feedback = document.querySelector("#feedback");
+    const input = document.querySelector("#guess-input");
+    const roundProgress = document.querySelector("#round-progress");
+    let remainingRounds = [];
+    let currentRoundIndex = -1;
+    let points = 0;
+    let answered = false;
+    let hidden = false;
+    let usedCount = 0;
+
+    function drawRandomRound() {
+      let newDeck = false;
+      if (remainingRounds.length === 0) {
+        remainingRounds = rounds.map((_, roundIndex) => roundIndex);
+        if (remainingRounds.length > 1 && currentRoundIndex !== -1) {
+          remainingRounds = remainingRounds.filter((roundIndex) => roundIndex !== currentRoundIndex);
+        }
+        usedCount = 0;
+        newDeck = currentRoundIndex !== -1;
+      }
+
+      const randomPosition = Math.floor(Math.random() * remainingRounds.length);
+      currentRoundIndex = remainingRounds.splice(randomPosition, 1)[0];
+      usedCount += 1;
+      return newDeck;
+    }
+
+    function render() {
+      const round = rounds[currentRoundIndex];
+      picture.textContent = round.picture;
+      picture.setAttribute("aria-label", `Hình gợi ý cho câu ${usedCount}`);
+      hidden = false;
+      picture.classList.toggle("hidden", hidden);
+      document.querySelector("#toggle-picture").textContent = "Che hình";
+      roundProgress.textContent = `Câu ${usedCount} / ${rounds.length} · Chọn ngẫu nhiên, không lặp lại cho đến hết bộ câu hỏi`;
+      hint.textContent = `Gợi ý: ${round.hint}`;
+      feedback.textContent = "";
+      feedback.classList.remove("error");
+      input.value = "";
+      answered = false;
+    }
+    document.querySelector("#guess-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (answered) {
+        feedback.textContent = "Nhấn “Câu tiếp theo” để chơi tiếp nhé.";
+        return;
+      }
+      if (input.value.trim().toLocaleLowerCase("en") === rounds[currentRoundIndex].word) {
+        points += 1;
+        document.querySelector("#score").textContent = `Điểm: ${points}`;
+        feedback.textContent = "Chính xác! Great job!";
+        answered = true;
+      } else {
+        feedback.textContent = "Chưa đúng, thử lại nhé!";
+        feedback.classList.add("error");
+        input.select();
+      }
+    });
+    document.querySelector("#toggle-picture").addEventListener("click", (event) => {
+      hidden = !hidden;
+      picture.classList.toggle("hidden", hidden);
+      event.currentTarget.textContent = hidden ? "Hiện hình" : "Che hình";
+    });
+    document.querySelector("#show-answer").addEventListener("click", () => {
+      feedback.textContent = `Đáp án: ${rounds[currentRoundIndex].word}`;
+      answered = true;
+    });
+    document.querySelector("#next").addEventListener("click", () => {
+      const completedDeck = drawRandomRound();
+      render();
+      if (completedDeck) feedback.textContent = "Đã chơi hết bộ từ! Bộ mới đã được xáo để chơi tiếp.";
+    });
+    drawRandomRound();
+    render();
+  </script>
+</body>
+</html>

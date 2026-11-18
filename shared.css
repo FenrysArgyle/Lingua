@@ -1,0 +1,221 @@
+:root {
+  --motion-ease: cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "DM Sans", "Segoe UI", Arial, sans-serif;
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(ellipse at 12% 8%, rgba(215, 243, 107, 0.16), transparent 28rem),
+    radial-gradient(ellipse at 92% 38%, rgba(190, 216, 248, 0.18), transparent 30rem),
+    radial-gradient(#dce4d9 0.8px, transparent 0.8px);
+  background-size: auto, auto, 20px 20px;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Manrope", "DM Sans", "Segoe UI", sans-serif;
+  letter-spacing: -0.035em;
+}
+
+a,
+button,
+input,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:not(.role-card):not(.brand):not(.brand-mark):not(.game-link):not(.back):not(.back-link):hover {
+  color: var(--green-dark, var(--dark));
+}
+
+:where(.topbar, header) {
+  border-color: rgba(23, 43, 39, 0.13);
+}
+
+.brand-mark {
+  transition: transform 220ms var(--motion-ease), box-shadow 220ms var(--motion-ease);
+}
+
+.brand:hover .brand-mark {
+  box-shadow: 0 6px 16px rgba(23, 107, 83, 0.2);
+  transform: rotate(0) scale(1.06);
+}
+
+.card,
+.role-card,
+.lesson-group,
+.game-card,
+.table-wrap {
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(23, 43, 39, 0.035);
+  transition:
+    border-color 220ms var(--motion-ease),
+    box-shadow 220ms var(--motion-ease),
+    transform 220ms var(--motion-ease);
+}
+
+.card:hover,
+.role-card:hover,
+.lesson-group:hover,
+.game-card:hover {
+  border-color: #b7cfc0;
+  box-shadow: 0 16px 38px rgba(23, 43, 39, 0.09);
+  transform: translateY(-3px);
+}
+
+.role-card[aria-pressed="true"] {
+  border-color: var(--green);
+}
+
+.role-art {
+  transition: transform 260ms var(--motion-ease);
+}
+
+.role-card:hover .role-art {
+  transform: scale(1.07) rotate(4deg);
+}
+
+button:not(.section-tab):not(.role-card) {
+  border-radius: 10px;
+  transition:
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms var(--motion-ease);
+}
+
+button:not(.section-tab):not(.role-card):hover:not(:disabled) {
+  box-shadow: 0 7px 18px rgba(23, 107, 83, 0.18);
+  transform: translateY(-2px);
+}
+
+button:not(.section-tab):not(.role-card):active:not(:disabled) {
+  box-shadow: none;
+  transform: translateY(0) scale(0.98);
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+input,
+select,
+.word-entry {
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 4px rgba(23, 107, 83, 0.1);
+}
+
+.word-entry:focus-within {
+  box-shadow: 0 0 0 4px rgba(23, 107, 83, 0.1);
+}
+
+.section-tab {
+  transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.section-tab:hover:not([aria-selected="true"]) {
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--green-dark);
+}
+
+.phrase-row {
+  transition: background-color 180ms ease, padding 180ms ease;
+}
+
+.phrase-row:hover {
+  padding-right: 8px;
+  padding-left: 8px;
+  background: rgba(239, 245, 235, 0.65);
+}
+
+.game-link {
+  transition: color 180ms ease, gap 180ms ease;
+}
+
+.game-link:hover {
+  gap: 5px;
+}
+
+.picture,
+.word,
+.word-card {
+  transition:
+    background-color 220ms ease,
+    color 220ms ease,
+    filter 220ms ease,
+    transform 220ms var(--motion-ease);
+}
+
+.picture:hover,
+.word:not(.is-hidden):hover,
+.word-card:hover {
+  transform: scale(1.01);
+}
+
+.team {
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+
+.team:focus-within {
+  border-color: #a9cabb;
+  background: #fbfcf8;
+}
+
+.chain li {
+  transition: background-color 180ms ease, transform 180ms var(--motion-ease);
+}
+
+.chain li:hover {
+  background: var(--lime, #d7f36b);
+  transform: translateY(-2px);
+}
+
+.table-wrap tbody tr {
+  transition: background-color 160ms ease;
+}
+
+.table-wrap tbody tr:hover {
+  background: rgba(239, 245, 235, 0.7);
+}
+
+.lesson-preview {
+  animation: shared-enter 450ms var(--motion-ease) both;
+}
+
+@keyframes shared-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
